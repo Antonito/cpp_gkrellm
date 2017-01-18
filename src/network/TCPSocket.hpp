@@ -14,10 +14,11 @@ public:
   TCPSocket &operator=(TCPSocket const &);
   ~TCPSocket();
 
-  bool send(char const *str, size_t len);
-  char const *receive();
+  static bool send(int fd, char const *str, size_t len);
+  static char const *receive(int &fd);
 
-  bool isStarted() const;
+  bool       isStarted() const;
+  int const &getFd() const;
 
 private:
   int      m_fd;
