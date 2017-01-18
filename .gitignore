@@ -1,0 +1,46 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+vgcore.*
+*.log
+
+# vscode
+*.vscode
+
+#npm log
+npm-debug.log*
+
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+
+# Gdb
+.gdb_history
+
+# Ctags
+tags
+*.swp
