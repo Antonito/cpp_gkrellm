@@ -1,0 +1,4 @@
+#ifndef TCPCONNECTION_HPP_
+#define TCPCONNECTION_HPP_
+
+#endif // !TCPCONNECTION_HPP_
