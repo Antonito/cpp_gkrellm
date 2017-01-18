@@ -4,23 +4,25 @@
 #include <stdint.h>
 #include <string>
 
+#define TCP_BUFF_SIZE (4096)
+
 class TCPSocket
 {
 public:
-  TCPSocket(std::string const &ip, uint16_t port);
+  TCPSocket(uint16_t port, int maxClient);
   TCPSocket(TCPSocket const &);
   TCPSocket &operator=(TCPSocket const &);
   ~TCPSocket();
 
-  bool send(char const *str);
+  bool send(char const *str, size_t len);
   char const *receive();
 
   bool isStarted() const;
 
 private:
-  int         m_fd;
-  uint16_t    m_port;
-  std::string m_ip;
+  int      m_fd;
+  uint16_t m_port;
+  int      m_maxClient;
 };
 
 #endif // !TCPSOCKET_HPP_
