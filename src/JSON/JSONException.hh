@@ -8,9 +8,9 @@ class JSONException : public std::exception
 {
 public:
   JSONException(std::string const &message);
-  virtual ~JSONException();
+  virtual ~JSONException() throw();
 
-  virtual const char *what() throw();
+  virtual const char *what() const throw();
 
 private:
   std::string m_message;
