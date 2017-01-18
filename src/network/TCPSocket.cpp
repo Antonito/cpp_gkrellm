@@ -4,6 +4,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <cstring>
 #include "TCPSocket.hpp"
 
 TCPSocket::TCPSocket(uint16_t port, int maxClient)
@@ -78,9 +79,10 @@ char const *TCPSocket::receive()
   // Security
   while (loop < 100)
     {
-      buffSize += read(m_fd, buff, TCP_BUFF_SIZE - 1);
-
-      for (ssize_t i = 0; i < buffSize; ++i)
+      char *tmp;
+      buffSize += read(m_fd, buff + prev,
+                       static_cast<unsigned>(buffSize) + TCP_BUFF_SIZE - 1);
+      for (ssize_t i = prev; i < buffSize; ++i)
 	{
 	  if (buff[i] == '\r' && i + 1 < buffSize && buff[i + 1] == '\n' &&
 	      i + 2 < buffSize && buff[i + 2] == '\r' && i + 3 < buffSize &&
@@ -90,6 +92,10 @@ char const *TCPSocket::receive()
 	      return (buff);
 	    }
 	}
+      tmp = new char[buffSize + TCP_BUFF_SIZE];
+      std::memcpy(tmp, buff, static_cast<unsigned>(buffSize));
+      delete[] buff;
+      buff = tmp;
       prev = buffSize;
       ++loop;
     }
