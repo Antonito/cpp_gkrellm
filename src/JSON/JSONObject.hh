@@ -3,22 +3,25 @@
 
 #include <map>
 #include <string>
-#include "IJSONElement.hh"
+#include "JSONIElement.hh"
 
-class JSONObject : public IJSONElement
+namespace JSON
 {
-public:
-  JSONObject();
-  virtual ~JSONObject();
+  class Object : public IElement
+  {
+  public:
+    Object();
+    virtual ~Object();
 
-  virtual std::string str(std::string const &c = "\"") const;
-  virtual IJSONElement &operator[](size_t index);
-  virtual IJSONElement &operator[](std::string const &prop);
-  void addProperty(std::string const &prop, IJSONElement *elem);
-  void removeProperty(std::string const &prop);
+    virtual std::string str(std::string const &c = "\"") const;
+    virtual IElement &operator[](size_t index);
+    virtual IElement &operator[](std::string const &prop);
+    void addProperty(std::string const &prop, IElement *elem);
+    void removeProperty(std::string const &prop);
+    size_t size() const;
 
-private:
-  std::map<std::string, IJSONElement *> m_properties;
-};
-
+  private:
+    std::map<std::string, IElement *> m_properties;
+  };
+}
 #endif // !JSONOBJECT_HH_

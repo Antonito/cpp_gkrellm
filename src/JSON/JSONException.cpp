@@ -1,14 +1,17 @@
 #include "JSONException.hh"
 
-JSONException::JSONException(std::string const &message) : m_message(message)
+namespace JSON
 {
-}
+  JSONException::JSONException(std::string const &message) : m_message(message)
+  {
+  }
 
-JSONException::~JSONException() throw()
-{
-}
+  JSONException::~JSONException() throw()
+  {
+  }
 
-const char *JSONException::what() const throw()
-{
-  return (m_message.c_str());
+  const char *JSONException::what() const throw()
+  {
+    return (m_message.c_str());
+  }
 }

@@ -2,22 +2,24 @@
 #define JSONSTRING_HH_
 
 #include <string>
-#include "IJSONElement.hh"
+#include "JSONIElement.hh"
 
-class JSONString : public IJSONElement
+namespace JSON
 {
-public:
-  JSONString();
-  JSONString(std::string const &str);
-  virtual ~JSONString();
+  class String : public IElement
+  {
+  public:
+    String();
+    String(std::string const &str);
+    virtual ~String();
 
-  virtual std::string str(std::string const &c = "\"") const;
-  virtual IJSONElement &operator[](size_t index);
-  virtual IJSONElement &operator[](std::string const &prop);
-  void setValue(std::string const &val);
+    virtual std::string str(std::string const &c = "\"") const;
+    virtual IElement &operator[](size_t index);
+    virtual IElement &operator[](std::string const &prop);
+    void setValue(std::string const &val);
 
-private:
-  std::string m_value;
-};
-
+  private:
+    std::string m_value;
+  };
+}
 #endif // !JSONSTRING_HH_

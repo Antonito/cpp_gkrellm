@@ -1,0 +1,11 @@
+{
+    "bite": "cocoman",
+    "alexia": {
+	"organ": "bite",
+	"origin"  :
+	[
+	    "cocoman",
+	    "peauc"
+	    ]
+    }
+}

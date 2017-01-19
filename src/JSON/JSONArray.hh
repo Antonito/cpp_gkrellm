@@ -3,23 +3,27 @@
 
 #include <string>
 #include <vector>
-#include "IJSONElement.hh"
+#include "JSONIElement.hh"
 
-class JSONArray : public IJSONElement
+namespace JSON
 {
-public:
-  JSONArray();
-  virtual ~JSONArray();
+  class Array : public IElement
+  {
+  public:
+    Array();
+    virtual ~Array();
 
-  virtual std::string str(std::string const &c = "\"") const;
-  virtual IJSONElement &operator[](size_t index);
-  virtual IJSONElement &operator[](std::string const &name);
-  void push(IJSONElement *elem);
-  void pop();
-  void erase(size_t index);
+    virtual std::string str(std::string const &c = "\"") const;
+    virtual IElement &operator[](size_t index);
+    virtual IElement &operator[](std::string const &name);
+    void push(IElement *elem);
+    void pop();
+    void erase(size_t index);
+    size_t size() const;
 
-private:
-  std::vector<IJSONElement *> m_values;
-};
+  private:
+    std::vector<IElement *> m_values;
+  };
+}
 
 #endif // !JSONARRAY_HH_

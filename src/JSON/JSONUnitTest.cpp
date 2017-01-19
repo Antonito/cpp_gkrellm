@@ -12,26 +12,26 @@ int main()
   // - Object as property
   // - String as property
   // - Property override
-  // - JSON::str()
+  // - JSON::::str()
 
-  JSONObject  root;
-  JSONObject *child1 = new JSONObject();
-  JSONObject *child2 = new JSONObject();
-  JSONArray * array = new JSONArray();
+  JSON::Object  root;
+  JSON::Object *child1 = new JSON::Object();
+  JSON::Object *child2 = new JSON::Object();
+  JSON::Array * array = new JSON::Array();
 
-  array->push(new JSONString("val in array1"));
-  array->push(new JSONString("val in array2"));
-  array->push(new JSONString("val in array3"));
-  array->push(new JSONString("val in array4"));
+  array->push(new JSON::String("val in array1"));
+  array->push(new JSON::String("val in array2"));
+  array->push(new JSON::String("val in array3"));
+  array->push(new JSON::String("val in array4"));
   array->pop();
   array->erase(1);
-  child1->addProperty("subProperty1", new JSONString("value1"));
-  child2->addProperty("subProperty2", new JSONString("value2"));
-  child2->addProperty("subProperty2", new JSONString("overriden1"));
+  child1->addProperty("subProperty1", new JSON::String("value1"));
+  child2->addProperty("subProperty2", new JSON::String("value2"));
+  child2->addProperty("subProperty2", new JSON::String("overriden1"));
   child2->addProperty("subProperty1", array);
   root.addProperty("property1", child1);
   root.addProperty("property2", child2);
-  root.addProperty("property3", new JSONString("nope"));
+  root.addProperty("property3", new JSON::String("nope"));
 
   // Exception tests
 
@@ -39,13 +39,13 @@ int main()
   try
     {
       // Index accessing on object (it only accept property, with string)
-      std::cout << "Index accessing on JSON Object:" << std::endl;
-      root[1] = JSONString("");
+      std::cout << "Index accessing on JSON:: Object:" << std::endl;
+      root[1] = JSON::String("");
     }
-  catch (JSONException const &e)
+  catch (JSON::JSONException const &e)
     {
       hasCatch = true;
-      assert(std::strcmp(e.what(), "Index accessing on JSONObject") == 0);
+      assert(std::strcmp(e.what(), "Index accessing on JSON::Object") == 0);
       std::cout << "Catch OK" << std::endl;
     }
   assert(hasCatch);
@@ -54,13 +54,13 @@ int main()
   try
     {
       // Index accessing on string (it doesn't accept accessing)
-      std::cout << "Index accessing on JSON String:" << std::endl;
-      root["property3"][0] = JSONString("");
+      std::cout << "Index accessing on JSON:: String:" << std::endl;
+      root["property3"][0] = JSON::String("");
     }
-  catch (JSONException const &e)
+  catch (JSON::JSONException const &e)
     {
       hasCatch = true;
-      assert(std::strcmp(e.what(), "Index accessing on JSONString") == 0);
+      assert(std::strcmp(e.what(), "Index accessing on JSON::String") == 0);
       std::cout << "Catch OK" << std::endl;
     }
   assert(hasCatch);
@@ -69,13 +69,13 @@ int main()
   try
     {
       // Property accessing on string (it doesn't accept accessing)
-      std::cout << "Property accessing on JSON String:" << std::endl;
-      root["property3"]["oui"] = JSONString("");
+      std::cout << "Property accessing on JSON:: String:" << std::endl;
+      root["property3"]["oui"] = JSON::String("");
     }
-  catch (JSONException const &e)
+  catch (JSON::JSONException const &e)
     {
       hasCatch = true;
-      assert(std::strcmp(e.what(), "Property accessing on JSONString") == 0);
+      assert(std::strcmp(e.what(), "Property accessing on JSON::String") == 0);
       std::cout << "Catch OK" << std::endl;
     }
   assert(hasCatch);
@@ -85,9 +85,9 @@ int main()
     {
       // Non existant property (it doesn't accept accessing)
       std::cout << "Non existant property:" << std::endl;
-      root["nonExistant"] = JSONString("nope");
+      root["nonExistant"] = JSON::String("nope");
     }
-  catch (JSONException const &e)
+  catch (JSON::JSONException const &e)
     {
       hasCatch = true;
       assert(std::strcmp(e.what(), "No such property") == 0);
@@ -95,8 +95,21 @@ int main()
     }
   assert(hasCatch);
 
-  std::cout << "Validating JSON with json_verify:" << std::endl;
+  std::cout << "Validating json with json_verify:" << std::endl;
   std::cout << root.str() << std::endl;
   system(std::string("json_verify <<< \"" + root.str("\\\"") + "\"").c_str());
+
+  JSON::Source src;
+
+  src.setText(root.str());
+  JSON::IElement *reconstruct = src.parseJSON();
+
+  std::cout << "Reconstruction:" << std::endl;
+  std::cout << reconstruct->str() << std::endl;
+
+  JSON::Source example("example.json");
+  JSON::IElement *ex = example.parseJSON();
+  std::cout << ex->str() << std::endl;
+  system(std::string("json_verify <<< \"" + ex->str("\\\"") + "\"").c_str());
   return EXIT_SUCCESS;
 }

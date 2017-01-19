@@ -1,34 +1,37 @@
 #include "JSONString.hh"
 #include "JSONException.hh"
 
-JSONString::JSONString() : m_value("")
+namespace JSON
 {
-}
+  String::String() : m_value("")
+  {
+  }
 
-JSONString::JSONString(std::string const &str) : m_value(str)
-{
-}
+  String::String(std::string const &str) : m_value(str)
+  {
+  }
 
-JSONString::~JSONString()
-{
-}
+  String::~String()
+  {
+  }
 
-std::string JSONString::str(std::string const &c) const
-{
-  return (c + m_value + c);
-}
+  std::string String::str(std::string const &c) const
+  {
+    return (c + m_value + c);
+  }
 
-IJSONElement &JSONString::operator[](size_t)
-{
-  throw JSONException("Index accessing on JSONString");
-}
+  IElement &String::operator[](size_t)
+  {
+    throw JSONException("Index accessing on JSON::String");
+  }
 
-IJSONElement &JSONString::operator[](std::string const &)
-{
-  throw JSONException("Property accessing on JSONString");
-}
+  IElement &String::operator[](std::string const &)
+  {
+    throw JSONException("Property accessing on JSON::String");
+  }
 
-void JSONString::setValue(std::string const &value)
-{
-  m_value = value;
+  void String::setValue(std::string const &value)
+  {
+    m_value = value;
+  }
 }
