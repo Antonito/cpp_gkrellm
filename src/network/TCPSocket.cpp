@@ -1,10 +1,10 @@
 #include <unistd.h>
-#include <assert.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <cstring>
+#include <iostream>
 #include "TCPSocket.hpp"
 
 TCPSocket::TCPSocket(uint16_t port, int maxClient)
@@ -59,17 +59,16 @@ TCPSocket::~TCPSocket()
     }
 }
 
-bool TCPSocket::send(char const *str, size_t len)
+bool TCPSocket::send(int fd, char const *str, size_t len)
 {
-  assert(m_fd != -1);
-  if (write(m_fd, str, len) < 0)
+  if (write(fd, str, len) < 0)
     {
       return (false);
     }
   return (true);
 }
 
-char const *TCPSocket::receive()
+char const *TCPSocket::receive(int &fd)
 {
   char *  buff = new char[TCP_BUFF_SIZE];
   ssize_t buffSize = 0;
@@ -80,8 +79,14 @@ char const *TCPSocket::receive()
   while (loop < 100)
     {
       char *tmp;
-      buffSize += read(m_fd, buff + prev,
+      buffSize += read(fd, buff + prev,
                        static_cast<unsigned>(buffSize) + TCP_BUFF_SIZE - 1);
+      if (!buffSize)
+	{
+	  close(fd);
+	  fd = -1;
+	  return (NULL);
+	}
       for (ssize_t i = prev; i < buffSize; ++i)
 	{
 	  if (buff[i] == '\r' && i + 1 < buffSize && buff[i + 1] == '\n' &&
@@ -106,4 +111,9 @@ char const *TCPSocket::receive()
 bool TCPSocket::isStarted() const
 {
   return (m_fd != -1);
+}
+
+int const &TCPSocket::getFd() const
+{
+  return (m_fd);
 }
