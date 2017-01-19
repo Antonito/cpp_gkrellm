@@ -10,6 +10,10 @@ JSONObject::JSONObject()
 
 JSONObject::~JSONObject()
 {
+  for (it_type it = m_properties.begin(); it != m_properties.end(); it++)
+    {
+      delete it->second;
+    }
 }
 
 std::string JSONObject::str(std::string const &c) const

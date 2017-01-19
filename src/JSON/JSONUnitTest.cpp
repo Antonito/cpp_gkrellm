@@ -17,10 +17,18 @@ int main()
   JSONObject  root;
   JSONObject *child1 = new JSONObject();
   JSONObject *child2 = new JSONObject();
+  JSONArray * array = new JSONArray();
 
+  array->push(new JSONString("val in array1"));
+  array->push(new JSONString("val in array2"));
+  array->push(new JSONString("val in array3"));
+  array->push(new JSONString("val in array4"));
+  array->pop();
+  array->erase(1);
   child1->addProperty("subProperty1", new JSONString("value1"));
   child2->addProperty("subProperty2", new JSONString("value2"));
   child2->addProperty("subProperty2", new JSONString("overriden1"));
+  child2->addProperty("subProperty1", array);
   root.addProperty("property1", child1);
   root.addProperty("property2", child2);
   root.addProperty("property3", new JSONString("nope"));
@@ -89,6 +97,6 @@ int main()
 
   std::cout << "Validating JSON with json_verify:" << std::endl;
   std::cout << root.str() << std::endl;
-  system(std::string("json_verify <<< " + root.str("\\\"")).c_str());
+  system(std::string("json_verify <<< \"" + root.str("\\\"") + "\"").c_str());
   return EXIT_SUCCESS;
 }

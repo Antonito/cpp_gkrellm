@@ -4,5 +4,6 @@
 #include "JSONException.hh"
 #include "JSONObject.hh"
 #include "JSONString.hh"
+#include "JSONArray.hh"
 
 #endif // !JSON_HH_
