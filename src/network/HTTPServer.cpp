@@ -4,8 +4,12 @@
 #include <netinet/in.h>
 #include "HTTPServer.hpp"
 
-HTTPQueueElem::HTTPQueueElem(int fd, char const *str)
-    : clientFd(fd), payload(str)
+HTTPClient::HTTPClient(int fd) : clientFd(fd), wrote(false)
+{
+}
+
+HTTPQueueElem::HTTPQueueElem(HTTPClient &info, char const *str)
+    : client(info), payload(str)
 {
 }
 
@@ -43,17 +47,20 @@ int HTTPServer::accept_client(int fd)
 void *HTTPServer::_serverLoopRead(void *_data)
 {
   HTTPServerData *data = static_cast<HTTPServerData *>(_data);
-  fd_set          readfds, exceptfds;
+  fd_set          readfds, writefds, exceptfds;
   int             maxFd;
-  int *           clients = new int[data->maxClient];
+  HTTPClient *    clients = new HTTPClient[data->maxClient]();
 
   for (ssize_t i = 0; i < data->maxClient; ++i)
     {
-      clients[i] = -1;
+      clients[i].clientFd = -1;
+      clients[i].wrote = false;
     }
   while (data->running)
     {
-      int rc;
+      int            rc;
+      struct timeval timeout;
+
       // Prepare fd
       FD_ZERO(&readfds);
       FD_ZERO(&exceptfds);
@@ -61,19 +68,26 @@ void *HTTPServer::_serverLoopRead(void *_data)
       FD_SET(data->srvFd, &readfds);
       for (ssize_t i = 0; i < data->maxClient; ++i)
 	{
-	  if (clients[i] != -1)
+	  if (clients[i].clientFd != -1)
 	    {
-	      FD_SET(clients[i], &readfds);
-	      maxFd = (maxFd > clients[i]) ? maxFd : clients[i];
+	      FD_SET(clients[i].clientFd, &readfds);
+	      maxFd =
+	          (maxFd > clients[i].clientFd) ? maxFd : clients[i].clientFd;
 	    }
 	}
       exceptfds = readfds;
+      writefds = readfds;
+
+      // Reset timeout, 60 seconds
+      timeout.tv_sec = 60;
+      timeout.tv_usec = 0;
 
       // Select
-      rc = select(maxFd + 1, &readfds, NULL, &exceptfds, NULL);
+      rc = select(maxFd + 1, &readfds, &writefds, &exceptfds, &timeout);
       if (rc < 0)
 	{
 	  // We have an error
+	  std::cout << "Select error" << std::endl;
 	  continue;
 	}
       else if (FD_ISSET(data->srvFd, &readfds))
@@ -83,9 +97,10 @@ void *HTTPServer::_serverLoopRead(void *_data)
 
 	  for (i = 0; i < data->maxClient; ++i)
 	    {
-	      if (clients[i] == -1)
+	      if (clients[i].clientFd == -1)
 		{
-		  clients[i] = sock;
+		  clients[i].clientFd = sock;
+		  clients[i].wrote = false;
 		  break;
 		}
 	    }
@@ -100,13 +115,14 @@ void *HTTPServer::_serverLoopRead(void *_data)
 	{
 	  for (ssize_t i = 0; i < data->maxClient; ++i)
 	    {
-	      if (clients[i] == -1)
+	      if (clients[i].clientFd == -1)
 		{
 		  continue;
 		}
-	      else if (FD_ISSET(clients[i], &readfds))
+	      else if (FD_ISSET(clients[i].clientFd, &readfds))
 		{
-		  char const *payload = TCPSocket::receive(clients[i]);
+		  char const *payload =
+		      TCPSocket::receive(clients[i].clientFd);
 
 		  if (payload)
 		    {
@@ -115,15 +131,33 @@ void *HTTPServer::_serverLoopRead(void *_data)
 		      data->mut.unlock();
 		      data->sem.post();
 		    }
+		  else
+		    {
+		      if (clients[i].clientFd > 0)
+			{
+			  close(clients[i].clientFd);
+			}
+		      clients[i].clientFd = -1;
+		      clients[i].wrote = false;
+		    }
 		}
-	      else if (FD_ISSET(clients[i], &exceptfds))
+	      else if (FD_ISSET(clients[i].clientFd, &writefds))
 		{
-		  close(clients[i]);
-		  clients[i] = -1;
+		  if (clients[i].wrote == true)
+		    {
+		      close(clients[i].clientFd);
+		      clients[i].clientFd = -1;
+		      clients[i].wrote = false;
+		    }
+		}
+	      else if (FD_ISSET(clients[i].clientFd, &exceptfds))
+		{
+		  close(clients[i].clientFd);
+		  clients[i].clientFd = -1;
+		  clients[i].wrote = false;
 		}
 	    }
 	}
-      std::cout << "THREAD READ" << std::endl;
     }
   return (NULL);
 }
@@ -143,14 +177,13 @@ void *HTTPServer::_serverLoopWrite(void *_data)
       data->queue.pop();
       data->mut.unlock();
       std::cout << elem->payload << std::endl;
-      TCPSocket::send(
-          elem->clientFd,
-          "HTTP/1.0 404 Not found\r\nConnection: close\r\n\r\n",
-          sizeof("HTTP/1.0 404 Not found\r\nConnection: close\r\n\r\n"));
       // Parse
       // Respond to Client
-      // Disconnect client
-      std::cout << "THREAD WRITE" << std::endl;
+      TCPSocket::send(
+          elem->client.clientFd,
+          "HTTP/1.0 404 Not found\r\nConnection: close\r\n\r\n",
+          sizeof("HTTP/1.0 404 Not found\r\nConnection: close\r\n\r\n"));
+      elem->client.wrote = true;
     }
   return (NULL);
 }

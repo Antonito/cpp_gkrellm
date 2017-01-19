@@ -7,10 +7,17 @@
 #include "Mutex.hpp"
 #include "Semaphore.hpp"
 
+struct HTTPClient
+{
+  HTTPClient(int fd = -1);
+  int  clientFd;
+  bool wrote;
+};
+
 struct HTTPQueueElem
 {
-  HTTPQueueElem(int fd, char const *str);
-  int         clientFd;
+  HTTPQueueElem(HTTPClient &info, char const *str);
+  HTTPClient &client;
   char const *payload;
 };
 
