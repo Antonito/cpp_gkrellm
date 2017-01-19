@@ -7,6 +7,7 @@ int main()
 
   srv.start();
   //  for (size_t i = 0; i < (size_t)~0; ++i);
-  sleep(20);
+  for (;;)
+    usleep(100);
   return (0);
 }

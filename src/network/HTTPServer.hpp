@@ -2,6 +2,7 @@
 #define HTTPSERVER_HPP_
 
 #include <queue>
+#include <map>
 #include "TCPSocket.hpp"
 #include "ThreadPool.hpp"
 #include "Mutex.hpp"
@@ -33,9 +34,30 @@ struct HTTPServerData
   std::queue<HTTPQueueElem *> queue;
 };
 
+struct HTTPHeader
+{
+  enum HTTP_CODE
+  {
+    HTTP_200 = 0,
+    HTTP_404,
+    HTTP_500,
+    HTTP_501
+  };
+  static std::string generateHeader(HTTP_CODE          code,
+                                    std::string const &payload = "");
+  HTTPHeader(std::string const &payload);
+  std::string verb;
+  std::string route;
+  std::string protocol;
+};
+
 class HTTPServer
 {
 public:
+  typedef std::string http_route;
+
+  // Returns a JSON string
+  typedef std::string const &(*serializerToJSON)();
   HTTPServer(uint16_t port, int maxClient);
   ~HTTPServer();
 
@@ -43,6 +65,8 @@ public:
   bool stop();
 
   bool isStarted() const;
+
+  static std::map<http_route, serializerToJSON> m_routes;
 
 private:
   bool           m_started;

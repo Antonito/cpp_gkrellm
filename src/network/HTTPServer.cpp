@@ -1,8 +1,63 @@
 #include <iostream>
+#include <sstream>
 #include <unistd.h>
 #include <sys/select.h>
 #include <netinet/in.h>
+#include <ctime>
+#include <cstdlib>
 #include "HTTPServer.hpp"
+
+std::map<HTTPServer::http_route, HTTPServer::serializerToJSON>
+    HTTPServer::m_routes =
+        std::map<HTTPServer::http_route, HTTPServer::serializerToJSON>();
+
+std::string HTTPHeader::generateHeader(HTTP_CODE          code,
+                                       std::string const &payload)
+{
+  char               buf[100];
+  time_t             now = time(0);
+  struct tm          tm = *gmtime(&now);
+  static std::string _msg[] = {"200 OK", "404 Not Found",
+                               "500 Internal Server Error",
+                               "501 Not Implemented"};
+
+  strftime(buf, sizeof buf, "%a, %d %b %Y %H:%M:%S %Z", &tm);
+  std::string header = "HTTP/1.1 ";
+  header += _msg[code];
+  header += "\r\nConnection: close\r\n";
+  header += "Date: ";
+  header += buf;
+  header += "\r\n";
+  if (code == HTTP_200)
+    {
+      header += "Content-Type: application/json\r\n";
+    }
+  if (payload != "")
+    {
+      std::stringstream nb;
+
+      nb << payload.length();
+      header += "Content-length: ";
+      header += nb.str();
+      header += "\r\n\r\n";
+      header += payload;
+    }
+  else
+    {
+      header += "\r\n";
+    }
+  return (header);
+}
+
+HTTPHeader::HTTPHeader(std::string const &payload)
+{
+  // Parses a HTTP Header
+  std::istringstream parse(payload);
+
+  parse >> verb;
+  parse >> route;
+  parse >> protocol;
+}
 
 HTTPClient::HTTPClient(int fd) : clientFd(fd), wrote(false)
 {
@@ -176,13 +231,43 @@ void *HTTPServer::_serverLoopWrite(void *_data)
       elem = data->queue.front();
       data->queue.pop();
       data->mut.unlock();
+
+      std::cout << "===========" << std::endl;
       std::cout << elem->payload << std::endl;
+      std::cout << "===========" << std::endl;
+
       // Parse
+      HTTPHeader header(elem->payload);
+      std::cout << "Verb: " << header.verb << std::endl;
+      std::cout << "Route: " << header.route << std::endl;
+      std::cout << "Prot: " << header.protocol << std::endl << std::endl;
+
+      std::string repHeader;
+      if (header.verb != "GET")
+	{
+	  repHeader = HTTPHeader::generateHeader(HTTPHeader::HTTP_501);
+	}
+      else if (HTTPServer::m_routes.find(header.route) !=
+               HTTPServer::m_routes.end())
+	{
+	  std::string       msg = "{\"data\": \"";
+	  std::stringstream s;
+	  int               nb = random() % 101;
+
+	  s << nb;
+	  msg += s.str();
+	  msg += "\"}";
+	  repHeader = HTTPHeader::generateHeader(HTTPHeader::HTTP_200, msg);
+	}
+      else
+	{
+	  repHeader = HTTPHeader::generateHeader(HTTPHeader::HTTP_404);
+	}
+
       // Respond to Client
-      TCPSocket::send(
-          elem->client.clientFd,
-          "HTTP/1.0 404 Not found\r\nConnection: close\r\n\r\n",
-          sizeof("HTTP/1.0 404 Not found\r\nConnection: close\r\n\r\n"));
+      std::cout << repHeader << std::endl;
+      TCPSocket::send(elem->client.clientFd, repHeader.c_str(),
+                      repHeader.length());
       elem->client.wrote = true;
     }
   return (NULL);
