@@ -41,6 +41,7 @@ std::ostream &operator<<(std::ostream &stream, Logger const &)
   return (stream);
 }
 
+
 // Private methods
 
 // This one writes to the specified stream, thread safe.

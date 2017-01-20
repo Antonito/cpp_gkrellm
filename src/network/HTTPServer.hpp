@@ -51,6 +51,7 @@ struct HTTPHeader
   std::string protocol;
 };
 
+// Singleton
 class HTTPServer
 {
 public:

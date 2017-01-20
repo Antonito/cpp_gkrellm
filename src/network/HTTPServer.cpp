@@ -5,6 +5,7 @@
 #include <netinet/in.h>
 #include <ctime>
 #include <cstdlib>
+#include "Logger.hpp"
 #include "HTTPServer.hpp"
 
 std::map<HTTPServer::http_route, HTTPServer::serializerToJSON>
@@ -142,6 +143,7 @@ void *HTTPServer::_serverLoopRead(void *_data)
       if (rc < 0)
 	{
 	  // We have an error
+	  Logger::Instance().log(Logger::ERROR, "select failed");
 	  std::cout << "Select error" << std::endl;
 	  continue;
 	}
@@ -283,6 +285,7 @@ bool HTTPServer::start()
   m_threads.addThread(&_serverLoopRead, &m_data);
   m_threads.addThread(&HTTPServer::_serverLoopWrite, &m_data);
   m_threads.startAll();
+  Logger::Instance().log(Logger::INFO, "HTTP server started");
   return (true);
 }
 
@@ -294,6 +297,7 @@ bool HTTPServer::stop()
     }
   m_threads.stopAll();
   m_started = false;
+  Logger::Instance().log(Logger::INFO, "HTTP server stopped.");
   return (true);
 }
 
