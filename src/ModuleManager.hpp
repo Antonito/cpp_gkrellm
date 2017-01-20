@@ -6,8 +6,8 @@
 
 struct ModuleManagerThreadData
 {
-  std::vector<IModule *> modules;
-  unsigned int           delay_useconds;
+  std::vector<IModuleMonitor *> modules;
+  unsigned int                  delay_useconds;
 };
 
 class ModuleManager
@@ -26,7 +26,8 @@ private:
   ModuleManager(ModuleManager const &);
   ModuleManager &operator=(ModuleManager const &);
 
-  // std::vector<IModule *>createModule1() const;
+  // TODO: Set buffer link at this time
+  // std::vector<IModuleMonitor *>createModule1() const;
 };
 
 #endif // !MODULEMANAGER_HPP_

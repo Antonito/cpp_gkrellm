@@ -8,7 +8,7 @@ static void *_loop(void *_data)
       static_cast<ModuleManagerThreadData *>(_data);
 
   // Add routes to the server
-  for (std::vector<IModule *>::iterator it = data->modules.begin();
+  for (std::vector<IModuleMonitor *>::iterator it = data->modules.begin();
        it != data->modules.end(); ++it)
     {
       // (*it).setRoute();
@@ -16,7 +16,7 @@ static void *_loop(void *_data)
   while (1)
     {
       pthread_testcancel();
-      for (std::vector<IModule *>::iterator it = data->modules.begin();
+      for (std::vector<IModuleMonitor *>::iterator it = data->modules.begin();
            it != data->modules.end(); ++it)
 	{
 	  // TODO: Call module parser
