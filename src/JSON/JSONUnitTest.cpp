@@ -108,6 +108,7 @@ int main()
   std::cout << reconstruct->str() << std::endl;
 
   JSON::Source example("example.json");
+  std::cout << example.getText() << std::endl;
   JSON::IElement *ex = example.parseJSON();
   std::cout << ex->str() << std::endl;
   system(std::string("json_verify <<< \"" + ex->str("\\\"") + "\"").c_str());
