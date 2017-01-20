@@ -1,5 +1,7 @@
 #include <fstream>
 #include <sstream>
+#include <string>
+#include <iostream>
 #include "JSON.hh"
 #include "JSONSource.hh"
 
@@ -16,8 +18,9 @@ namespace JSON
 
     if (file.is_open())
       {
-	sstring << file;
+	sstring << file.rdbuf();
 	m_text = sstring.str();
+	this->clearSpaces();
 	file.close();
       }
     else
@@ -53,6 +56,7 @@ namespace JSON
   void Source::setText(std::string const &text)
   {
     m_text = text;
+    this->clearSpaces();
   }
 
   size_t Source::getIndex() const
@@ -65,20 +69,41 @@ namespace JSON
     m_index = index;
   }
 
-  void Source::jumpSpaces()
+  void Source::clearSpaces()
   {
-    while (m_index < m_text.size() && std::isspace(m_text[m_index]))
-      ++m_index;
-    if (m_index == m_text.size())
+    bool               inString = false;
+    bool               escaping = false;
+    std::string        res("");
+    const std::string &str(m_text);
+    size_t             i = 0;
+
+    for (size_t i = 0; i < str.size(); ++i)
       {
-	throw JSONException("JSON parsing error: unexpected end of source");
+	if (inString)
+	  {
+	    res += str[i];
+	    if (str[i] == '\"' && escaping == false)
+	      inString = false;
+	    if (str[i] == '\\')
+	      escaping = !escaping;
+	  }
+	else
+	  {
+	    if (str[i] == '\"')
+	      inString = true;
+	    if (std::isspace(str[i]) == false)
+	      res += str[i];
+	  }
       }
+    m_text = res;
   }
 
   IElement *Source::parseJSON()
   {
-    this->jumpSpaces();
     char cur = m_text[m_index];
+
+    if (cur == 0)
+      throw JSONException("JSON parsing error: unexpected end of source (1)");
 
     if (cur == '\"')
       return this->parseString();
@@ -86,132 +111,149 @@ namespace JSON
       return this->parseObject();
     else if (cur == '[')
       return this->parseArray();
+    std::cerr << "Invalid char: '" << cur << "' (" << m_index << ")"
+              << std::endl;
     throw JSONException("JSON parsing error: invalid character");
   }
 
   std::string Source::parseStr()
   {
-    size_t &           i(m_index);
-    std::string const &s(m_text);
+    size_t &           idx(m_index); // Reference on cursor index
+    std::string const &str(m_text);  // Reference on source text
 
-    std::string res("");
-    bool        escaping = false;
+    std::string res("");   // Resulting string
+    bool escaping = false; // Boolean to know if we are escaping a character
 
-    if (s[i] != '"')
+    // Check if the first character is a double quote
+    if (str[idx] != '"')
       {
 	throw JSONException(
 	    "Invalid parsing: JSON string (first double quote missing)");
       }
-    ++i;
+    ++idx; // Go to next char
 
-    // Looping until a double quote (not escaped)
-    while (s[i] != '"' && !escaping)
+    // Looping until a not escaped double quote
+    while (str[idx] != '"' && !escaping)
       {
-	// If we reached the end of the source, throw
-	if (i >= s.length())
+	// If we reached the end of the source text, throw
+	if (idx >= str.length())
 	  {
 	    throw JSONException(
 	        "Invalid parsing: JSON string (last double quote missing)");
 	  }
+
+	// If we are currently escaping, add the character, no matter what
 	if (escaping)
 	  {
-	    res += s[i];
-	    escaping = false;
+	    res += str[idx];
+	    escaping = false; // We are no more escaping
 	  }
-	else if (s[i] == '\\')
+	// Else if it's an escaping character, enable it to escape the next one
+	else if (str[idx] == '\\')
 	  escaping = true;
 	else
-	  res += s[i];
-	++i;
+	  res += str[idx]; // Else add it normally
+
+	++idx; // Go to next char
       }
-    ++i;
+    ++idx; // The last char is '"', so go to the next
     return (res);
   }
 
   String *Source::parseString()
   {
-    this->jumpSpaces();
     return new String(this->parseStr());
   }
 
   Array *Source::parseArray()
   {
-    Array *            res = new Array();
-    size_t &           i(m_index);
-    std::string const &s(m_text);
+    Array *            res = new Array(); // Resulting array
+    size_t &           idx(m_index);      // Reference on cursor index
+    std::string const &str(m_text);       // Reference on source text
 
-    this->jumpSpaces();
-    if (s[i] != '[')
+    // Check if the first character is an opening bracket
+    if (str[idx] != '[')
       {
 	throw JSONException(
 	    "Invalid parsing: JSON array (missing opening bracket)");
       }
-    ++i;
-    while (s[i] != ']')
+    ++idx; // Go to the content
+
+    // While we do not encounter a closing bracket
+    while (str[idx] != ']')
       {
-	if (i >= s.length())
+	// If we reached end of source text, throw
+	if (idx >= str.length())
 	  {
 	    throw JSONException(
 	        "Invalid parsing: JSON array (missing closing bracket)");
 	  }
+
+	// If this is not the first element, check for the comma
 	if (res->size() != 0)
 	  {
-	    this->jumpSpaces();
-	    if (s[i] != ',')
+	    if (str[idx] != ',')
 	      {
 		throw JSONException(
 		    "Invalid parsing: JSON array (missing comma)");
 	      }
-	      ++i;
+	    ++idx;
 	  }
+	// Parse objects directly and add them
 	res->push(this->parseJSON());
       }
-      ++i;
+    ++idx; // Move from the ']' char
     return (res);
   }
 
   Object *Source::parseObject()
   {
-    Object *           res = new Object();
-    size_t &           i(m_index);
-    std::string const &s(m_text);
+    Object *           res = new Object(); // Resulting object
+    size_t &           idx(m_index);       // Reference on cursor index
+    std::string const &str(m_text);        // Reference on source text
 
-    this->jumpSpaces();
-    if (s[i] != '{')
+    // Check if the character is an opening brace
+    if (str[idx] != '{')
       {
 	throw JSONException(
 	    "Invalid parsing: JSON object (missing opening brace)");
       }
-    ++i;
-    while (s[i] != '}')
+    ++idx;
+    // While we do not encounter a closing brace
+    while (str[idx] != '}')
       {
-	if (i >= s.length())
+	// If we reached end of source text, throw
+	if (idx >= str.length())
 	  {
 	    throw JSONException(
 	        "Invalid parsing: JSON object (missing closing brace)");
 	  }
+
+	// If this is not the first element, check for comma
 	if (res->size() != 0)
 	  {
-	    this->jumpSpaces();
-	    if (s[i] != ',')
+	    if (str[idx] != ',')
 	      {
 		throw JSONException(
 		    "Invalid parsing: JSON object (missing comma)");
 	      }
-	      ++i;
+	    ++idx;
 	  }
+	// Get the property name
 	std::string name = this->parseStr();
-	this->jumpSpaces();
-	if (s[i] != ':')
+	// Check for the ':' between the property name and the value
+	if (str[idx] != ':')
 	  {
 	    throw JSONException(
 	        "Invalid parsing: JSON object (missing colon in property)");
 	  }
-	  ++i;
+	++idx;
+	// Get the property's value
 	IElement *val = this->parseJSON();
+	// Add it to the current object
 	res->addProperty(name, val);
       }
-      ++i;
+    ++idx;
     return (res);
   }
 }

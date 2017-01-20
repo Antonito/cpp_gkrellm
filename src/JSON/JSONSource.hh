@@ -5,10 +5,10 @@
 
 namespace JSON
 {
-	class IElement;
-	class Object;
-	class String;
-	class Array;
+  class IElement;
+  class Object;
+  class String;
+  class Array;
 
   class Source
   {
@@ -34,7 +34,7 @@ namespace JSON
     std::string m_text;
     size_t      m_index;
 
-    void        jumpSpaces();
+    void        clearSpaces();
     std::string parseStr();
   };
 }
