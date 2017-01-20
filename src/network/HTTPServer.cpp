@@ -249,21 +249,26 @@ void *HTTPServer::_serverLoopWrite(void *_data)
 	{
 	  repHeader = HTTPHeader::generateHeader(HTTPHeader::HTTP_501);
 	}
-      else if (HTTPServer::m_routes.find(header.route) !=
-               HTTPServer::m_routes.end())
-	{
-	  std::string       msg = "{\"data\": \"";
-	  std::stringstream s;
-	  int               nb = random() % 101;
-
-	  s << nb;
-	  msg += s.str();
-	  msg += "\"}";
-	  repHeader = HTTPHeader::generateHeader(HTTPHeader::HTTP_200, msg);
-	}
       else
 	{
-	  repHeader = HTTPHeader::generateHeader(HTTPHeader::HTTP_404);
+	  if (isRoute(header.route))
+	    {
+	      HTTPServer::serializerToJSON serializer = getRoute(header.route);
+	      std::string                  msg = "{\"data\": \"";
+	      std::stringstream            s;
+	      int                          nb = random() % 101;
+
+	      (void)serializer;
+	      s << nb;
+	      msg += s.str();
+	      msg += "\"}";
+	      repHeader =
+	          HTTPHeader::generateHeader(HTTPHeader::HTTP_200, msg);
+	    }
+	  else
+	    {
+	      repHeader = HTTPHeader::generateHeader(HTTPHeader::HTTP_404);
+	    }
 	}
 
       // Respond to Client
@@ -304,4 +309,22 @@ bool HTTPServer::stop()
 bool HTTPServer::isStarted() const
 {
   return (m_started);
+}
+
+void HTTPServer::addRoute(HTTPServer::http_route const &route,
+                          HTTPServer::serializerToJSON  serial)
+{
+  m_routes.insert(
+      std::pair<HTTPServer::http_route, HTTPServer::serializerToJSON>(route,
+                                                                      serial));
+}
+
+bool HTTPServer::isRoute(http_route const &route)
+{
+  return (m_routes.find(route) != m_routes.end());
+}
+
+HTTPServer::serializerToJSON HTTPServer::getRoute(http_route const &route)
+{
+  return ((m_routes.find(route))->second);
 }

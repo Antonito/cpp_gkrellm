@@ -64,10 +64,12 @@ public:
 
   bool start();
   bool stop();
-
   bool isStarted() const;
 
-  static std::map<http_route, serializerToJSON> m_routes;
+  // Routes
+  static void addRoute(http_route const &route, serializerToJSON serial);
+  static bool             isRoute(http_route const &);
+  static serializerToJSON getRoute(http_route const &route);
 
 private:
   bool           m_started;
@@ -81,6 +83,7 @@ private:
   static int accept_client(int fd);
   static void *_serverLoopWrite(void *_data);
   static void *_serverLoopRead(void *_data);
+  static std::map<http_route, serializerToJSON> m_routes;
 };
 
 #endif // !HTTPSERVER_HPP_
