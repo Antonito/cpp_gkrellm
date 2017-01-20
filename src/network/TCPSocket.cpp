@@ -5,6 +5,7 @@
 #include <arpa/inet.h>
 #include <cstring>
 #include <iostream>
+#include "Logger.hpp"
 #include "TCPSocket.hpp"
 
 TCPSocket::TCPSocket(uint16_t port, int maxClient)
@@ -17,10 +18,12 @@ TCPSocket::TCPSocket(uint16_t port, int maxClient)
   if (m_fd == -1)
     {
       // TODO: throw exception
+      Logger::Instance().log(Logger::CRITICAL, "Cannot create TCP socket.");
     }
   if (setsockopt(m_fd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(enable)) < 0)
     {
       // TODO: Log
+      Logger::Instance().log(Logger::WARNING, "Cannot configure TCP socket.");
     }
   sin.sin_addr.s_addr = htonl(INADDR_ANY);
   sin.sin_port = htons(port);
@@ -28,10 +31,12 @@ TCPSocket::TCPSocket(uint16_t port, int maxClient)
   if (bind(m_fd, reinterpret_cast<struct sockaddr *>(&sin), sizeof(sin)) == -1)
     {
       // TODO: throw exception
+      Logger::Instance().log(Logger::CRITICAL, "Cannot bind TCP socket.");
     }
   if (listen(m_fd, maxClient) == -1)
     {
       // TODO: throw exception
+      Logger::Instance().log(Logger::CRITICAL, "Cannot listen on TCP socket.");
     }
 }
 
