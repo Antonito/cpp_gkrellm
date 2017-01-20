@@ -2,7 +2,9 @@
 #define MODULEMANAGER_HPP_
 
 #include <vector>
+#include "IModuleMonitor.hpp"
 #include "ThreadPool.hpp"
+#include "ModuleDataBuffer.hpp"
 
 struct ModuleManagerThreadData
 {
@@ -19,12 +21,16 @@ public:
   bool start();
   bool stop();
 
+  // Getters
+
 private:
   ThreadPool                           m_threads;
   bool                                 m_started;
   std::vector<ModuleManagerThreadData> m_modules;
   ModuleManager(ModuleManager const &);
   ModuleManager &operator=(ModuleManager const &);
+
+  volatile ModuleDataBuffer m_buffer;
 
   // TODO: Set buffer link at this time
   // std::vector<IModuleMonitor *>createModule1() const;
