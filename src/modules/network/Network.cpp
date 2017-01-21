@@ -28,7 +28,7 @@ namespace Module
   {
     std::string json;
 
-    json = "{[";
+    json = "{ \"network\": [";
     for (std::vector<NetworkData>::iterator it = m_data->nd.begin();
          it != m_data->nd.end(); ++it)
       {

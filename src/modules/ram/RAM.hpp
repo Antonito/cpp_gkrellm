@@ -1,21 +1,25 @@
 #ifndef RAM_HPP_
 #define RAM_HPP_
 
+#include <vector>
+#include <string>
+#include "IModuleMonitor.hpp"
+
 namespace Module
 {
-  class RAM
-  {
-  public:
-    struct RAMData
+class RAM : public IModuleMonitor
+{
+public:
+struct RAMData
     {
       size_t memTotal;
       size_t memFree;
-      size_t memeAvailable;
+      size_t memAvailable;
     };
     struct SWAPData
     {
       size_t swapTotal;
-      size_t swapFree
+      size_t swapFree;
     };
     struct RAMGlobal
     {

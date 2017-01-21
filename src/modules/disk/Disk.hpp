@@ -1,12 +1,16 @@
 #ifndef DISK_HPP_
 #define DISK_HPP_
 
+#include <vector>
+#include <string>
+#include "IModuleMonitor.hpp"
+
 namespace Module
 {
-  class Disk
+  class Disk : public IModuleMonitor
   {
   public:
-    struct DiskParition
+    struct DiskPartition
     {
       size_t      majorNumber;
       size_t      minorNumber;
@@ -26,13 +30,13 @@ namespace Module
     struct DiskData
     {
       std::string               diskName;
-      std::vector<DiskParition> dp;
+      std::vector<DiskPartition> dp;
     };
     struct DiskGlobal
     {
       std::vector<DiskData> rd;
     };
-    static std::string ramSerializer();
+    static std::string diskSerializer();
     Disk();
     virtual ~Disk();
     void setData(DiskGlobal *rg);

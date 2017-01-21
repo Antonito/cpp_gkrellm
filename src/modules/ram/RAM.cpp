@@ -5,29 +5,35 @@
 #include "RAM.hpp"
 #include "UtilsModule.hpp"
 #include "Logger.hpp"
+#include "HTTPServer.hpp"
 
 namespace Module
 {
   RAM::RAMGlobal *RAM::m_data = NULL;
+
   RAM::RAM()
   {
   }
+
   RAM::~RAM()
   {
   }
+
   void RAM::setData(RAMGlobal *rg)
   {
     m_data = rg;
   }
+
   std::string RAM::ramSerializer()
   {
+    return ("");
   }
 
   void RAM::setRoute()
   {
-    Loggger::Instance().log(Logger::LogLevel::INFO,
+    Logger::Instance().log(Logger::INFO,
                             "Added routes for Memory module");
-    HTTPServer::addRoute("/ram", static_cast<HTTPServer::SerializerToJSON>(
+    HTTPServer::addRoute("/ram", static_cast<HTTPServer::serializerToJSON>(
                                      &RAM::ramSerializer));
   }
   void RAM::parse()
@@ -39,14 +45,12 @@ namespace Module
     ff.open("/proc/meminfo", std::ios_base::in);
     if (!ff.good())
       {
-	Loggger::Instance().log(Logger::LogLevel::ERROR,
+	Logger::Instance().log(Logger::ERROR,
 	                        "Cannot read memory info");
 	return;
       }
     strbuf << ff.rdbuf();
     m_split = split(strbuf.str(), '\n');
-
-    RAMGlobal data;
 
     for (std::vector<std::string>::iterator it = m_split.begin();
          it != m_split.end(); ++it)

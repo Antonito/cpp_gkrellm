@@ -7,6 +7,8 @@ INC_DIR=		-I./src/JSON/			\
 			-I./src/modules/cpu/		\
 			-I./src/modules/network/	\
 			-I./src/modules/system/		\
+			-I./src/modules/disk/		\
+			-I./src/modules/ram/		\
 			-I./src/network/		\
 			-I./src/threads/
 

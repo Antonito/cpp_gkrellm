@@ -1,3 +1,4 @@
+
 #include <unistd.h>
 #include "ModuleManager.hpp"
 #include "Logger.hpp"
@@ -7,13 +8,6 @@ static void *_loop(void *_data)
   ModuleManagerThreadData *data =
       static_cast<ModuleManagerThreadData *>(_data);
 
-  // Add routes to the server
-  for (std::vector<Module::IModuleMonitor *>::iterator it =
-           data->modules.begin();
-       it != data->modules.end(); ++it)
-    {
-      (*it)->setRoute();
-    }
   while (1)
     {
       pthread_testcancel();
@@ -33,11 +27,14 @@ std::vector<Module::IModuleMonitor *> ModuleManager::createCPUModule()
   std::vector<Module::IModuleMonitor *> _module;
   Module::Processor::CPU *cpu = new Module::Processor::CPU();
   Module::System *sys = new Module::System();
+  Module::Disk *disk = new Module::Disk();
 
   cpu->setData(const_cast<Module::Processor::CPU::CPUGlobal *>(&m_buffer.CPU));
   _module.push_back(cpu);
-  sys->setData(const_cast<Module::System::SystemGlobal *>(&m_buffer.sys));;
+  sys->setData(const_cast<Module::System::SystemGlobal *>(&m_buffer.sys));
   _module.push_back(sys);
+  disk->setData(const_cast<Module::Disk::DiskGlobal *>(&m_buffer.disk));
+  _module.push_back(disk);
   return (_module);
 }
 
@@ -66,6 +63,13 @@ ModuleManager::ModuleManager() : m_started(false)
   for (std::vector<ModuleManagerThreadData>::iterator it = m_modules.begin();
        it != m_modules.end(); ++it)
     {
+      // Add routes to server
+      for (std::vector<Module::IModuleMonitor *>::iterator jt =
+	     it->modules.begin();
+	   jt != it->modules.end(); ++jt)
+	{
+	  (*jt)->setRoute();
+	}
       // Add threads
       m_threads.addThread(&_loop, &(*it));
     }
