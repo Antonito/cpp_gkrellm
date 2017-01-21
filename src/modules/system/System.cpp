@@ -62,7 +62,7 @@ namespace Module
 
   void System::setRoute()
   {
-    Logger::Instance().log(Logger::LogLevel::INFO,
+    Logger::Instance().log(Logger::INFO,
                            "Added routes for System Module.");
     HTTPServer::addRoute("/system", static_cast<HTTPServer::serializerToJSON>(
                                         &System::systemSerializer));
@@ -77,7 +77,7 @@ namespace Module
     ff.open("/proc/sys/kernel/hostname", std::ios_base::in);
     if (!ff.good())
       {
-	Logger::Instance().log(Logger::LogLevel::ERROR,
+	Logger::Instance().log(Logger::ERROR,
 	                       "cannot read system module info");
 	return;
       }
@@ -94,7 +94,7 @@ namespace Module
     ff.open("/proc/sys/kernel/osrelease", std::ios_base::in);
     if (!ff.good())
       {
-	Logger::Instance().log(Logger::LogLevel::ERROR,
+	Logger::Instance().log(Logger::ERROR,
 	                       "cannot read system module info");
 	return;
       }
@@ -116,7 +116,7 @@ namespace Module
     ff.open("/proc/uptime", std::ios_base::in);
     if (!ff.good())
       {
-	Logger::Instance().log(Logger::LogLevel::ERROR,
+	Logger::Instance().log(Logger::ERROR,
 	                       "cannot read system module info");
 	return;
       }
@@ -130,7 +130,7 @@ namespace Module
     ff.open("/proc/loadavg", std::ios_base::in);
     if (!ff.good())
       {
-	Logger::Instance().log(Logger::LogLevel::ERROR,
+	Logger::Instance().log(Logger::ERROR,
 	                       "cannot read system module info");
 	return;
       }

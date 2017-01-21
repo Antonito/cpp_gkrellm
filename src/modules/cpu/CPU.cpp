@@ -106,7 +106,7 @@ namespace Module
 
     void CPU::setRoute()
     {
-      Logger::Instance().log(Logger::LogLevel::INFO,
+      Logger::Instance().log(Logger::INFO,
                              "Added routes for CPU Module.");
       HTTPServer::addRoute("/cpu", static_cast<HTTPServer::serializerToJSON>(
                                        &CPU::cpuSerializer));
