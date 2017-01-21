@@ -4,13 +4,14 @@ MK_DIR=		./mk/
 include $(MK_DIR)colors.mk $(MK_DIR)local_defs.mk $(MK_DIR)defs.mk
 
 # Project's files
-VPATH=		./src/:./src/JSON/:./src/log/:./src/network/		\
+VPATH=		./src/:./src/JSON/:./src/log/:./src/http/		\
 		:./src/threads/:./src/modules/:./src/modules/cpu/	\
 		:./src/modules/network/:./src/modules/system/		\
 		:./src/modules/disk/:./src/modules/ram/			\
 		:./src/graphic:./src/graphic/ncurses
 
-SRC_FILES=	main.cpp
+SRC_FILES=	main.cpp		\
+		MainManager.cpp
 
 JSON_SRC=	JSONArray.cpp		\
 		JSONException.cpp	\
@@ -20,7 +21,7 @@ JSON_SRC=	JSONArray.cpp		\
 
 LOG_SRC=	Logger.cpp
 
-NETWORK_SRC=	HTTPServer.cpp		\
+HTTP_SRC=	HTTPServer.cpp		\
 		TCPSocket.cpp
 
 THREAD_SRC=	Mutex.cpp		\
@@ -43,7 +44,7 @@ GRAPHIC_SRC=	AFrame.cpp		\
 NCURSES_SRC=	Frame.cpp		\
 		Window.cpp
 
-SRC=		$(SRC_FILES) $(JSON_FILES) $(LOG_SRC) $(NETWORK_SRC)	\
+SRC=		$(SRC_FILES) $(JSON_FILES) $(LOG_SRC) $(HTTP_SRC)	\
 		$(THREAD_SRC) $(MODULE_SRC) $(GRAPHIC_SRC) $(NCURSES_SRC)
 
 # Rules

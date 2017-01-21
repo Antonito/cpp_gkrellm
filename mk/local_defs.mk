@@ -1,7 +1,8 @@
 # Definitions for Makefile
 NAME=			gkrellm
 
-INC_DIR=		-I./src/JSON/			\
+INC_DIR=		-I./src/			\
+			-I./src/JSON/			\
 			-I./src/log/			\
 			-I./src/modules/		\
 			-I./src/modules/cpu/		\
@@ -9,10 +10,10 @@ INC_DIR=		-I./src/JSON/			\
 			-I./src/modules/system/		\
 			-I./src/modules/disk/		\
 			-I./src/modules/ram/		\
-			-I./src/network/		\
+			-I./src/http/			\
 			-I./src/threads/		\
 			-I./src/graphic/		\
-			-I./src/graphic/ncurses
+			-I./src/graphic/ncurses/
 
 DEBUG=			no
 
