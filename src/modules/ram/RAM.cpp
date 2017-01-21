@@ -26,15 +26,37 @@ namespace Module
 
   std::string RAM::ramSerializer()
   {
-    return ("");
+    std::stringstream nb;
+    std::string       json = "{ \"ram\" : { \"mem_total\": ";
+
+    nb.str("");
+    nb << m_data->rd.memTotal;
+    json += nb.str();
+    json += ", \"mem_free\": ";
+    nb.str("");
+    nb << m_data->rd.memFree;
+    json += nb.str();
+    json += ", \"mem_available\": ";
+    nb.str("");
+    nb << m_data->rd.memAvailable;
+    json += nb.str();
+    json += " }, \"swap\": { \"swap_total\": ";
+    nb.str("");
+    nb << m_data->sd.swapTotal;
+    json += nb.str();
+    json += ", \"swap_free\": ";
+    nb.str("");
+    nb << m_data->sd.swapFree;
+    json += nb.str();
+    json += " } }";
+    return (json);
   }
 
   void RAM::setRoute()
   {
-    Logger::Instance().log(Logger::INFO,
-                            "Added routes for Memory module");
-    HTTPServer::addRoute("/ram", static_cast<HTTPServer::serializerToJSON>(
-                                     &RAM::ramSerializer));
+    Logger::Instance().log(Logger::INFO, "Added routes for Memory module");
+    HTTPServer::addRoute("/memory", static_cast<HTTPServer::serializerToJSON>(
+                                        &RAM::ramSerializer));
   }
   void RAM::parse()
   {
@@ -45,8 +67,7 @@ namespace Module
     ff.open("/proc/meminfo", std::ios_base::in);
     if (!ff.good())
       {
-	Logger::Instance().log(Logger::ERROR,
-	                        "Cannot read memory info");
+	Logger::Instance().log(Logger::ERROR, "Cannot read memory info");
 	return;
       }
     strbuf << ff.rdbuf();

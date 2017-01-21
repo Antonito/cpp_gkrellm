@@ -9,7 +9,7 @@
 struct ModuleManagerThreadData
 {
   std::vector<Module::IModuleMonitor *> modules;
-  unsigned int                  delay_useconds;
+  unsigned int                          delay_useconds;
 };
 
 class ModuleManager

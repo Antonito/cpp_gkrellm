@@ -63,8 +63,7 @@ namespace Module
 
   void System::setRoute()
   {
-    Logger::Instance().log(Logger::INFO,
-                           "Added routes for System Module.");
+    Logger::Instance().log(Logger::INFO, "Added routes for System Module.");
     HTTPServer::addRoute("/system", static_cast<HTTPServer::serializerToJSON>(
                                         &System::systemSerializer));
   }

@@ -30,8 +30,7 @@ namespace Module
 
   void Disk::setRoute()
   {
-    Logger::Instance().log(Logger::INFO,
-                            "Added routes for Disk module");
+    Logger::Instance().log(Logger::INFO, "Added routes for Disk module");
     HTTPServer::addRoute("/disk", static_cast<HTTPServer::serializerToJSON>(
                                       &Disk::diskSerializer));
   }
@@ -41,14 +40,13 @@ namespace Module
     std::ifstream            ff;
     std::stringstream        strbuf;
     std::vector<std::string> m_split;
-    DiskGlobal data;
+    DiskGlobal               data;
 
     m_data->rd.clear();
     ff.open("/proc/diskstats", std::ios_base::in);
     if (!ff.good())
       {
-	Logger::Instance().log(Logger::ERROR,
-	                        "Cannot read memory info");
+	Logger::Instance().log(Logger::ERROR, "Cannot read memory info");
 	return;
       }
     strbuf << ff.rdbuf();

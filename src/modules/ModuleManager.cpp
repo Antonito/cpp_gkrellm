@@ -25,9 +25,10 @@ static void *_loop(void *_data)
 std::vector<Module::IModuleMonitor *> ModuleManager::createCPUModule()
 {
   std::vector<Module::IModuleMonitor *> _module;
-  Module::Processor::CPU *cpu = new Module::Processor::CPU();
-  Module::System *sys = new Module::System();
-  Module::Disk *disk = new Module::Disk();
+  Module::Processor::CPU *              cpu = new Module::Processor::CPU();
+  Module::System *                      sys = new Module::System();
+  Module::Disk *                        disk = new Module::Disk();
+  Module::RAM *                         memory = new Module::RAM();
 
   cpu->setData(const_cast<Module::Processor::CPU::CPUGlobal *>(&m_buffer.CPU));
   _module.push_back(cpu);
@@ -35,13 +36,15 @@ std::vector<Module::IModuleMonitor *> ModuleManager::createCPUModule()
   _module.push_back(sys);
   disk->setData(const_cast<Module::Disk::DiskGlobal *>(&m_buffer.disk));
   _module.push_back(disk);
+  memory->setData(const_cast<Module::RAM::RAMGlobal *>(&m_buffer.ram));
+  _module.push_back(memory);
   return (_module);
 }
 
 std::vector<Module::IModuleMonitor *> ModuleManager::createNetworkModule()
 {
   std::vector<Module::IModuleMonitor *> _module;
-  Module::Network *net = new Module::Network();
+  Module::Network *                     net = new Module::Network();
 
   net->setData(
       const_cast<Module::Network::NetworkGlobal *>(&m_buffer.network));
@@ -65,8 +68,8 @@ ModuleManager::ModuleManager() : m_started(false)
     {
       // Add routes to server
       for (std::vector<Module::IModuleMonitor *>::iterator jt =
-	     it->modules.begin();
-	   jt != it->modules.end(); ++jt)
+               it->modules.begin();
+           jt != it->modules.end(); ++jt)
 	{
 	  (*jt)->setRoute();
 	}
