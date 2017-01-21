@@ -10,8 +10,8 @@ VPATH=		./src/:./src/JSON/:./src/log/:./src/http/		\
 		:./src/modules/disk/:./src/modules/ram/			\
 		:./src/graphic:./src/graphic/ncurses			\
 		:./src/graphic/module:./src/graphic/module/network/	\
-		:./src/graphic/module/network/ncurses
-		:./src/modules/process/					\
+		:./src/graphic/module/network/ncurses			\
+		:./src/modules/process/
 
 SRC_FILES=	main.cpp		\
 		MainManager.cpp

@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <iostream>
 #include <sys/ioctl.h>
+#include <csignal>
 #include "Window.hpp"
 #include "GraphicException.hpp"
 
@@ -15,10 +16,32 @@ namespace Graphic
 {
   namespace Ncurses
   {
+    size_t Window::m_termWidth = 0;
+    size_t Window::m_termHeight = 0;
+
+    void do_resize(int s)
+    {
+      if (s == SIGWINCH)
+	{
+	  struct winsize w;
+	  ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+
+	  Window::setTermSize(w.ws_col, w.ws_row);
+	}
+    }
+
+    void Window::setTermSize(size_t width, size_t height)
+    {
+      m_termWidth = width;
+      m_termHeight = height;
+    }
+
     Window::Window(std::string const &name) : AWindow(name)
     {
       struct termios new_term;
 
+      signal(SIGWINCH, do_resize);
+      do_resize(SIGWINCH);
       ::initscr();
       ::raw();
       ::keypad(stdscr, TRUE);
@@ -51,13 +74,34 @@ namespace Graphic
     void Window::refresh() const
     {
       //::refresh();
+      ::doupdate();
+      ::clear();
       m_currentTab->second->refresh();
+      usleep(60000);
     }
 
     void Window::updateInfos()
     {
-      getmaxyx(stdscr, m_height, m_width);
+      // getmaxyx(stdscr, m_height, m_width);
+      if (m_width != m_termWidth || m_height != m_termHeight)
+	{
+	  m_width = m_termWidth;
+	  m_height = m_termHeight;
+	  this->resize();
+	}
       m_headerSize = 1;
+    }
+
+    void Window::resize()
+    {
+      ::wresize(stdscr, m_height, m_width);
+      if (m_tab.size() > 0)
+	{
+	  if (m_currentTab->second->isEnabled())
+	    m_currentTab->second->disable();
+	  m_currentTab->second->enable(0, m_headerSize, 0, 0, m_width,
+	                               m_height - m_headerSize);
+	}
     }
 
     int Window::readKey()
