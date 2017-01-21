@@ -7,14 +7,38 @@
 
 namespace Module
 {
-class RAM : public IModuleMonitor
-{
-public:
-struct RAMData
+  class RAM : public IModuleMonitor
+  {
+  public:
+    struct RAMData
     {
       size_t memTotal;
       size_t memFree;
       size_t memAvailable;
+
+      size_t buffers;
+      size_t cached;
+      size_t active;
+      size_t inactive;
+      size_t active_anon;
+      size_t inactive_anon;
+      size_t active_file;
+      size_t inactive_file;
+      size_t unevictable;
+      size_t mlocked;
+      size_t dirty;
+      size_t writeback;
+      size_t anon_pages;
+      size_t mapped;
+      size_t shmem;
+      size_t slab;
+      size_t sreclaimable;
+      size_t sunreclaim;
+      size_t kernelstack;
+      size_t pagetable;
+      size_t nfs_unstable;
+      size_t bounce;
+      size_t writebacktmp;
     };
     struct SWAPData
     {

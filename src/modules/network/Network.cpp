@@ -64,7 +64,7 @@ namespace Module
 
   void Network::setRoute()
   {
-    Logger::Instance().log(Logger::INFO, "Added routes for Network Module.");
+    Logger::Instance().log(Logger::Info, "Added routes for Network Module.");
     HTTPServer::addRoute("/network", static_cast<HTTPServer::serializerToJSON>(
                                          &Network::networkSerializer));
   }
@@ -79,7 +79,7 @@ namespace Module
     ff.open("/proc/net/dev", std::ios_base::in);
     if (!ff.good())
       {
-	Logger::Instance().log(Logger::ERROR, "CANNOT READ NETWORK INFO");
+	Logger::Instance().log(Logger::Error, "CANNOT READ NETWORK Info");
 	return;
       }
     mystream << ff.rdbuf();

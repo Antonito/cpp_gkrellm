@@ -4,27 +4,27 @@
 MainManager::MainManager(uint16_t port, int nbClients)
     : m_modules(), m_http(port, nbClients)
 {
-  Logger::Instance().log(Logger::INFO, "Starting MainManager.");
+  Logger::Instance().log(Logger::Info, "Starting MainManager.");
   m_modules.start();
   m_http.start();
-  Logger::Instance().log(Logger::INFO, "MainManager started.");
+  Logger::Instance().log(Logger::Info, "MainManager started.");
 }
 
 MainManager::~MainManager()
 {
-  Logger::Instance().log(Logger::INFO, "Stopping MainManager...");
+  Logger::Instance().log(Logger::Info, "Stopping MainManager...");
 }
 
 void MainManager::reloadModules()
 {
-  Logger::Instance().log(Logger::INFO, "Restarting data miners modules.");
+  Logger::Instance().log(Logger::Info, "Restarting data miners modules.");
   m_modules.stop();
   m_modules.start();
 }
 
 void MainManager::reloadHTTP()
 {
-  Logger::Instance().log(Logger::INFO, "Restarting HTTP server.");
+  Logger::Instance().log(Logger::Info, "Restarting HTTP server.");
   m_http.stop();
   m_http.start();
 }
