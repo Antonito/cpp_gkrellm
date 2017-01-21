@@ -14,7 +14,8 @@ namespace Module
       std::string hostname;
       std::string userName;
       std::string localHost;
-      std::string kernel; // kernel version + OS name
+      std::string kernel; // kernel version
+      std::string osName; // os name, should be set to 'linux'
       double      uptime; // time since boot in sec
       double idletime; // time the computer has been idle, it is the sum of the
                        // idle time accumulated by each CPU (on some linux)
