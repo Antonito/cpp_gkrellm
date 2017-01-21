@@ -1,4 +1,4 @@
-CXX = g++
+CXX = clang++
 
 CXXFLAGS = -W -Wall -Werror -g -I..
 
@@ -8,15 +8,17 @@ NAME = test_bin
 
 GRAPHIC_DIR= ./
 
-GRAPHIC_FILES= AGraphicFrame.cpp
+GRAPHIC_FILES= AFrame.cpp	\
+		AWindow.cpp	\
+		GraphicException.cpp
 
 GRAPHIC_SRC= $(addprefix $(GRAPHIC_DIR),$(GRAPHIC_FILES))
 
 NCURSES_DIR= ncurses/
 
-NCURSES_FILES= AFrame.cpp	\
+NCURSES_FILES= Frame.cpp	\
 		Window.cpp	\
-		NCursesUnit.cpp
+		NCursesUnit.cpp	
 
 NCURSES_SRC= $(addprefix $(NCURSES_DIR), $(NCURSES_FILES))
 
@@ -32,10 +34,10 @@ $(NAME): $(OBJ)
 all: $(NAME)
 
 clean:
-	rm $(OBJ)
+	rm -rf $(OBJ)
 
 fclean: clean
-	rm $(NAME)
+	rm -rf $(NAME)
 
 re: fclean $(NAME)
 
