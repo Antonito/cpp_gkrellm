@@ -8,6 +8,7 @@ VPATH=		./src/:./src/JSON/:./src/log/:./src/http/		\
 		:./src/threads/:./src/modules/:./src/modules/cpu/	\
 		:./src/modules/network/:./src/modules/system/		\
 		:./src/modules/disk/:./src/modules/ram/			\
+		:./src/modules/process/					\
 		:./src/graphic:./src/graphic/ncurses
 
 SRC_FILES=	main.cpp		\
@@ -35,7 +36,8 @@ MODULE_SRC=	ModuleManager.cpp	\
 		Network.cpp		\
 		System.cpp		\
 		Disk.cpp		\
-		RAM.cpp
+		RAM.cpp			\
+		Process.cpp
 
 GRAPHIC_SRC=	AFrame.cpp		\
 		AWindow.cpp		\

@@ -10,6 +10,7 @@ INC_DIR=		-I./src/			\
 			-I./src/modules/system/		\
 			-I./src/modules/disk/		\
 			-I./src/modules/ram/		\
+			-I./src/modules/process/	\
 			-I./src/http/			\
 			-I./src/threads/		\
 			-I./src/graphic/		\

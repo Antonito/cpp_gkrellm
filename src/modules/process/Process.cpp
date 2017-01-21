@@ -27,17 +27,18 @@ namespace Module
 
   std::string Process::processSerializer()
   {
+    return ("");
   }
 
   void Process::setRoute()
   {
     Logger::Instance().log(Logger::INFO, "Added routes for Process module");
     HTTPServer::addRoute("/process", static_cast<HTTPServer::serializerToJSON>(
-                                         &Process::ramSerializer));
+                                         &Process::processSerializer));
   }
   void Process::parse()
   {
-    m_data->rd.clear();
+    m_data->pd.clear();
 
     std::string   root_path("/proc/");
     std::string   file_path;
@@ -58,7 +59,7 @@ namespace Module
 		if (pid == 0) // check if it is a process directory
 		  continue;
 		pd.pid = pid;
-		file_path = root + ent->d_name + "/cmdline";
+		file_path = root_path + ent->d_name + "/cmdline";
 		ff.open(file_path.c_str(), std::ios_base::in);
 		if (!ff.good())
 		  continue;
