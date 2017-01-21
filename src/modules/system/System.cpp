@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <unistd.h>
 #include "System.hpp"
+#include "UtilsModule.hpp"
 #include "Logger.hpp"
 #include "HTTPServer.hpp"
 

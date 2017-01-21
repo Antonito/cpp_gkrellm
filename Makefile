@@ -4,7 +4,9 @@ MK_DIR=		./mk/
 include $(MK_DIR)colors.mk $(MK_DIR)local_defs.mk $(MK_DIR)defs.mk
 
 # Project's files
-VPATH=		./src/:./src/JSON/:./src/log/:./src/network/:./src/threads/:./src/modules/:./src/modules/cpu/:./src/modules/network/:./src/modules/system
+VPATH=		./src/:./src/JSON/:./src/log/:./src/network/		\
+		:./src/threads/:./src/modules/:./src/modules/cpu/	\
+		:./src/modules/network/:./src/modules/system
 
 SRC_FILES=	main.cpp
 
@@ -25,6 +27,7 @@ THREAD_SRC=	Mutex.cpp		\
 		ThreadPool.cpp
 
 MODULE_SRC=	ModuleManager.cpp	\
+		UtilsModule.cpp		\
 		CPU.cpp			\
 		Network.cpp		\
 		System.cpp
