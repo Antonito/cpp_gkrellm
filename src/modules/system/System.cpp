@@ -2,6 +2,7 @@
 #include <sstream>
 #include <algorithm>
 #include <unistd.h>
+#include <ctime>
 #include "System.hpp"
 #include "UtilsModule.hpp"
 #include "Logger.hpp"
@@ -106,11 +107,24 @@ namespace Module
     mystream.str("");
     ff.close();
 
-    // TODO: get username
     // getting username
-    // std::string userName(getlogin());
-    // m_data->userName = userName;
-    m_data->userName = "";
+    char *login_check = getlogin();
+    if (login_check != NULL)
+      {
+	std::string userName(getlogin());
+	m_data->userName = userName;
+      }
+    else
+      m_data->userName = "";
+
+    // getting date and time
+    char      buf[100];
+    time_t    now = time(0);
+    struct tm tm = *gmtime(&now);
+
+    strftime(buf, sizeof buf, "%a, %d %b %Y %H:%M:%S %Z", &tm);
+    std::string datetime(buf);
+    m_data->datetime = datetime;
 
     // getting uptime
     ff.open("/proc/uptime", std::ios_base::in);
