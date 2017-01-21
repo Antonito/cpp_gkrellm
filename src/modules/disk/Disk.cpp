@@ -41,7 +41,7 @@ namespace Module
 	stream.str("");
 	stream << it->diskSize;
 	json += stream.str();
-	json += ", \"partitons\": [";
+	json += ", \"partitions\": [";
 	for (std::vector<DiskPartition>::iterator itb = it->dp.begin();
 	     itb != it->dp.end(); ++itb)
 	  {
@@ -63,8 +63,8 @@ namespace Module
 	           << ", \"sectors_written\": " << itb->sectorsWritten
 	           << ", \"io_cur\": " << itb->ioCur
 	           << ", \"time_spent_ioms\": " << itb->timeSpentIOMS
-	           << ", \"write_success\": " << itb->writesSuccess <<
-	      ", \"partition_size\": " << itb->partitionSize;
+	           << ", \"write_success\": " << itb->writesSuccess
+	           << ", \"partition_size\": " << itb->partitionSize;
 	    json += stream.str();
 	    json += "}";
 	  }

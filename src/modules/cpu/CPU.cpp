@@ -16,6 +16,13 @@ namespace Module
   {
     CPU::CPUGlobal *CPU::m_data = NULL;
 
+    CPU::CPUData::CPUData()
+        : coreName(""), user(0), nice(0), system(0), idle(0), iowait(0),
+          irq(0), softirq(0), curFreq(0), cachesize(""), cacheAlign(0),
+          apicid(0), initialApicid(0), cpuFamily(0), cpuModel(0)
+    {
+    }
+
     CPU::CPU()
     {
     }
@@ -79,6 +86,22 @@ namespace Module
 	  json += ", \"freq_mhz\": ";
 	  nb.str("");
 	  nb << m_data->coresData[i].curFreq;
+	  json += nb.str();
+	  json += ", \"apicid\": ";
+	  nb.str("");
+	  nb << m_data->coresData[i].apicid;
+	  json += nb.str();
+	  json += ", \"initial_apicid\": ";
+	  nb.str("");
+	  nb << m_data->coresData[i].initialApicid;
+	  json += nb.str();
+	  json += ", \"cpu_family\": ";
+	  nb.str("");
+	  nb << m_data->coresData[i].cpuFamily;
+	  json += nb.str();
+	  json += ", \"cpu_model\": ";
+	  nb.str("");
+	  nb << m_data->coresData[i].cpuModel;
 	  json += nb.str();
 	  json += ", \"cache_size\": \"";
 	  json += m_data->coresData[i].cachesize;
@@ -180,6 +203,34 @@ namespace Module
 	      size_t            pos = it->find(":", 0);
 	      streamFreq << it->substr(pos + 2);
 	      streamFreq >> m_data->coresData[nb_cores].cacheAlign;
+	    }
+	  else if (it->find("apicid", 0) == 0)
+	    {
+	      std::stringstream streamFreq;
+	      size_t            pos = it->find(":", 0);
+	      streamFreq << it->substr(pos + 2);
+	      streamFreq >> m_data->coresData[nb_cores].apicid;
+	    }
+	  else if (it->find("initial apicid", 0) == 0)
+	    {
+	      std::stringstream streamFreq;
+	      size_t            pos = it->find(":", 0);
+	      streamFreq << it->substr(pos + 2);
+	      streamFreq >> m_data->coresData[nb_cores].initialApicid;
+	    }
+	  else if (it->find("cpu family", 0) == 0)
+	    {
+	      std::stringstream streamFreq;
+	      size_t            pos = it->find(":", 0);
+	      streamFreq << it->substr(pos + 2);
+	      streamFreq >> m_data->coresData[nb_cores].cpuFamily;
+	    }
+	  else if (it->find("model", 0) == 0)
+	    {
+	      std::stringstream streamFreq;
+	      size_t            pos = it->find(":", 0);
+	      streamFreq << it->substr(pos + 2);
+	      streamFreq >> m_data->coresData[nb_cores].cpuModel;
 	    }
 	}
       ff.close();

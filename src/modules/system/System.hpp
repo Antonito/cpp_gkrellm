@@ -13,7 +13,6 @@ namespace Module
     {
       std::string hostname;
       std::string userName;
-      std::string localHost;
       std::string kernel; // kernel version
       std::string osName; // os name, should be set to 'linux'
       double      uptime; // time since boot in sec

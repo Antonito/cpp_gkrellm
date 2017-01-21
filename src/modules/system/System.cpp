@@ -34,10 +34,12 @@ namespace Module
     json += m_data->hostname;
     json += "\", \"username\": \"";
     json += m_data->userName;
-    json += "\", \"localhost\": \"";
-    json += m_data->localHost;
+    json += "\", \"os\": \"";
+    json += m_data->osName;
     json += "\", \"kernel\": \"";
     json += m_data->kernel;
+    json += "\", \"date\": \"";
+    json += m_data->datetime;
     json += "\", \"uptime\": ";
     nb.str("");
     nb << m_data->uptime;

@@ -15,6 +15,7 @@ namespace Module
     public:
       typedef struct CPUData
       {
+	CPUData();
 	std::string coreName;
 	size_t      user;       // normal processes executing in user mode
 	size_t      nice;       // niced processes executing in user mode
@@ -26,6 +27,11 @@ namespace Module
 	double      curFreq;    // current frequency
 	std::string cachesize;  // cache size
 	size_t      cacheAlign; // cache alignment
+
+	size_t apicid;        // apicid
+	size_t initialApicid; // initial apcid
+	size_t cpuFamily;     // family
+	size_t cpuModel;      // model
       } CPUData;
       typedef struct CPUGlobal
       {
