@@ -25,7 +25,46 @@ namespace Module
   }
   std::string Disk::diskSerializer()
   {
-    return ("");
+    std::string json = "{ \"disks\": [";
+    for (std::vector<DiskData>::iterator it = m_data->rd.begin();
+         it != m_data->rd.end(); ++it)
+      {
+	if (it != m_data->rd.begin())
+	  {
+	    json += ", ";
+	  }
+	json += "{\"name\": \"";
+	json += it->diskName;
+	json += "\", \"partitons\": [";
+	for (std::vector<DiskPartition>::iterator itb = it->dp.begin();
+	     itb != it->dp.end(); ++itb)
+	  {
+	    std::stringstream stream;
+
+	    if (itb != it->dp.begin())
+	      {
+		json += ", ";
+	      }
+	    stream << "{\"major\": " << itb->majorNumber
+	           << ", \"minor\": " << itb->minorNumber
+	           << ", \"device_name\": \"" << itb->deviceName
+	           << "\", \"read_success\": " << itb->readsSuccess
+	           << ", \"read_merged\": " << itb->readsMerged
+	           << ", \"sectors_read\": " << itb->sectorsRead
+	           << ", \"time_spent_reading\": " << itb->timeSpentReadingMS
+	           << ", \"write_success\": " << itb->writesSuccess
+	           << ", \"write_merged\": " << itb->writesMerged
+	           << ", \"sectors_written\": " << itb->sectorsWritten
+	           << ", \"io_cur\": " << itb->ioCur
+	           << ", \"time_spent_ioms\": " << itb->timeSpentIOMS
+	           << ", \"write_success\": " << itb->writesSuccess;
+	    json += stream.str();
+	    json += "}";
+	  }
+	json += "]}";
+      }
+    json += "]}";
+    return (json);
   }
 
   void Disk::setRoute()
@@ -95,25 +134,6 @@ namespace Module
 	    disk.diskName = dp.deviceName;
 	    disk.dp.clear();
 	  }
-      }
-    for (std::vector<DiskData>::iterator it = m_data->rd.begin();
-         it != m_data->rd.end(); ++it)
-      {
-
-	std::cout << "Disk: " << it->diskName << std::endl;
-	for (std::vector<DiskPartition>::iterator itb = it->dp.begin();
-	     itb != it->dp.end(); ++itb)
-	  {
-	    // TO REMOVE
-	    std::cout << itb->majorNumber << " " << itb->minorNumber << " "
-	              << itb->deviceName << " " << itb->readsSuccess << " "
-	              << itb->readsMerged << " " << itb->sectorsRead << " "
-	              << itb->timeSpentReadingMS << " " << itb->writesSuccess
-	              << " " << itb->writesMerged << " " << itb->sectorsWritten
-	              << " " << itb->ioCur << " " << itb->timeSpentIOMS << " "
-	              << itb->writesSuccess << std::endl;
-	  }
-	std::cout << std::endl;
       }
   }
 }

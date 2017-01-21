@@ -324,3 +324,13 @@ HTTPServer::serializerToJSON HTTPServer::getRoute(http_route const &route)
 {
   return ((m_routes.find(route))->second);
 }
+
+uint16_t HTTPServer::getPort() const
+{
+  return (m_sock.getPort());
+}
+
+int HTTPServer::getMaxClients() const
+{
+  return (m_sock.getMaxClients());
+}

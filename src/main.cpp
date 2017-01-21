@@ -1,15 +1,10 @@
 #include <unistd.h>
-#include "HTTPServer.hpp"
-#include "ModuleManager.hpp"
+#include "MainManager.hpp"
 
 int main()
 {
-  HTTPServer    http(12345, 64);
-  ModuleManager manager;
+  MainManager manager;
 
-  manager.start();
-  http.start();
-  //  for (size_t i = 0; i < (size_t)~0; ++i);
   for (;;)
     usleep(500);
   return (0);

@@ -122,3 +122,13 @@ int const &TCPSocket::getFd() const
 {
   return (m_fd);
 }
+
+uint16_t TCPSocket::getPort() const
+{
+  return (m_port);
+}
+
+int TCPSocket::getMaxClients() const
+{
+  return (m_maxClient);
+}

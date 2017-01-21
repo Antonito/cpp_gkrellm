@@ -29,7 +29,7 @@ namespace Module
     };
     struct DiskData
     {
-      std::string               diskName;
+      std::string                diskName;
       std::vector<DiskPartition> dp;
     };
     struct DiskGlobal
