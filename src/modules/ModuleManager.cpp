@@ -45,10 +45,14 @@ std::vector<Module::IModuleMonitor *> ModuleManager::createNetworkModule()
 {
   std::vector<Module::IModuleMonitor *> _module;
   Module::Network *                     net = new Module::Network();
+  Module::Process *proc = new Module::Process();
 
   net->setData(
       const_cast<Module::Network::NetworkGlobal *>(&m_buffer.network));
   _module.push_back(net);
+  proc->setData(
+		const_cast<Module::Process::ProcessGlobal *>(&m_buffer.proc));
+  _module.push_back(proc);
   return (_module);
 }
 
