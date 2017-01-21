@@ -45,10 +45,13 @@ std::vector<Module::IModuleMonitor *> ModuleManager::createNetworkModule()
 {
   std::vector<Module::IModuleMonitor *> _module;
   Module::Network *                     net = new Module::Network();
+  Module::Process *                     proc = new Module::Process();
 
   net->setData(
       const_cast<Module::Network::NetworkGlobal *>(&m_buffer.network));
   _module.push_back(net);
+  proc->setData(const_cast<Module::Process::ProcessGlobal *>(&m_buffer.proc));
+  _module.push_back(proc);
   return (_module);
 }
 
@@ -107,7 +110,7 @@ bool ModuleManager::start()
     }
   m_started = true;
   m_threads.startAll();
-  Logger::Instance().log(Logger::INFO, "Module Manager started.");
+  Logger::Instance().log(Logger::Info, "Module Manager started.");
   return (true);
 }
 
@@ -119,6 +122,6 @@ bool ModuleManager::stop()
     }
   m_started = false;
   m_threads.stopAll();
-  Logger::Instance().log(Logger::INFO, "Module Manager stopped.");
+  Logger::Instance().log(Logger::Info, "Module Manager stopped.");
   return (true);
 }

@@ -41,14 +41,13 @@ std::ostream &operator<<(std::ostream &stream, Logger const &)
   return (stream);
 }
 
-
 // Private methods
 
 // This one writes to the specified stream, thread safe.
 void Logger::_writeLog(std::string const &msg, LogLevel lvl)
 {
-  static std::string _lvl[] = {"DEBUG", "INFO", "WARNING", "ERROR",
-                               "CRITICAL"};
+  static std::string _lvl[] = {"Debug", "Info", "Warning", "Error",
+                               "Critical"};
   m_mut.lock();
   (*m_stream) << "[" << _lvl[lvl] << "] ";
   (*m_stream) << msg;
@@ -56,7 +55,7 @@ void Logger::_writeLog(std::string const &msg, LogLevel lvl)
   m_mut.unlock();
 }
 
-Logger::Logger() : m_level(DEBUG), m_stream(&std::clog)
+Logger::Logger() : m_level(Debug), m_stream(&std::clog)
 {
 }
 

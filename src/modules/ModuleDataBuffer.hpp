@@ -9,6 +9,7 @@
 #include "System.hpp"
 #include "Disk.hpp"
 #include "RAM.hpp"
+#include "Process.hpp"
 
 struct ModuleDataBuffer
 {
@@ -17,6 +18,7 @@ struct ModuleDataBuffer
   Module::System::SystemGlobal      sys;
   Module::Disk::DiskGlobal          disk;
   Module::RAM::RAMGlobal            ram;
+  Module::Process::ProcessGlobal proc;
 };
 
 #endif // !MODULEDATABUFFER_HPP_

@@ -41,7 +41,7 @@ namespace Module
 	stream.str("");
 	stream << it->diskSize;
 	json += stream.str();
-	json += ", \"partitons\": [";
+	json += ", \"partitions\": [";
 	for (std::vector<DiskPartition>::iterator itb = it->dp.begin();
 	     itb != it->dp.end(); ++itb)
 	  {
@@ -63,8 +63,8 @@ namespace Module
 	           << ", \"sectors_written\": " << itb->sectorsWritten
 	           << ", \"io_cur\": " << itb->ioCur
 	           << ", \"time_spent_ioms\": " << itb->timeSpentIOMS
-	           << ", \"write_success\": " << itb->writesSuccess <<
-	      ", \"partition_size\": " << itb->partitionSize;
+	           << ", \"write_success\": " << itb->writesSuccess
+	           << ", \"partition_size\": " << itb->partitionSize;
 	    json += stream.str();
 	    json += "}";
 	  }
@@ -76,7 +76,7 @@ namespace Module
 
   void Disk::setRoute()
   {
-    Logger::Instance().log(Logger::INFO, "Added routes for Disk module");
+    Logger::Instance().log(Logger::Info, "Added routes for Disk module");
     HTTPServer::addRoute("/disk", static_cast<HTTPServer::serializerToJSON>(
                                       &Disk::diskSerializer));
   }
@@ -92,11 +92,12 @@ namespace Module
     ff.open("/proc/diskstats", std::ios_base::in);
     if (!ff.good())
       {
-	Logger::Instance().log(Logger::ERROR, "Cannot read memory info");
+	Logger::Instance().log(Logger::Error, "Cannot read memory info");
 	return;
       }
     strbuf << ff.rdbuf();
     m_split = split(strbuf.str(), '\n');
+    m_split.push_back("ENDOFFILE");
 
     DiskData disk;
     for (std::vector<std::string>::iterator it = m_split.begin();

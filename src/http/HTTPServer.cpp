@@ -144,7 +144,7 @@ void *HTTPServer::_serverLoopRead(void *_data)
       if (rc < 0)
 	{
 	  // We have an error
-	  Logger::Instance().log(Logger::ERROR, "select failed");
+	  Logger::Instance().log(Logger::Error, "select failed");
 	  continue;
 	}
       else if (FD_ISSET(data->srvFd, &readfds))
@@ -164,7 +164,7 @@ void *HTTPServer::_serverLoopRead(void *_data)
 	  if (i == data->maxClient)
 	    {
 	      // We don't have any slots free
-	      Logger::Instance().log(Logger::WARNING,
+	      Logger::Instance().log(Logger::Warning,
 	                             "No more space on HTTP Server");
 	      close(sock);
 	    }
@@ -240,7 +240,7 @@ void *HTTPServer::_serverLoopWrite(void *_data)
       std::string repHeader;
       if (header.verb != "GET")
 	{
-	  Logger::Instance().log(Logger::DEBUG, "HTTP server: 501.");
+	  Logger::Instance().log(Logger::Debug, "HTTP server: 501.");
 	  repHeader = HTTPHeader::generateHeader(HTTPHeader::HTTP_501);
 	}
       else
@@ -250,7 +250,7 @@ void *HTTPServer::_serverLoopWrite(void *_data)
 	      HTTPServer::serializerToJSON serializer = getRoute(header.route);
 	      std::string                  msg;
 
-	      Logger::Instance().log(Logger::DEBUG,
+	      Logger::Instance().log(Logger::Debug,
 	                             "HTTP server: " + header.route);
 	      msg = (serializer)();
 	      repHeader =
@@ -258,7 +258,7 @@ void *HTTPServer::_serverLoopWrite(void *_data)
 	    }
 	  else
 	    {
-	      Logger::Instance().log(Logger::DEBUG, "HTTP server: 404.");
+	      Logger::Instance().log(Logger::Debug, "HTTP server: 404.");
 	      repHeader = HTTPHeader::generateHeader(HTTPHeader::HTTP_404);
 	    }
 	}
@@ -284,7 +284,7 @@ bool HTTPServer::start()
   m_threads.addThread(&_serverLoopRead, &m_data);
   m_threads.addThread(&HTTPServer::_serverLoopWrite, &m_data);
   m_threads.startAll();
-  Logger::Instance().log(Logger::INFO, "HTTP server started");
+  Logger::Instance().log(Logger::Info, "HTTP server started");
   return (true);
 }
 
@@ -298,7 +298,7 @@ bool HTTPServer::stop()
   m_started = false;
   delete[] m_data.clients;
   m_data.clients = NULL;
-  Logger::Instance().log(Logger::INFO, "HTTP server stopped.");
+  Logger::Instance().log(Logger::Info, "HTTP server stopped.");
   return (true);
 }
 

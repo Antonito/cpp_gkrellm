@@ -7,6 +7,8 @@
 int main()
 {
   MainManager manager;
+  //   for (;;)
+  //     usleep(10000);
 
   Graphic::Ncurses::Window win("Window");
   Graphic::Ncurses::Frame *frame = new Graphic::Ncurses::Frame();

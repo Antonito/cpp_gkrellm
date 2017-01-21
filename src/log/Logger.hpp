@@ -10,11 +10,11 @@ class Logger
 public:
   enum LogLevel
   {
-    DEBUG = 0,
-    INFO,
-    WARNING,
-    ERROR,
-    CRITICAL
+    Debug = 0,
+    Info,
+    Warning,
+    Error,
+    Critical
   };
   static Logger &Instance();
 
@@ -37,7 +37,7 @@ private:
 
   LogLevel      m_level;
   std::ostream *m_stream;
-  Mutex m_mut;
+  Mutex         m_mut;
 };
 
 std::ostream &operator<<(std::ostream &stream, Logger const &);
