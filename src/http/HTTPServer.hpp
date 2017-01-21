@@ -73,6 +73,9 @@ public:
   static bool             isRoute(http_route const &);
   static serializerToJSON getRoute(http_route const &route);
 
+  uint16_t getPort() const;
+  int      getMaxClients() const;
+
 private:
   bool           m_started;
   TCPSocket      m_sock;

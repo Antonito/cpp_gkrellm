@@ -20,6 +20,9 @@ public:
   bool       isStarted() const;
   int const &getFd() const;
 
+  uint16_t getPort() const;
+  int      getMaxClients() const;
+
 private:
   int      m_fd;
   uint16_t m_port;
