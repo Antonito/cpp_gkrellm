@@ -38,12 +38,26 @@ std::vector<Module::IModuleMonitor *> ModuleManager::createCPUModule()
   return (_module);
 }
 
+std::vector<Module::IModuleMonitor *> ModuleManager::createNetworkModule()
+{
+  std::vector<Module::IModuleMonitor *> _module;
+  Module::Network *net = new Module::Network();
+
+  net->setData(
+      const_cast<Module::Network::NetworkGlobal *>(&m_buffer.network));
+  _module.push_back(net);
+  return (_module);
+}
+
 ModuleManager::ModuleManager() : m_started(false)
 {
   // Init modules
   ModuleManagerThreadData tmp;
 
   tmp.modules = createCPUModule();
+  tmp.delay_useconds = 1 * 1000 * 1000;
+  m_modules.push_back(tmp);
+  tmp.modules = createNetworkModule();
   tmp.delay_useconds = 1 * 1000 * 1000;
   m_modules.push_back(tmp);
   for (std::vector<ModuleManagerThreadData>::iterator it = m_modules.begin();

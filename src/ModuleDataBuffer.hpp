@@ -5,10 +5,12 @@
 // collected by the data miner threads
 
 #include "CPU.hpp"
+#include "Network.hpp"
 
 struct ModuleDataBuffer
 {
   Module::Processor::CPU::CPUGlobal CPU;
+  Module::Network::NetworkGlobal    network;
 };
 
 #endif // !MODULEDATABUFFER_HPP_

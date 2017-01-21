@@ -2,11 +2,11 @@
 #define NETWORK_HPP_
 
 #include <vector>
-#include "IMonitorModule.hpp"
+#include "IModuleMonitor.hpp"
 
 namespace Module
 {
-  class Network : public IMonitorModule
+  class Network : public IModuleMonitor
   {
   public:
     struct NetworkData
@@ -30,6 +30,7 @@ namespace Module
 
   private:
     static NetworkGlobal *m_data;
+    static std::string    networkSerializer();
   };
 }
 

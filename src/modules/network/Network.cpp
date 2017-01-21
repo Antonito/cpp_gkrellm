@@ -2,6 +2,7 @@
 #include <sstream>
 #include "Network.hpp"
 #include "Logger.hpp"
+#include "HTTPServer.hpp"
 
 namespace Module
 {
@@ -25,9 +26,11 @@ namespace Module
     split(s, delim, elems);
     return elems;
   }
+
   Network::Network()
   {
   }
+
   Network::~Network()
   {
   }
@@ -39,6 +42,40 @@ namespace Module
 
   std::string Network::networkSerializer()
   {
+    std::string json;
+
+    json = "{[";
+    for (std::vector<NetworkData>::iterator it = m_data->nd.begin();
+         it != m_data->nd.end(); ++it)
+      {
+	std::stringstream nb;
+
+	if (it != m_data->nd.begin())
+	  {
+	    json += ", ";
+	  }
+	json += "{\"name\": \"";
+	json += (*it).interface;
+	json += "\", \"pkt_rec\": ";
+	nb.str("");
+	nb << (*it).packetRecv;
+	json += nb.str();
+	json += ", \"pkt_rec_drop\": ";
+	nb.str("");
+	nb << (*it).packetRecvDrop;
+	json += nb.str();
+	json += ", \"pkt_sent\": ";
+	nb.str("");
+	nb << (*it).packetSend;
+	json += nb.str();
+	json += ", \"pkt_sent_drop\": ";
+	nb.str("");
+	nb << (*it).packetSendDrop;
+	json += nb.str();
+	json += "}";
+      }
+    json += "]}";
+    return (json);
   }
 
   void Network::setRoute()
@@ -76,7 +113,7 @@ namespace Module
 	    std::stringstream interfaceInfo;
 	    size_t            trash;
 	    interfaceInfo << it->substr(it->find(":") + 1);
-	    nb.interface = it->substr(0, it->find(":"));
+	    nd.interface = it->substr(0, it->find(":"));
 	    interfaceInfo >> trash;
 	    interfaceInfo >> nd.packetRecv;
 	    interfaceInfo >> trash;
@@ -91,15 +128,6 @@ namespace Module
 	    interfaceInfo >> nd.packetSendDrop;
 	    m_data->nd.push_back(nd);
 	  }
-      }
-    for (std::vector<NetworkData>::iterator it = m_data->nd.begin();
-         it != m_data->nd.end(); ++it)
-      {
-	std::cout << "Interface : " << it->interface << std::endl;
-	std::cout << "PacketRecv : " << it->packetRecv << std::endl;
-	std::cout << "PacketRecvDrop : " << it->packetRecvDrop << std::endl;
-	std::cout << "PacketSend : " << it->packetSend << std::endl;
-	std::cout << "PacketSendDrop : " << it->packetSendDrop << std::endl;
       }
   }
 }

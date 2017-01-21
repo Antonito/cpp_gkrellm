@@ -10,7 +10,7 @@ int main()
   manager.start();
   http.start();
   //  for (size_t i = 0; i < (size_t)~0; ++i);
-  // for (;;)
-  sleep(10);
+  for (;;)
+    usleep(500);
   return (0);
 }

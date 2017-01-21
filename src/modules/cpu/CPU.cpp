@@ -53,52 +53,54 @@ namespace Module
       std::stringstream nb;
       size_t            nbCore = m_data->coresData.size();
 
-      json = "{ \"name\": \"" + m_data->name + "\", \"nb_core\": \"";
+      json = "{ \"name\": \"" + m_data->name + "\", \"nb_core\": ";
       nb << nbCore;
       json += nb.str();
-      json += "\"";
+      json += ", \"core\": [";
       for (size_t i = 0; i < nbCore; ++i)
 	{
-	  json += ", \"core";
-	  nb.str("");
-	  nb << i;
-	  json += nb.str();
-	  json += "\":";
+	  if (i)
+	    {
+	      json += ", ";
+	    }
 	  json += "{";
-
 	  json += "\"name\": \"";
 	  json += m_data->coresData[i].coreName;
-	  json += "\", \"user\": \"";
+	  json += "\", \"user\": ";
 	  nb.str("");
 	  nb << m_data->coresData[i].user;
 	  json += nb.str();
-	  json += "\", \"nice\": \"";
+	  json += ", \"nice\": ";
 	  nb.str("");
 	  nb << m_data->coresData[i].nice;
 	  json += nb.str();
-	  json += "\", \"system\": \"";
+	  json += ", \"system\": ";
 	  nb.str("");
 	  nb << m_data->coresData[i].system;
 	  json += nb.str();
-	  json += "\", \"idle\": \"";
+	  json += ", \"idle\": ";
 	  nb.str("");
 	  nb << m_data->coresData[i].idle;
 	  json += nb.str();
-	  json += "\", \"iowait\": \"";
+	  json += ", \"iowait\": ";
 	  nb.str("");
 	  nb << m_data->coresData[i].iowait;
 	  json += nb.str();
-	  json += "\", \"irq\": \"";
+	  json += ", \"irq\": ";
 	  nb.str("");
 	  nb << m_data->coresData[i].irq;
 	  json += nb.str();
-	  json += "\", \"softirq\": \"";
+	  json += ", \"softirq\": ";
 	  nb.str("");
 	  nb << m_data->coresData[i].softirq;
 	  json += nb.str();
-	  json += "\"}";
+	  json += ", \"freq_mhz\": ";
+	  nb.str("");
+	  nb << m_data->coresData[i].curFreq;
+	  json += nb.str();
+	  json += "}";
 	}
-      json += "}";
+      json += "]}";
       return (json);
     }
 
@@ -176,7 +178,7 @@ namespace Module
 	    {
 	      std::stringstream streamFreq;
 	      size_t            pos = it->find(":", 0);
-	      streamFreq << *it->substr(pos + 2);
+	      streamFreq << it->substr(pos + 2);
 	      streamFreq >> m_data->coresData[nb_cores].curFreq;
 	      nb_cores++;
 	    }

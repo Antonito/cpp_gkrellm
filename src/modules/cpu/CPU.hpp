@@ -24,7 +24,7 @@ namespace Module
 	size_t      iowait;
 	size_t      irq;
 	size_t      softirq;
-	double      curFreq; // TODO: add this to JSON
+	double      curFreq;
       } CPUData;
       typedef struct CPUGlobal
       {
