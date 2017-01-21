@@ -49,13 +49,65 @@ namespace Module
 
     std::string CPU::cpuSerializer()
     {
-      return ("{ \"data_cpu\": \"" + m_data->name + "\"}");
+      std::string       json;
+      std::stringstream nb;
+      size_t            nbCore = m_data->coresData.size();
+
+      json = "{ \"name\": \"" + m_data->name + "\", \"nb_core\": \"";
+      nb << nbCore;
+      json += nb.str();
+      json += "\"";
+      for (size_t i = 0; i < nbCore; ++i)
+	{
+	  json += ", \"core";
+	  nb.str("");
+	  nb << i;
+	  json += nb.str();
+	  json += "\":";
+	  json += "{";
+
+	  json += "\"name\": \"";
+	  json += m_data->coresData[i].coreName;
+	  json += "\", \"user\": \"";
+	  nb.str("");
+	  nb << m_data->coresData[i].user;
+	  json += nb.str();
+	  json += "\", \"nice\": \"";
+	  nb.str("");
+	  nb << m_data->coresData[i].nice;
+	  json += nb.str();
+	  json += "\", \"system\": \"";
+	  nb.str("");
+	  nb << m_data->coresData[i].system;
+	  json += nb.str();
+	  json += "\", \"idle\": \"";
+	  nb.str("");
+	  nb << m_data->coresData[i].idle;
+	  json += nb.str();
+	  json += "\", \"iowait\": \"";
+	  nb.str("");
+	  nb << m_data->coresData[i].iowait;
+	  json += nb.str();
+	  json += "\", \"irq\": \"";
+	  nb.str("");
+	  nb << m_data->coresData[i].irq;
+	  json += nb.str();
+	  json += "\", \"softirq\": \"";
+	  nb.str("");
+	  nb << m_data->coresData[i].softirq;
+	  json += nb.str();
+	  json += "\"}";
+	}
+      json += "}";
+      return (json);
     }
 
     void CPU::setRoute()
     {
-      Logger::Instance().log(Logger::LogLevel::INFO, "Added routes for CPU Module.");
-      HTTPServer::addRoute("/cpu", static_cast<HTTPServer::serializerToJSON>(&CPU::cpuSerializer));
+      Logger::Instance().log(Logger::LogLevel::INFO,
+                             "Added routes for CPU Module.");
+      HTTPServer::addRoute("/cpu", static_cast<HTTPServer::serializerToJSON>(
+                                       &CPU::cpuSerializer));
     }
 
     void CPU::parse()
@@ -66,6 +118,7 @@ namespace Module
       std::vector<std::string> m_split;
 
       assert(m_data != NULL);
+      m_data->coresData.clear();
       ff.open("/proc/stat", std::ios_base::in);
       if (!ff.good())
 	{

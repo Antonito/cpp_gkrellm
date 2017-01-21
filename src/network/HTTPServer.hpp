@@ -33,6 +33,7 @@ struct HTTPServerData
   int const &                 srvFd;
   int const                   maxClient;
   std::queue<HTTPQueueElem *> queue;
+  HTTPClient *                clients;
 };
 
 struct HTTPHeader

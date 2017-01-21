@@ -13,6 +13,7 @@ namespace Module
     class CPU : public IModuleMonitor
     {
     public:
+      // TODO: Add freq, and comment
       typedef struct CPUData
       {
 	std::string coreName;
@@ -31,7 +32,7 @@ namespace Module
       } CPUGlobal;
       static std::string cpuSerializer();
       CPU();
-      ~CPU();
+      virtual ~CPU();
       void setData(CPUGlobal *cpu);
       virtual void parse();
       virtual void setRoute();
