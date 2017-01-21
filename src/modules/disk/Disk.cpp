@@ -121,26 +121,5 @@ namespace Module
 	    disk.dp.clear();
 	  }
       }
-    for (std::vector<DiskData>::iterator it = m_data->rd.begin();
-         it != m_data->rd.end(); ++it)
-      {
-
-	std::cout << "Disk: " << it->diskName << " " << it->diskSize << "Bytes"
-	          << std::endl;
-	for (std::vector<DiskPartition>::iterator itb = it->dp.begin();
-	     itb != it->dp.end(); ++itb)
-	  {
-	    // TO REMOVE
-	    std::cout << itb->majorNumber << " " << itb->minorNumber << " "
-	              << itb->deviceName << " " << itb->readsSuccess << " "
-	              << itb->readsMerged << " " << itb->sectorsRead << " "
-	              << itb->timeSpentReadingMS << " " << itb->writesSuccess
-	              << " " << itb->writesMerged << " " << itb->sectorsWritten
-	              << " " << itb->ioCur << " " << itb->timeSpentIOMS << " "
-	              << itb->writesSuccess << " " << itb->partitionSize
-	              << "Bytes" << std::endl;
-	  }
-	std::cout << std::endl;
-      }
   }
 }
