@@ -6,6 +6,7 @@ namespace Module
   class IModuleMonitor
   {
   public:
+    virtual ~IModuleMonitor(){};
     virtual void parse() = 0;
     virtual void setRoute() = 0;
   };

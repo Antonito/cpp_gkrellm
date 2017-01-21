@@ -13,6 +13,7 @@ namespace Module
     class CPU : public IModuleMonitor
     {
     public:
+      // TODO: Add freq, and comment
       typedef struct CPUData
       {
 	std::string coreName;

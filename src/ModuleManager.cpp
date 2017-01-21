@@ -8,7 +8,8 @@ static void *_loop(void *_data)
       static_cast<ModuleManagerThreadData *>(_data);
 
   // Add routes to the server
-  for (std::vector<Module::IModuleMonitor *>::iterator it = data->modules.begin();
+  for (std::vector<Module::IModuleMonitor *>::iterator it =
+           data->modules.begin();
        it != data->modules.end(); ++it)
     {
       (*it)->setRoute();
@@ -16,11 +17,11 @@ static void *_loop(void *_data)
   while (1)
     {
       pthread_testcancel();
-      for (std::vector<Module::IModuleMonitor *>::iterator it = data->modules.begin();
+      for (std::vector<Module::IModuleMonitor *>::iterator it =
+               data->modules.begin();
            it != data->modules.end(); ++it)
 	{
 	  (*it)->parse();
-	  // TODO: Call module parser
 	}
       usleep(data->delay_useconds);
     }
@@ -60,6 +61,17 @@ ModuleManager::~ModuleManager()
       m_threads.stopAll();
     }
   // Free
+  for (std::vector<ModuleManagerThreadData>::iterator it = m_modules.begin();
+       it != m_modules.end(); ++it)
+    {
+      for (std::vector<Module::IModuleMonitor *>::iterator jt =
+               (*it).modules.begin();
+           jt != (*it).modules.end(); ++jt)
+	{
+	  delete *jt;
+	}
+      (*it).modules.clear();
+    }
   m_modules.clear();
 }
 
