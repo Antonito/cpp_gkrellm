@@ -9,8 +9,7 @@ public:
   virtual ~IMonitorDisplay(){};
   virtual void update() = 0;
   virtual void refresh() = 0;
-  virtual void position(size_t x, size_t y, size_t offX, size_t offY,
-                        size_t width, size_t height) = 0;
+  virtual void position(size_t x, size_t y, size_t width, size_t height) = 0;
 };
 
 #endif // !IMONITORDISPLAY_HPP_

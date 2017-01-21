@@ -1,16 +1,21 @@
 #include <unistd.h>
 #include "MainManager.hpp"
+#include "AModule.hpp"
+#include "ncurses/NcNetwork.hpp"
+#include "Frame.hpp"
 
 int main()
 {
   MainManager manager;
 
   Graphic::Ncurses::Window win("Window");
-  Graphic::AFrame *        frame = Graphic::AFrame::newFrame();
-  Graphic::AFrame *        child1 = Graphic::AFrame::newFrame();
-  Graphic::AFrame *        child2 = Graphic::AFrame::newFrame();
-  Graphic::AFrame *        schild1 = Graphic::AFrame::newFrame();
-  Graphic::AFrame *        schild2 = Graphic::AFrame::newFrame();
+  Graphic::Ncurses::Frame *frame = new Graphic::Ncurses::Frame();
+  Graphic::Ncurses::Frame *child1 = new Graphic::Ncurses::Frame();
+  Graphic::Ncurses::Frame *child2 = new Graphic::Ncurses::Frame();
+  Graphic::Ncurses::Frame *schild1 = new Graphic::Ncurses::Frame();
+  Graphic::Ncurses::Frame *schild2 = new Graphic::Ncurses::Frame();
+
+  Graphic::AModule *network = new Graphic::Module::Ncurses::NcNetwork(schild1);
 
   frame->addFrame(child1);
   frame->addFrame(child2);
@@ -18,6 +23,7 @@ int main()
   child1->addFrame(schild2);
   child1->setRatio(0.4);
   child1->setSplitMode(Graphic::AFrame::HORIZONTAL);
+  schild1->setModule(network);
   win.addTab("Tab1", *frame);
   frame->setRatio(0.7);
   win.enable();

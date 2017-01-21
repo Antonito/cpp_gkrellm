@@ -8,7 +8,9 @@ VPATH=		./src/:./src/JSON/:./src/log/:./src/http/		\
 		:./src/threads/:./src/modules/:./src/modules/cpu/	\
 		:./src/modules/network/:./src/modules/system/		\
 		:./src/modules/disk/:./src/modules/ram/			\
-		:./src/graphic:./src/graphic/ncurses
+		:./src/graphic:./src/graphic/ncurses			\
+		:./src/graphic/module:./src/graphic/module/network/	\
+		:./src/graphic/module/network/ncurses
 
 SRC_FILES=	main.cpp		\
 		MainManager.cpp
@@ -39,13 +41,21 @@ MODULE_SRC=	ModuleManager.cpp	\
 
 GRAPHIC_SRC=	AFrame.cpp		\
 		AWindow.cpp		\
-		GraphicException.cpp
+		GraphicException.cpp	\
 
 NCURSES_SRC=	Frame.cpp		\
-		Window.cpp
+		Window.cpp		\
+		NcTextArea.cpp
+
+GRAPHIC_MODULE_SRC=	AModule.cpp	\
+			ANcModule.cpp
+
+GFX_NETWORK=	NcNetwork.cpp
+
 
 SRC=		$(SRC_FILES) $(JSON_FILES) $(LOG_SRC) $(HTTP_SRC)	\
-		$(THREAD_SRC) $(MODULE_SRC) $(GRAPHIC_SRC) $(NCURSES_SRC)
+		$(THREAD_SRC) $(MODULE_SRC) $(GRAPHIC_SRC)	\
+		$(NCURSES_SRC) $(GRAPHIC_MODULE_SRC) $(GFX_NETWORK)
 
 # Rules
 include $(MK_DIR)rules.mk

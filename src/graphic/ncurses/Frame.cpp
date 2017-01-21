@@ -83,7 +83,10 @@ namespace Graphic
       if (m_split.size() >= 2)
 	m_split[1]->update();
       if (m_module)
-	m_module->update();
+	{
+	  m_module->position(m_x + m_offX, m_y + m_offY, m_width, m_height);
+	  m_module->update();
+	}
     }
 
     void Frame::refresh()
@@ -95,6 +98,11 @@ namespace Graphic
 	m_split[1]->refresh();
       if (m_module)
 	m_module->refresh();
+    }
+
+    WINDOW *Frame::getWin() const
+    {
+      return (m_win);
     }
   }
 }

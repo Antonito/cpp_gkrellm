@@ -15,7 +15,7 @@ namespace Graphic
       VERTICAL,
       HORIZONTAL
     };
-    virtual ~AFrame(){};
+    virtual ~AFrame();
 
     virtual void enable(size_t x, size_t y, size_t offX, size_t offY,
                         size_t width, size_t height) = 0;

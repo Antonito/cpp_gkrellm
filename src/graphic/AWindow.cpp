@@ -6,6 +6,13 @@ namespace Graphic
   {
   }
 
+  AWindow::~AWindow()
+  {
+    for (std::map<std::string, AFrame *>::iterator it = m_tab.begin();
+         it != m_tab.end(); ++it)
+      delete it->second;
+  }
+
   void AWindow::addTab(std::string const &name, AFrame &frame)
   {
     m_tab[name] = &frame;
