@@ -10,7 +10,9 @@ INC_DIR=		-I./src/JSON/			\
 			-I./src/modules/disk/		\
 			-I./src/modules/ram/		\
 			-I./src/network/		\
-			-I./src/threads/
+			-I./src/threads/		\
+			-I./src/graphic/		\
+			-I./src/graphic/ncurses
 
 DEBUG=			no
 
@@ -18,6 +20,6 @@ MODE=
 
 LOCAL_COMP_FLAGS=	-pipe
 
-LOCAL_LINK_FLAGS=	-pthread
+LOCAL_LINK_FLAGS=	-pthread -lncurses
 
 LOCAL_DEBUG_FLAGS=

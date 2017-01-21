@@ -1,7 +1,7 @@
 #ifndef IMONITORDISPLAY_HPP_
 #define IMONITORDISPLAY_HPP_
 
-#include "JSON/JSON.hh"
+#include "JSON.hh"
 
 class IMonitorDisplay
 {

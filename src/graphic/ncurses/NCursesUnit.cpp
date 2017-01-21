@@ -4,14 +4,6 @@
 
 int main()
 {
-  union
-  {
-    uint8_t  byte[2];
-    uint16_t value;
-  };
-  value = KEY_F(3);
-  std::cout << KEY_F(3) << std::endl;
-  std::cout << (int)byte[0] << ", " << (int)byte[1] << std::endl;
   Graphic::Ncurses::Window win("Window");
   Graphic::AFrame *        frame = Graphic::AFrame::newFrame();
   Graphic::AFrame *        child1 = Graphic::AFrame::newFrame();

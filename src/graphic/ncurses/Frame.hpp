@@ -2,7 +2,7 @@
 #define FRAME_HPP_
 
 #include <ncurses.h>
-#include "Graphic/AFrame.hpp"
+#include "AFrame.hpp"
 
 namespace Graphic
 {

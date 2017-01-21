@@ -2,7 +2,7 @@
 #define WINDOW_HPP_
 
 #include <termios.h>
-#include "Graphic/AWindow.hpp"
+#include "AWindow.hpp"
 
 namespace Graphic
 {
