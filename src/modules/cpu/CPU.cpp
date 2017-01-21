@@ -163,7 +163,7 @@ namespace Module
 
       m_split = split(strData, '\n');
       // /proc/cpuinfo
-      // unsigned int nb_cores = 0;
+      unsigned int nb_cores = 0;
       for (std::vector<std::string>::iterator it = m_split.begin();
            it != m_split.end(); ++it)
 	{
@@ -172,12 +172,15 @@ namespace Module
 	      size_t pos = it->find(":", 0);
 	      m_data->name = it->substr(pos + 2);
 	    }
-	  /*if (it->find("cpu MHz", 0) == 0)
+	  if (it->find("cpu MHz", 0) == 0)
 	    {
-	      tmp_proco << *it << "\n";
-	      std::cout << "get actual core frequency" << std::endl;
+	      std::stringstream streamFreq;
+	      size_t            pos = it->find(":", 0);
+	      streamFreq << *it->substr(pos + 2);
+	      streamFreq >> m_data->coresData[nb_cores].curFreq;
+	      nb_cores++;
 	    }
-	  if (it->find("cache size", 0) == 0)
+	  /*if (it->find("cache size", 0) == 0)
 	    {
 	      tmp_proco << *it << "\n";
 	      std::cout << "get actual core frequency" << std::endl;
