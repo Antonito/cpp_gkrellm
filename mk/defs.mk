@@ -36,7 +36,7 @@ CXX=		g++
 CPP_VER=	c++03
 
 # Debug Infos
-ifeq ($(DEBUG), yes)
+ifeq ($(Debug), yes)
 CXXFLAGS=	-g -DDEBUG 				\
 		$(LOCAL_DEBUG_FLAGS)
 

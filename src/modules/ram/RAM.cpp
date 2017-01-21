@@ -54,7 +54,7 @@ namespace Module
 
   void RAM::setRoute()
   {
-    Logger::Instance().log(Logger::INFO, "Added routes for Memory module");
+    Logger::Instance().log(Logger::Info, "Added routes for Memory module");
     HTTPServer::addRoute("/memory", static_cast<HTTPServer::serializerToJSON>(
                                         &RAM::ramSerializer));
   }
@@ -67,7 +67,7 @@ namespace Module
     ff.open("/proc/meminfo", std::ios_base::in);
     if (!ff.good())
       {
-	Logger::Instance().log(Logger::ERROR, "Cannot read memory info");
+	Logger::Instance().log(Logger::Error, "Cannot read memory info");
 	return;
       }
     strbuf << ff.rdbuf();
@@ -115,6 +115,182 @@ namespace Module
 	    mystream << *it;
 	    mystream >> trash;
 	    mystream >> m_data->sd.swapFree;
+	  }
+	else if (it->find("Buffers:", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.buffers;
+	  }
+	else if (it->find("Cached:", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.cached;
+	  }
+	else if (it->find("Active:", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.active;
+	  }
+	else if (it->find("Inactive:", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.inactive;
+	  }
+	else if (it->find("Active(anon):", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.active_anon;
+	  }
+	else if (it->find("Inactive(anon):", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.inactive_anon;
+	  }
+	else if (it->find("Active(file):", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.active_file;
+	  }
+	else if (it->find("Inactive(anon):", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.inactive_file;
+	  }
+	else if (it->find("Unevictable:", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.unevictable;
+	  }
+	else if (it->find("Mlocked:", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.mlocked;
+	  }
+	else if (it->find("Dirty:", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.dirty;
+	  }
+	else if (it->find("Writeback:", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.writeback;
+	  }
+	else if (it->find("AnonPages:", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.anon_pages;
+	  }
+	else if (it->find("Mapped:", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.mapped;
+	  }
+	else if (it->find("Shmem:", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.shmem;
+	  }
+	else if (it->find("Slab:", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.slab;
+	  }
+	else if (it->find("SReclaimable:", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.sreclaimable;
+	  }
+	else if (it->find("KernelStack:", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.kernelstack;
+	  }
+	else if (it->find("PageTables:", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.pagetable;
+	  }
+	else if (it->find("NFS_Unstable:", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.nfs_unstable;
+	  }
+	else if (it->find("Bounce:", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.bounce;
+	  }
+	else if (it->find("WritebackTmp:", 0) == 0)
+	  {
+	    std::stringstream mystream;
+	    std::string       trash;
+	    mystream << *it;
+	    mystream >> trash;
+	    mystream >> m_data->rd.writebacktmp;
 	  }
       }
   }

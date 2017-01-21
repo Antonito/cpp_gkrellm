@@ -117,7 +117,7 @@ namespace Module
 
     void CPU::setRoute()
     {
-      Logger::Instance().log(Logger::INFO, "Added routes for CPU Module.");
+      Logger::Instance().log(Logger::Info, "Added routes for CPU Module.");
       HTTPServer::addRoute("/cpu", static_cast<HTTPServer::serializerToJSON>(
                                        &CPU::cpuSerializer));
     }
@@ -134,7 +134,7 @@ namespace Module
       ff.open("/proc/stat", std::ios_base::in);
       if (!ff.good())
 	{
-	  // Logger::Instance().log(Logger::ERROR, "cannot read cores info");
+	  // Logger::Instance().log(Logger::Error, "cannot read cores info");
 	  return;
 	}
       strbuf << ff.rdbuf();
@@ -166,7 +166,7 @@ namespace Module
       ff.open("/proc/cpuinfo", std::ios_base::in);
       if (!ff.good())
 	{
-	  // Logger::Instance().log(Logger::ERROR, "cannot read cpu info :(");
+	  // Logger::Instance().log(Logger::Error, "cannot read cpu info :(");
 	  return;
 	}
       strbuf.str("");

@@ -43,7 +43,7 @@ namespace Module
 
   void TCP::setRoute()
   {
-    Logger::Instance().log(Logger::LogLevel::INFO,
+    Logger::Instance().log(Logger::LogLevel::Info,
                            "Added routes for TCP Module.");
     HTTPServer::addRoute("/network", static_cast<HTTPServer::serializerToJSON>(
                                          &TCP::networkSerializer));
@@ -59,7 +59,7 @@ namespace Module
     ff.open("/proc/net/dev", std::ios_base::in);
     if (!ff.good())
       {
-	Logger::Instance().log(Logger::LogLevel::ERROR,
+	Logger::Instance().log(Logger::LogLevel::Error,
 	                       "Added routes for TCP Module.");
 	return;
       }

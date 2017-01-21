@@ -76,7 +76,7 @@ namespace Module
 
   void Disk::setRoute()
   {
-    Logger::Instance().log(Logger::INFO, "Added routes for Disk module");
+    Logger::Instance().log(Logger::Info, "Added routes for Disk module");
     HTTPServer::addRoute("/disk", static_cast<HTTPServer::serializerToJSON>(
                                       &Disk::diskSerializer));
   }
@@ -92,7 +92,7 @@ namespace Module
     ff.open("/proc/diskstats", std::ios_base::in);
     if (!ff.good())
       {
-	Logger::Instance().log(Logger::ERROR, "Cannot read memory info");
+	Logger::Instance().log(Logger::Error, "Cannot read memory info");
 	return;
       }
     strbuf << ff.rdbuf();

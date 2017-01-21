@@ -32,7 +32,7 @@ namespace Module
 
   void Process::setRoute()
   {
-    Logger::Instance().log(Logger::INFO, "Added routes for Process module");
+    Logger::Instance().log(Logger::Info, "Added routes for Process module");
     HTTPServer::addRoute("/process", static_cast<HTTPServer::serializerToJSON>(
                                          &Process::processSerializer));
   }
@@ -86,7 +86,7 @@ namespace Module
       }
     else
       {
-	Logger::Instance().log(Logger::ERROR,
+	Logger::Instance().log(Logger::Error,
 	                       "Cannot open /proc, WTF ? is this blinux ?");
       }
     for (std::vector<ProcessData>::iterator it = m_data->pd.begin();
