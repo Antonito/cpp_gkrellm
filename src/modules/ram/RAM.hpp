@@ -15,7 +15,6 @@ namespace Module
       size_t memTotal;
       size_t memFree;
       size_t memAvailable;
-
       size_t buffers;
       size_t cached;
       size_t active;
@@ -39,11 +38,29 @@ namespace Module
       size_t nfs_unstable;
       size_t bounce;
       size_t writebacktmp;
+      size_t commitlimit;
+      size_t committed_as;
+      size_t vmallocTotal;
+      size_t vmallocUsed;
+      size_t vmallocChunk;
+      size_t hardwareCorrupted;
+      size_t anonHugePages;
+      size_t shmemHugePages;
+      size_t shmemPmdMapped;
+      size_t hugePagesTotal;
+      size_t hugePagesFree;
+      size_t hugePagesRsvd;
+      size_t hugePagesSurp;
+      size_t hugepagesize;
+      size_t directMap4k;
+      size_t directMap2M;
+      size_t directMap1G;
     };
     struct SWAPData
     {
       size_t swapTotal;
       size_t swapFree;
+      size_t swapCached;
     };
     struct RAMGlobal
     {
