@@ -97,6 +97,7 @@ namespace Module
       }
     strbuf << ff.rdbuf();
     m_split = split(strbuf.str(), '\n');
+    m_split.push_back("ENDOFFILE");
 
     DiskData disk;
     for (std::vector<std::string>::iterator it = m_split.begin();
