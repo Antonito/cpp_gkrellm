@@ -82,7 +82,7 @@ ModuleManager::~ModuleManager()
 {
   if (m_started)
     {
-      m_threads.stopAll();
+      stop();
     }
   // Free
   for (std::vector<ModuleManagerThreadData>::iterator it = m_modules.begin();

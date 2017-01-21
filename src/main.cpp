@@ -5,7 +5,7 @@ int main()
 {
   MainManager manager;
 
-  for (;;)
-    usleep(500);
+  //  for (;;)
+  sleep(2);
   return (0);
 }

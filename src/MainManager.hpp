@@ -10,6 +10,9 @@ public:
   MainManager(uint16_t port = 12345, int nbClients = 64);
   ~MainManager();
 
+  void reloadModules();
+  void reloadHTTP();
+
 private:
   ModuleManager m_modules;
   HTTPServer    m_http;
