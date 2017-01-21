@@ -16,7 +16,7 @@ INC_DIR=		-I./src/			\
 			-I./src/graphic/		\
 			-I./src/graphic/ncurses/
 
-Debug=			no
+DEBUG=			no
 
 MODE=
 
