@@ -3,6 +3,8 @@
 
 #include "HTTPServer.hpp"
 #include "ModuleManager.hpp"
+#include "AFrame.hpp"
+#include "Window.hpp"
 
 class MainManager
 {

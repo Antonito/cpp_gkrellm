@@ -9,7 +9,7 @@
 #include <iostream>
 #include <sys/ioctl.h>
 #include "Window.hpp"
-#include "Graphic/GraphicException.hpp"
+#include "GraphicException.hpp"
 
 namespace Graphic
 {

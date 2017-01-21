@@ -7,7 +7,8 @@ include $(MK_DIR)colors.mk $(MK_DIR)local_defs.mk $(MK_DIR)defs.mk
 VPATH=		./src/:./src/JSON/:./src/log/:./src/http/		\
 		:./src/threads/:./src/modules/:./src/modules/cpu/	\
 		:./src/modules/network/:./src/modules/system/		\
-		:./src/modules/disk/:./src/modules/ram/
+		:./src/modules/disk/:./src/modules/ram/			\
+		:./src/graphic:./src/graphic/ncurses
 
 SRC_FILES=	main.cpp		\
 		MainManager.cpp
@@ -36,8 +37,15 @@ MODULE_SRC=	ModuleManager.cpp	\
 		Disk.cpp		\
 		RAM.cpp
 
+GRAPHIC_SRC=	AFrame.cpp		\
+		AWindow.cpp		\
+		GraphicException.cpp
+
+NCURSES_SRC=	Frame.cpp		\
+		Window.cpp
+
 SRC=		$(SRC_FILES) $(JSON_FILES) $(LOG_SRC) $(HTTP_SRC)	\
-		$(THREAD_SRC) $(MODULE_SRC)
+		$(THREAD_SRC) $(MODULE_SRC) $(GRAPHIC_SRC) $(NCURSES_SRC)
 
 # Rules
 include $(MK_DIR)rules.mk
