@@ -146,22 +146,6 @@ namespace Module
 	    }*/
 	}
       ff.close();
-
-      std::cout << m_data->name << std::endl;
-      for (std::vector<CPUData>::iterator it = m_data->coresData.begin();
-           it != m_data->coresData.end(); ++it)
-	{
-	  std::cout << it->coreName << std::endl;
-	  std::cout << "User: " << it->user << std::endl;
-	  std::cout << "Nice: " << it->nice << std::endl;
-	  std::cout << "System: " << it->system << std::endl;
-	  std::cout << "Idle: " << it->idle << std::endl;
-	  std::cout << "iowait: " << it->iowait << std::endl;
-	  std::cout << "Irq: " << it->irq << std::endl;
-	  std::cout << "SoftIrq: " << it->softirq << std::endl;
-	  std::cout << std::endl;
-	}
-
     }
   }
 }

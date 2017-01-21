@@ -247,6 +247,7 @@ void *HTTPServer::_serverLoopWrite(void *_data)
       std::string repHeader;
       if (header.verb != "GET")
 	{
+	  Logger::Instance().log(Logger::DEBUG, "HTTP server: 501.");
 	  repHeader = HTTPHeader::generateHeader(HTTPHeader::HTTP_501);
 	}
       else
@@ -256,18 +257,19 @@ void *HTTPServer::_serverLoopWrite(void *_data)
 	      HTTPServer::serializerToJSON serializer = getRoute(header.route);
 	      std::string msg;
 
+	      Logger::Instance().log(Logger::DEBUG, "HTTP server: " + header.route);
 	      msg = (serializer)();
 	      repHeader =
 	          HTTPHeader::generateHeader(HTTPHeader::HTTP_200, msg);
 	    }
 	  else
 	    {
+	      Logger::Instance().log(Logger::DEBUG, "HTTP server: 404.");
 	      repHeader = HTTPHeader::generateHeader(HTTPHeader::HTTP_404);
 	    }
 	}
 
       // Respond to Client
-      std::cout << repHeader << std::endl;
       TCPSocket::send(elem->client.clientFd, repHeader.c_str(),
                       repHeader.length());
       elem->client.wrote = true;
