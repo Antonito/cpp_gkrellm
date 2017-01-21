@@ -17,14 +17,14 @@ namespace Module
       typedef struct CPUData
       {
 	std::string coreName;
-	size_t      user;   // normal processes executing in user mode
-	size_t      nice;   // niced processes executing in user mode
-	size_t      system; // processes executing in kernel mode
-	size_t      idle;   // twiddling thumbs
-	size_t iowait;      // waiting for I/O to complete
-	size_t irq;         // ervicing interrupts
-	size_t softirq;     // servicing softirqs
-	double curFreq;     // TODO: add this to JSON
+	size_t      user;    // normal processes executing in user mode
+	size_t      nice;    // niced processes executing in user mode
+	size_t      system;  // processes executing in kernel mode
+	size_t      idle;    // twiddling thumbs
+	size_t      iowait;  // waiting for I/O to complete
+	size_t      irq;     // ervicing interrupts
+	size_t      softirq; // servicing softirqs
+	double      curFreq; // TODO: add this to JSON
       } CPUData;
       typedef struct CPUGlobal
       {
