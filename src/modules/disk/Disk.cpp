@@ -79,18 +79,43 @@ namespace Module
 	  {
 	    disk.diskName = dp.deviceName;
 	  }
+	std::ifstream     partition_file;
+	std::stringstream partition_stream;
+	std::string       partition_path;
+	partition_path =
+	    "/sys/block/" + disk.diskName + "/" + dp.deviceName + "/size";
+	partition_file.open(partition_path.c_str(), std::ios_base::in);
+	if (partition_file.good())
+	  {
+	    partition_stream << partition_file.rdbuf();
+	    partition_file.close();
+	    size_t partition_go;
+	    partition_stream >> partition_go;
+	    dp.partitionSize = partition_go;
+	  }
 	if (dp.deviceName.find(disk.diskName, 0) == 0)
 	  {
 	    disk.dp.push_back(dp);
 	  }
-	else
+	if (dp.deviceName.find(disk.diskName, 0) != 0 ||
+	    it == m_split.end() - 1)
 	  {
-	    m_data->rd.push_back(disk);
-	    disk.diskName = dp.deviceName;
-	    disk.dp.clear();
-	  }
-	if (it == m_split.end() - 1)
-	  {
+	    std::ifstream     size_file;
+	    std::stringstream size_stream;
+	    std::string       file_path;
+	    file_path = "/sys/block/" + disk.diskName + "/size";
+	    size_file.open(file_path.c_str(), std::ios_base::in);
+	    if (size_file.good())
+	      {
+		size_stream << size_file.rdbuf();
+		size_file.close();
+		size_t size_go;
+		size_stream >> size_go;
+		disk.diskSize = size_go;
+		disk.dp[0].partitionSize = size_go;
+	      }
+	    else
+	      disk.diskSize = 0;
 	    m_data->rd.push_back(disk);
 	    disk.diskName = dp.deviceName;
 	    disk.dp.clear();
@@ -100,7 +125,8 @@ namespace Module
          it != m_data->rd.end(); ++it)
       {
 
-	std::cout << "Disk: " << it->diskName << std::endl;
+	std::cout << "Disk: " << it->diskName << " " << it->diskSize << "Bytes"
+	          << std::endl;
 	for (std::vector<DiskPartition>::iterator itb = it->dp.begin();
 	     itb != it->dp.end(); ++itb)
 	  {
@@ -111,7 +137,8 @@ namespace Module
 	              << itb->timeSpentReadingMS << " " << itb->writesSuccess
 	              << " " << itb->writesMerged << " " << itb->sectorsWritten
 	              << " " << itb->ioCur << " " << itb->timeSpentIOMS << " "
-	              << itb->writesSuccess << std::endl;
+	              << itb->writesSuccess << " " << itb->partitionSize
+	              << "Bytes" << std::endl;
 	  }
 	std::cout << std::endl;
       }
