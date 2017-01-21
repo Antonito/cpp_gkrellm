@@ -24,6 +24,7 @@ namespace Module
                            // of the time on average.
       double loadAverage15; // uring the last 15 minutes, the system was
                             // overloaded X% on average
+      std::string datetime; // current time and date;
     };
     System();
     virtual ~System();
