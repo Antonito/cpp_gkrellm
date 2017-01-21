@@ -8,13 +8,15 @@
 #include "Network.hpp"
 #include "System.hpp"
 #include "Disk.hpp"
+#include "RAM.hpp"
 
 struct ModuleDataBuffer
 {
   Module::Processor::CPU::CPUGlobal CPU;
   Module::Network::NetworkGlobal    network;
-  Module::System::SystemGlobal	sys;
-  Module::Disk::DiskGlobal disk;
+  Module::System::SystemGlobal      sys;
+  Module::Disk::DiskGlobal          disk;
+  Module::RAM::RAMGlobal            ram;
 };
 
 #endif // !MODULEDATABUFFER_HPP_
