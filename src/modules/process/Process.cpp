@@ -40,36 +40,49 @@ namespace Module
   {
     m_data->pd.clear();
 
-    std::string       root_path("/proc/");
-    std::string       file_path;
-    std::ifstream     ff;
-    std::stringstream mystream;
-    pid_t             pid = 0;
+    std::string   root_path("/proc/");
+    std::string   file_path;
+    std::ifstream ff;
+    pid_t         pid = 0;
 
     DIR *          dir;
     struct dirent *ent;
     if ((dir = opendir("/proc/")) != NULL)
       {
+	int pointpoint = 0;
 	while ((ent = readdir(dir)) != NULL)
 	  {
+	    pointpoint++;
+	    if (pointpoint < 3)
+	      continue;
 	    if (ent->d_type == DT_DIR)
 	      {
-		ProcessData pd;
-		mystream << ent->d_name;
-		mystream >> pid;
+		pid = 0;
+		ProcessData        pd = {};
+		std::string        fileName(ent->d_name);
+		std::istringstream ss(fileName);
+		ss >> pid;
+		ss >> pid;
 		if (pid == 0) // check if it is a process directory
-		  continue;
+		  {
+		    continue;
+		  }
 		pd.pid = pid;
 		file_path = root_path + ent->d_name + "/cmdline";
 		ff.open(file_path.c_str(), std::ios_base::in);
 		if (!ff.good())
-		  continue;
-		mystream.str("");
+		  {
+		    continue;
+		  }
+		std::stringstream mystream;
 		mystream << ff.rdbuf();
+		ff.close();
 		if (mystream.str() == "")
-		  continue;
+		  {
+		    continue;
+		  }
 		mystream >> pd.cmdline;
-		pd.user = "";
+		pd.user = "UserLogin";
 		m_data->pd.push_back(pd);
 	      }
 	  }
