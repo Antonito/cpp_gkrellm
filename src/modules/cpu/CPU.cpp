@@ -80,6 +80,12 @@ namespace Module
 	  nb.str("");
 	  nb << m_data->coresData[i].curFreq;
 	  json += nb.str();
+	  json += ", \"cache_size\": \"";
+	  json += m_data->coresData[i].cachesize;
+	  json += "\", \"cache_align\": ";
+	  nb.str("");
+	  nb << m_data->coresData[i].cacheAlign;
+	  json += nb.str();
 	  json += "}";
 	}
       json += "]}";
@@ -155,7 +161,7 @@ namespace Module
 	      size_t pos = it->find(":", 0);
 	      m_data->name = it->substr(pos + 2);
 	    }
-	  if (it->find("cpu MHz", 0) == 0)
+	  else if (it->find("cpu MHz", 0) == 0)
 	    {
 	      std::stringstream streamFreq;
 	      size_t            pos = it->find(":", 0);
@@ -163,26 +169,18 @@ namespace Module
 	      streamFreq >> m_data->coresData[nb_cores].curFreq;
 	      nb_cores++;
 	    }
-	  /*if (it->find("cache size", 0) == 0)
+	  else if (it->find("cache size", 0) == 0)
 	    {
-	      tmp_proco << *it << "\n";
-	      std::cout << "get actual core frequency" << std::endl;
+	      size_t pos = it->find(":", 0);
+	      m_data->coresData[nb_cores].cachesize = it->substr(pos + 2);
 	    }
-	  if (it->find("bogomips", 0) == 0)
+	  else if (it->find("cache_alignment", 0) == 0)
 	    {
-	      tmp_proco << *it << "\n";
-	      std::cout << "get max speed of the core" << std::endl;
+	      std::stringstream streamFreq;
+	      size_t            pos = it->find(":", 0);
+	      streamFreq << it->substr(pos + 2);
+	      streamFreq >> m_data->coresData[nb_cores].cacheAlign;
 	    }
-	  if (*it == "")
-	    {
-	      std::stringstream core_info;
-	      core_info << "Core: " << nb_cores << "\n";
-	      // core_info << tmp_proco.str();
-	      std::cout << "get a processor" << std::endl;
-	      m_data.push_back(core_info.str());
-	      tmp_proco.str("");
-	      nb_cores += 1;
-	    }*/
 	}
       ff.close();
     }
