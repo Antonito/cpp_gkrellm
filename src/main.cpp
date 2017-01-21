@@ -4,8 +4,10 @@
 int main()
 {
   MainManager manager;
+  for (;;)
+    usleep(10000);
 
-  Graphic::Ncurses::Window win("Window");
+  /*Graphic::Ncurses::Window win("Window");
   Graphic::AFrame *        frame = Graphic::AFrame::newFrame();
   Graphic::AFrame *        child1 = Graphic::AFrame::newFrame();
   Graphic::AFrame *        child2 = Graphic::AFrame::newFrame();
@@ -22,6 +24,6 @@ int main()
   frame->setRatio(0.7);
   win.enable();
   while (win.update())
-    win.refresh();
+    win.refresh();*/
   return (0);
 }

@@ -54,11 +54,19 @@ namespace Module
 	  {
 	    if (ent->d_type == DT_DIR)
 	      {
-		ProcessData pd;
-		mystream << ent->d_name;
+		__asm__("int $3");
+		pid = 0;
+		mystream.str("");
+		ProcessData pd = {};
+		std::string fileName(ent->d_name);
+		mystream << fileName;
+		std::cout << "REPERTORY: " << mystream.str() << std::endl;
 		mystream >> pid;
 		if (pid == 0) // check if it is a process directory
-		  continue;
+		  {
+		    std::cout << "PIDPDIPDIDPIDPIDDPIDPID" << std::endl;
+		    continue;
+		  }
 		pd.pid = pid;
 		file_path = root_path + ent->d_name + "/cmdline";
 		ff.open(file_path.c_str(), std::ios_base::in);
@@ -66,6 +74,7 @@ namespace Module
 		  continue;
 		mystream.str("");
 		mystream << ff.rdbuf();
+		ff.close();
 		if (mystream.str() == "")
 		  continue;
 		mystream >> pd.cmdline;
@@ -79,6 +88,13 @@ namespace Module
       {
 	Logger::Instance().log(Logger::ERROR,
 	                       "Cannot open /proc, WTF ? is this blinux ?");
+      }
+    for (std::vector<ProcessData>::iterator it = m_data->pd.begin();
+         it != m_data->pd.end(); ++it)
+      {
+
+	std::cout << "PID: " << it->pid << "CMDLINE: " << it->cmdline
+	          << std::endl;
       }
   }
 }
