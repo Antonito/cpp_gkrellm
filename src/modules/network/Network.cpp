@@ -1,5 +1,6 @@
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 #include "Network.hpp"
 #include "Logger.hpp"
 
@@ -17,6 +18,13 @@ namespace Module
       {
 	elems.push_back(item);
       }
+  }
+  static inline std::string &ltrim(std::string &s)
+  {
+    s.erase(s.begin(),
+            std::find_if(s.begin(), s.end(),
+                         std::not1(std::ptr_fun<int, int>(std::isspace))));
+    return s;
   }
 
   std::vector<std::string> split(const std::string &s, char delim)
@@ -60,7 +68,7 @@ namespace Module
     if (!ff.good())
       {
 	Logger::Instance().log(Logger::LogLevel::ERROR,
-	                       "Added routes for CPU Module.");
+	                       "CANNOT READ NETWORK INFO");
 	return;
       }
     mystream << ff.rdbuf();
@@ -76,7 +84,7 @@ namespace Module
 	    std::stringstream interfaceInfo;
 	    size_t            trash;
 	    interfaceInfo << it->substr(it->find(":") + 1);
-	    nb.interface = it->substr(0, it->find(":"));
+	    nb.interface = ltrim(it->substr(0, it->find(":")));
 	    interfaceInfo >> trash;
 	    interfaceInfo >> nd.packetRecv;
 	    interfaceInfo >> trash;
