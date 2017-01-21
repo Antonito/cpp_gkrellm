@@ -27,7 +27,7 @@ namespace Module
   {
     Loggger::Instance().log(Logger::LogLevel::INFO,
                             "Added routes for Memory module");
-    HTTPServer::addRoute("/mem", static_cast<HTTPServer::SerializerToJSON>(
+    HTTPServer::addRoute("/ram", static_cast<HTTPServer::SerializerToJSON>(
                                      &RAM::ramSerializer));
   }
   void RAM::parse()
