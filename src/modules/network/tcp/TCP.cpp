@@ -60,7 +60,7 @@ namespace Module
     if (!ff.good())
       {
 	Logger::Instance().log(Logger::LogLevel::ERROR,
-	                       "Added routes for CPU Module.");
+	                       "Added routes for TCP Module.");
 	return;
       }
     mystream << ff.rdbuf();

@@ -91,7 +91,7 @@ namespace Module
     mystream.str("");
     ff.close();
 
-    // getting kernel and OS
+    // getting kernel
     ff.open("/proc/sys/kernel/osrelease", std::ios_base::in);
     if (!ff.good())
       {
@@ -104,6 +104,19 @@ namespace Module
     m_data->kernel.erase(
         std::remove_if(m_data->kernel.begin(), m_data->kernel.end(), isspace),
         m_data->kernel.end());
+    mystream.str("");
+    ff.close();
+
+    // getting osName
+    ff.open("/proc/version", std::ios_base::in);
+    if (!ff.good())
+      {
+	Logger::Instance().log(Logger::ERROR,
+	                       "cannot read system module info");
+	return;
+      }
+    mystream << ff.rdbuf();
+    mystream >> m_data->osName;
     mystream.str("");
     ff.close();
 

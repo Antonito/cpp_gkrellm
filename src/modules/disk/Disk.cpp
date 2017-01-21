@@ -29,13 +29,19 @@ namespace Module
     for (std::vector<DiskData>::iterator it = m_data->rd.begin();
          it != m_data->rd.end(); ++it)
       {
+	std::stringstream stream;
+
 	if (it != m_data->rd.begin())
 	  {
 	    json += ", ";
 	  }
 	json += "{\"name\": \"";
 	json += it->diskName;
-	json += "\", \"partitons\": [";
+	json += "\", \"disk_size\": ";
+	stream.str("");
+	stream << it->diskSize;
+	json += stream.str();
+	json += ", \"partitons\": [";
 	for (std::vector<DiskPartition>::iterator itb = it->dp.begin();
 	     itb != it->dp.end(); ++itb)
 	  {
@@ -57,7 +63,8 @@ namespace Module
 	           << ", \"sectors_written\": " << itb->sectorsWritten
 	           << ", \"io_cur\": " << itb->ioCur
 	           << ", \"time_spent_ioms\": " << itb->timeSpentIOMS
-	           << ", \"write_success\": " << itb->writesSuccess;
+	           << ", \"write_success\": " << itb->writesSuccess <<
+	      ", \"partition_size\": " << itb->partitionSize;
 	    json += stream.str();
 	    json += "}";
 	  }
@@ -118,18 +125,43 @@ namespace Module
 	  {
 	    disk.diskName = dp.deviceName;
 	  }
+	std::ifstream     partition_file;
+	std::stringstream partition_stream;
+	std::string       partition_path;
+	partition_path =
+	    "/sys/block/" + disk.diskName + "/" + dp.deviceName + "/size";
+	partition_file.open(partition_path.c_str(), std::ios_base::in);
+	if (partition_file.good())
+	  {
+	    partition_stream << partition_file.rdbuf();
+	    partition_file.close();
+	    size_t partition_go;
+	    partition_stream >> partition_go;
+	    dp.partitionSize = partition_go;
+	  }
 	if (dp.deviceName.find(disk.diskName, 0) == 0)
 	  {
 	    disk.dp.push_back(dp);
 	  }
-	else
+	if (dp.deviceName.find(disk.diskName, 0) != 0 ||
+	    it == m_split.end() - 1)
 	  {
-	    m_data->rd.push_back(disk);
-	    disk.diskName = dp.deviceName;
-	    disk.dp.clear();
-	  }
-	if (it == m_split.end() - 1)
-	  {
+	    std::ifstream     size_file;
+	    std::stringstream size_stream;
+	    std::string       file_path;
+	    file_path = "/sys/block/" + disk.diskName + "/size";
+	    size_file.open(file_path.c_str(), std::ios_base::in);
+	    if (size_file.good())
+	      {
+		size_stream << size_file.rdbuf();
+		size_file.close();
+		size_t size_go;
+		size_stream >> size_go;
+		disk.diskSize = size_go;
+		disk.dp[0].partitionSize = size_go;
+	      }
+	    else
+	      disk.diskSize = 0;
 	    m_data->rd.push_back(disk);
 	    disk.diskName = dp.deviceName;
 	    disk.dp.clear();

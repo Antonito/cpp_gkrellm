@@ -26,10 +26,12 @@ namespace Module
       size_t      ioCur;
       size_t      timeSpentIOMS;
       size_t      wTimeSpentIOMS;
+      size_t      partitionSize; // ADD THIS TO JSON
     };
     struct DiskData
     {
       std::string                diskName;
+      size_t                     diskSize; // ADD THIS TO JSON
       std::vector<DiskPartition> dp;
     };
     struct DiskGlobal
