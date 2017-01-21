@@ -8,7 +8,7 @@
 
 struct ModuleManagerThreadData
 {
-  std::vector<IModuleMonitor *> modules;
+  std::vector<Module::IModuleMonitor *> modules;
   unsigned int                  delay_useconds;
 };
 
@@ -34,6 +34,7 @@ private:
 
   // TODO: Set buffer link at this time
   // std::vector<IModuleMonitor *>createModule1() const;
+  std::vector<Module::IModuleMonitor *> createCPUModule();
 };
 
 #endif // !MODULEMANAGER_HPP_

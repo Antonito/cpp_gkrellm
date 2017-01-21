@@ -3,6 +3,7 @@
 
 #include <queue>
 #include <map>
+#include "IModuleMonitor.hpp"
 #include "TCPSocket.hpp"
 #include "ThreadPool.hpp"
 #include "Mutex.hpp"
@@ -58,7 +59,7 @@ public:
   typedef std::string http_route;
 
   // Returns a JSON string
-  typedef std::string const &(*serializerToJSON)();
+  typedef std::string (*serializerToJSON)();
   HTTPServer(uint16_t port, int maxClient);
   ~HTTPServer();
 

@@ -254,14 +254,9 @@ void *HTTPServer::_serverLoopWrite(void *_data)
 	  if (isRoute(header.route))
 	    {
 	      HTTPServer::serializerToJSON serializer = getRoute(header.route);
-	      std::string                  msg = "{\"data\": \"";
-	      std::stringstream            s;
-	      int                          nb = random() % 101;
+	      std::string msg;
 
-	      (void)serializer;
-	      s << nb;
-	      msg += s.str();
-	      msg += "\"}";
+	      msg = (serializer)();
 	      repHeader =
 	          HTTPHeader::generateHeader(HTTPHeader::HTTP_200, msg);
 	    }

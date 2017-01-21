@@ -1,3 +1,6 @@
+#ifndef IMODULEMONITOR_HPP_
+#define IMODULEMONITOR_HPP_
+
 namespace Module
 {
   class IModuleMonitor
@@ -7,3 +10,5 @@ namespace Module
     virtual void setRoute() = 0;
   };
 }
+
+#endif // !IMODULEMONITOR_HPP_

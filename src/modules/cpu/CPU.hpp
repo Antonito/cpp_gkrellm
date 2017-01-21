@@ -1,10 +1,10 @@
-#ifndef CPUMODULE_HH_
-#define CPUMODULE_HH_
+#ifndef CPUMODULE_HPP_
+#define CPUMODULE_HPP_
 
 #include <string>
 #include <vector>
 #include <map>
-#include "IModuleMonitor.hh"
+#include "IModuleMonitor.hpp"
 
 namespace Module
 {
@@ -13,7 +13,7 @@ namespace Module
     class CPU : public IModuleMonitor
     {
     public:
-      typedef struct CpuData
+      typedef struct CPUData
       {
 	std::string coreName;
 	size_t      user;
@@ -23,20 +23,22 @@ namespace Module
 	size_t      iowait;
 	size_t      irq;
 	size_t      softirq;
-      } CpuData;
-      typedef struct CpuGlobal
+      } CPUData;
+      typedef struct CPUGlobal
       {
 	std::string          name;
-	std::vector<CpuData> coresData;
-      } CpuGlobal;
+	std::vector<CPUData> coresData;
+      } CPUGlobal;
+      static std::string cpuSerializer();
       CPU();
       ~CPU();
+      void setData(CPUGlobal *cpu);
       virtual void parse();
       virtual void setRoute();
 
     private:
-      CpuGlobal m_data;
+      static CPUGlobal *m_data;
     };
   }
 }
-#endif
+#endif // !CPUMODULE_HPP_

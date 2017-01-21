@@ -4,12 +4,17 @@
 #include <sstream>
 #include <vector>
 #include <iostream>
-#include "CPU.hh"
+#include <cassert>
+#include "CPU.hpp"
+#include "Logger.hpp"
+#include "HTTPServer.hpp"
 
 namespace Module
 {
   namespace Processor
   {
+    CPU::CPUGlobal *CPU::m_data = NULL;
+
     void split(const std::string &s, char delim,
                std::vector<std::string> &elems)
     {
@@ -37,8 +42,20 @@ namespace Module
     {
     }
 
+    void CPU::setData(CPUGlobal *cpu)
+    {
+      m_data = cpu;
+    }
+
+    std::string CPU::cpuSerializer()
+    {
+      return ("{ \"data_cpu\": \"" + m_data->name + "\"}");
+    }
+
     void CPU::setRoute()
     {
+      Logger::Instance().log(Logger::LogLevel::INFO, "Added routes for CPU Module.");
+      HTTPServer::addRoute("/cpu", static_cast<HTTPServer::serializerToJSON>(&CPU::cpuSerializer));
     }
 
     void CPU::parse()
@@ -48,6 +65,7 @@ namespace Module
       std::string              strData;
       std::vector<std::string> m_split;
 
+      assert(m_data != NULL);
       ff.open("/proc/stat", std::ios_base::in);
       if (!ff.good())
 	{
@@ -59,7 +77,7 @@ namespace Module
 
       m_split = split(strData, '\n');
 
-      CpuData info_proc;
+      CPUData info_proc;
       for (std::vector<std::string>::iterator it = m_split.begin();
            it != m_split.end(); ++it)
 	{
@@ -76,7 +94,7 @@ namespace Module
 	      core_info >> info_proc.iowait;
 	      core_info >> info_proc.irq;
 	      core_info >> info_proc.softirq;
-	      m_data.coresData.push_back(info_proc);
+	      m_data->coresData.push_back(info_proc);
 	    }
 	}
       ff.close();
@@ -99,7 +117,7 @@ namespace Module
 	  if (it->find("model name", 0) == 0)
 	    {
 	      size_t pos = it->find(":", 0);
-	      m_data.name = it->substr(pos + 2);
+	      m_data->name = it->substr(pos + 2);
 	    }
 	  /*if (it->find("cpu MHz", 0) == 0)
 	    {
@@ -129,10 +147,9 @@ namespace Module
 	}
       ff.close();
 
-      return;
-      std::cout << m_data.name << std::endl;
-      for (std::vector<CpuData>::iterator it = m_data.coresData.begin();
-           it != m_data.coresData.end(); ++it)
+      std::cout << m_data->name << std::endl;
+      for (std::vector<CPUData>::iterator it = m_data->coresData.begin();
+           it != m_data->coresData.end(); ++it)
 	{
 	  std::cout << it->coreName << std::endl;
 	  std::cout << "User: " << it->user << std::endl;
@@ -144,6 +161,7 @@ namespace Module
 	  std::cout << "SoftIrq: " << it->softirq << std::endl;
 	  std::cout << std::endl;
 	}
+
     }
   }
 }
