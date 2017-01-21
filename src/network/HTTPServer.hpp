@@ -3,6 +3,7 @@
 
 #include <queue>
 #include <map>
+#include "IModuleMonitor.hpp"
 #include "TCPSocket.hpp"
 #include "ThreadPool.hpp"
 #include "Mutex.hpp"
@@ -32,6 +33,7 @@ struct HTTPServerData
   int const &                 srvFd;
   int const                   maxClient;
   std::queue<HTTPQueueElem *> queue;
+  HTTPClient *                clients;
 };
 
 struct HTTPHeader
@@ -58,16 +60,18 @@ public:
   typedef std::string http_route;
 
   // Returns a JSON string
-  typedef std::string const &(*serializerToJSON)();
+  typedef std::string (*serializerToJSON)();
   HTTPServer(uint16_t port, int maxClient);
   ~HTTPServer();
 
   bool start();
   bool stop();
-
   bool isStarted() const;
 
-  static std::map<http_route, serializerToJSON> m_routes;
+  // Routes
+  static void addRoute(http_route const &route, serializerToJSON serial);
+  static bool             isRoute(http_route const &);
+  static serializerToJSON getRoute(http_route const &route);
 
 private:
   bool           m_started;
@@ -81,6 +85,7 @@ private:
   static int accept_client(int fd);
   static void *_serverLoopWrite(void *_data);
   static void *_serverLoopRead(void *_data);
+  static std::map<http_route, serializerToJSON> m_routes;
 };
 
 #endif // !HTTPSERVER_HPP_

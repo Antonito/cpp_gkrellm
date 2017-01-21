@@ -72,7 +72,8 @@ HTTPQueueElem::HTTPQueueElem(HTTPClient &info, char const *str)
 HTTPServerData::HTTPServerData(bool const &_running, Mutex &_mut,
                                Semaphore &_sem, int const &fd,
                                int const _maxClient)
-    : running(_running), mut(_mut), sem(_sem), srvFd(fd), maxClient(_maxClient)
+    : running(_running), mut(_mut), sem(_sem), srvFd(fd),
+      maxClient(_maxClient), clients(NULL)
 {
 }
 
@@ -105,7 +106,7 @@ void *HTTPServer::_serverLoopRead(void *_data)
   HTTPServerData *data = static_cast<HTTPServerData *>(_data);
   fd_set          readfds, writefds, exceptfds;
   int             maxFd;
-  HTTPClient *    clients = new HTTPClient[data->maxClient]();
+  HTTPClient *    clients = data->clients;
 
   for (ssize_t i = 0; i < data->maxClient; ++i)
     {
@@ -144,7 +145,6 @@ void *HTTPServer::_serverLoopRead(void *_data)
 	{
 	  // We have an error
 	  Logger::Instance().log(Logger::ERROR, "select failed");
-	  std::cout << "Select error" << std::endl;
 	  continue;
 	}
       else if (FD_ISSET(data->srvFd, &readfds))
@@ -164,7 +164,8 @@ void *HTTPServer::_serverLoopRead(void *_data)
 	  if (i == data->maxClient)
 	    {
 	      // We don't have any slots free
-	      std::cout << "No more space" << std::endl;
+	      Logger::Instance().log(Logger::WARNING,
+	                             "No more space on HTTP Server");
 	      close(sock);
 	    }
 	}
@@ -234,43 +235,40 @@ void *HTTPServer::_serverLoopWrite(void *_data)
       data->queue.pop();
       data->mut.unlock();
 
-      std::cout << "===========" << std::endl;
-      std::cout << elem->payload << std::endl;
-      std::cout << "===========" << std::endl;
-
       // Parse
-      HTTPHeader header(elem->payload);
-      std::cout << "Verb: " << header.verb << std::endl;
-      std::cout << "Route: " << header.route << std::endl;
-      std::cout << "Prot: " << header.protocol << std::endl << std::endl;
-
+      HTTPHeader  header(elem->payload);
       std::string repHeader;
       if (header.verb != "GET")
 	{
+	  Logger::Instance().log(Logger::DEBUG, "HTTP server: 501.");
 	  repHeader = HTTPHeader::generateHeader(HTTPHeader::HTTP_501);
-	}
-      else if (HTTPServer::m_routes.find(header.route) !=
-               HTTPServer::m_routes.end())
-	{
-	  std::string       msg = "{\"data\": \"";
-	  std::stringstream s;
-	  int               nb = random() % 101;
-
-	  s << nb;
-	  msg += s.str();
-	  msg += "\"}";
-	  repHeader = HTTPHeader::generateHeader(HTTPHeader::HTTP_200, msg);
 	}
       else
 	{
-	  repHeader = HTTPHeader::generateHeader(HTTPHeader::HTTP_404);
+	  if (isRoute(header.route))
+	    {
+	      HTTPServer::serializerToJSON serializer = getRoute(header.route);
+	      std::string                  msg;
+
+	      Logger::Instance().log(Logger::DEBUG,
+	                             "HTTP server: " + header.route);
+	      msg = (serializer)();
+	      repHeader =
+	          HTTPHeader::generateHeader(HTTPHeader::HTTP_200, msg);
+	    }
+	  else
+	    {
+	      Logger::Instance().log(Logger::DEBUG, "HTTP server: 404.");
+	      repHeader = HTTPHeader::generateHeader(HTTPHeader::HTTP_404);
+	    }
 	}
 
       // Respond to Client
-      std::cout << repHeader << std::endl;
       TCPSocket::send(elem->client.clientFd, repHeader.c_str(),
                       repHeader.length());
       elem->client.wrote = true;
+      delete[] elem->payload;
+      delete elem;
     }
   return (NULL);
 }
@@ -282,6 +280,7 @@ bool HTTPServer::start()
       return (false);
     }
   m_started = true;
+  m_data.clients = new HTTPClient[m_data.maxClient]();
   m_threads.addThread(&_serverLoopRead, &m_data);
   m_threads.addThread(&HTTPServer::_serverLoopWrite, &m_data);
   m_threads.startAll();
@@ -297,6 +296,8 @@ bool HTTPServer::stop()
     }
   m_threads.stopAll();
   m_started = false;
+  delete[] m_data.clients;
+  m_data.clients = NULL;
   Logger::Instance().log(Logger::INFO, "HTTP server stopped.");
   return (true);
 }
@@ -304,4 +305,22 @@ bool HTTPServer::stop()
 bool HTTPServer::isStarted() const
 {
   return (m_started);
+}
+
+void HTTPServer::addRoute(HTTPServer::http_route const &route,
+                          HTTPServer::serializerToJSON  serial)
+{
+  m_routes.insert(
+      std::pair<HTTPServer::http_route, HTTPServer::serializerToJSON>(route,
+                                                                      serial));
+}
+
+bool HTTPServer::isRoute(http_route const &route)
+{
+  return (m_routes.find(route) != m_routes.end());
+}
+
+HTTPServer::serializerToJSON HTTPServer::getRoute(http_route const &route)
+{
+  return ((m_routes.find(route))->second);
 }
