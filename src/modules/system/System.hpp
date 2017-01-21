@@ -6,11 +6,12 @@
 
 namespace Module
 {
-  class System : public IMonitorModule
+  class System : public IModuleMonitor
   {
   public:
     struct SystemGlobal
     {
+      std::string hostname;
       std::string userName;
       std::string localHost;
       std::string kernel; // kernel version + OS name
@@ -33,6 +34,7 @@ namespace Module
 
   private:
     static SystemGlobal *m_data;
+    static std::string   systemSerializer();
   };
 }
 

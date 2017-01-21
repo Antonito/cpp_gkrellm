@@ -6,11 +6,13 @@
 
 #include "CPU.hpp"
 #include "Network.hpp"
+#include "System.hpp"
 
 struct ModuleDataBuffer
 {
   Module::Processor::CPU::CPUGlobal CPU;
   Module::Network::NetworkGlobal    network;
+  Module::System::SystemGlobal	sys;
 };
 
 #endif // !MODULEDATABUFFER_HPP_

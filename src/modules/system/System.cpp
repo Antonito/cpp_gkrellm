@@ -1,34 +1,19 @@
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 #include <unistd.h>
 #include "System.hpp"
 #include "Logger.hpp"
+#include "HTTPServer.hpp"
 
 namespace Module
 {
-
   System::SystemGlobal *System::m_data = NULL;
 
-  void split(const std::string &s, char delim, std::vector<std::string> &elems)
-  {
-    std::stringstream ss;
-    ss.str(s);
-    std::string item;
-    while (std::getline(ss, item, delim))
-      {
-	elems.push_back(item);
-      }
-  }
-
-  std::vector<std::string> split(const std::string &s, char delim)
-  {
-    std::vector<std::string> elems;
-    split(s, delim, elems);
-    return elems;
-  }
   System::System()
   {
   }
+
   System::~System()
   {
   }
@@ -38,8 +23,41 @@ namespace Module
     m_data = ng;
   }
 
-  std::string System::networkSerializer()
+  std::string System::systemSerializer()
   {
+    std::stringstream nb;
+    std::string       json;
+
+    json = "{ \"hostname\": \"";
+    json += m_data->hostname;
+    json += "\", \"username\": \"";
+    json += m_data->userName;
+    json += "\", \"localhost\": \"";
+    json += m_data->localHost;
+    json += "\", \"kernel\": \"";
+    json += m_data->kernel;
+    json += "\", \"uptime\": ";
+    nb.str("");
+    nb << m_data->uptime;
+    json += nb.str();
+    json += ", \"idletime\": ";
+    nb.str("");
+    nb << m_data->idletime;
+    json += nb.str();
+    json += ", \"loadaverage1\": ";
+    nb.str("");
+    nb << m_data->loadAverage1;
+    json += nb.str();
+    json += ", \"loadaverage5\": ";
+    nb.str("");
+    nb << m_data->loadAverage5;
+    json += nb.str();
+    json += ", \"loadaverage15\": ";
+    nb.str("");
+    nb << m_data->loadAverage15;
+    json += nb.str();
+    json += " }";
+    return (json);
   }
 
   void System::setRoute()
@@ -47,7 +65,7 @@ namespace Module
     Logger::Instance().log(Logger::LogLevel::INFO,
                            "Added routes for System Module.");
     HTTPServer::addRoute("/system", static_cast<HTTPServer::serializerToJSON>(
-                                        &System::networkSerializer));
+                                        &System::systemSerializer));
   }
 
   void System::parse()
@@ -63,8 +81,12 @@ namespace Module
 	                       "cannot read system module info");
 	return;
       }
+
     mystream << ff.rdbuf();
     m_data->hostname = mystream.str();
+    m_data->hostname.erase(std::remove_if(m_data->hostname.begin(),
+                                          m_data->hostname.end(), isspace),
+                           m_data->hostname.end());
     mystream.str("");
     ff.close();
 
@@ -78,12 +100,17 @@ namespace Module
       }
     mystream << ff.rdbuf();
     m_data->kernel = mystream.str();
+    m_data->kernel.erase(
+        std::remove_if(m_data->kernel.begin(), m_data->kernel.end(), isspace),
+        m_data->kernel.end());
     mystream.str("");
     ff.close();
 
+    // TODO: get username
     // getting username
-    std::string userName(getlogin());
-    m_data->userName = userName;
+    // std::string userName(getlogin());
+    // m_data->userName = userName;
+    m_data->userName = "";
 
     // getting uptime
     ff.open("/proc/uptime", std::ios_base::in);

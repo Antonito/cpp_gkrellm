@@ -217,7 +217,6 @@ void *HTTPServer::_serverLoopRead(void *_data)
 	    }
 	}
     }
-  delete[] clients;
   return (NULL);
 }
 

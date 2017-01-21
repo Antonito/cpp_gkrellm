@@ -31,10 +31,13 @@ static void *_loop(void *_data)
 std::vector<Module::IModuleMonitor *> ModuleManager::createCPUModule()
 {
   std::vector<Module::IModuleMonitor *> _module;
-
   Module::Processor::CPU *cpu = new Module::Processor::CPU();
+  Module::System *sys = new Module::System();
+
   cpu->setData(const_cast<Module::Processor::CPU::CPUGlobal *>(&m_buffer.CPU));
   _module.push_back(cpu);
+  sys->setData(const_cast<Module::System::SystemGlobal *>(&m_buffer.sys));;
+  _module.push_back(sys);
   return (_module);
 }
 

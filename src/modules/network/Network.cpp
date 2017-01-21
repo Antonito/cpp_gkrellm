@@ -20,13 +20,6 @@ namespace Module
 	elems.push_back(item);
       }
   }
-  static inline std::string &ltrim(std::string &s)
-  {
-    s.erase(s.begin(),
-            std::find_if(s.begin(), s.end(),
-                         std::not1(std::ptr_fun<int, int>(std::isspace))));
-    return s;
-  }
 
   std::vector<std::string> split(const std::string &s, char delim)
   {
@@ -122,7 +115,10 @@ namespace Module
 	    size_t            trash;
 
 	    interfaceInfo << it->substr(it->find(":") + 1);
-	    nd.interface = ltrim(it->substr(0, it->find(":")));
+	    nd.interface = it->substr(0, it->find(":"));
+	    nd.interface.erase(std::remove_if(nd.interface.begin(),
+	                                      nd.interface.end(), isspace),
+	                       nd.interface.end());
 	    interfaceInfo >> trash;
 	    interfaceInfo >> nd.packetRecv;
 	    interfaceInfo >> trash;
