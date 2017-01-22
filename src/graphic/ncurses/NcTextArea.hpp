@@ -21,6 +21,8 @@ namespace Graphic
 
       NcTextArea &operator<<(std::string const &s);
       NcTextArea &operator<<(int n);
+      NcTextArea &operator<<(size_t n);
+      NcTextArea &operator<<(double n);
 
       void clear();
 

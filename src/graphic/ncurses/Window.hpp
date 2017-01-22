@@ -17,12 +17,10 @@ namespace Graphic
       virtual Graphic::Event update();
       virtual void           refresh();
       void                   resize();
-
-      static void setTermSize(size_t width, size_t height);
+      static void doResize(int s);
 
     private:
-      static size_t  m_termWidth;
-      static size_t  m_termHeight;
+      static bool m_resized;
       static int     readKey();
       static int     keyboardHit();
       struct termios m_orig_termios;

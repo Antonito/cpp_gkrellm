@@ -16,6 +16,7 @@ INC_DIR=		-I./src/			\
 			-I./src/graphic/		\
 			-I./src/graphic/ncurses/	\
 			-I./src/graphic/module/		\
+			-I./src/graphic/module/mouche	\
 			-I./src/graphic/module/network	\
 			-I./src/graphic/module/cpu	\
 			-I./src/graphic/module/network/sfml	\

@@ -33,7 +33,7 @@ namespace Graphic
 
     logger.log(Logger::Info, "Switching to next tab");
     this->updateInfos();
-    if (m_tab.size() > 0)
+    if (m_tab.size() > 1)
       {
 	if (m_currentTab->second->isEnabled())
 	  m_currentTab->second->disable();
@@ -51,13 +51,13 @@ namespace Graphic
 
     logger.log(Logger::Info, "Switching to prev tab");
     this->updateInfos();
-    if (m_tab.size() > 0)
+    if (m_tab.size() > 1)
       {
 	if (m_currentTab->second->isEnabled())
 	  m_currentTab->second->disable();
 	if (m_currentTab == m_tab.begin())
 	  m_currentTab = m_tab.end();
-	m_currentTab--;
+	--m_currentTab;
 	m_currentTab->second->enable(0, m_headerSize, 0, 0, m_width,
 	                             m_height - m_headerSize);
       }
