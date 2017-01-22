@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <unistd.h>
 #include "SfWindow.hpp"
 #include "SfFrame.hpp"
@@ -33,7 +34,7 @@ namespace Graphic
       m_rect.setPosition(m_x + m_offX, m_y + m_offY);
       // m_rect.setFillColor(sf::Color::Red);
       m_rect.setOutlineThickness(10);
-      m_rect.setOutlineColor(sf::Color::Red);
+      m_rect.setOutlineColor((rand() % 2) ? sf::Color::Red : sf::Color::Blue);
       if (m_splitMode == VERTICAL)
 	{
 	  if (m_split.size() >= 1)

@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cstring>
+#include <cstdlib>
+#include <ctime>
 #include <unistd.h>
 #include "MainManager.hpp"
 #include "AModule.hpp"
@@ -14,6 +16,7 @@
 #include "SfCPU.hpp"
 #include "SfRAM.hpp"
 #include "Logger.hpp"
+#include "NcMouche.hpp"
 
 // NCURSES
 
@@ -49,11 +52,15 @@ Graphic::Event ncurseMode(MainManager &m)
   frame1_2->addFrame(frame1_2_2);
   frame1->addFrame(frame1_2);
 
-  win.addTab("TabName", *frame1);
-  // Network
-
-  //
   frame1->setModule(network);
+
+  // Mouche
+  Graphic::Ncurses::Frame *        framouche = new Graphic::Ncurses::Frame();
+  Graphic::Module::Ncurses::NcMouche *mouche =
+      new Graphic::Module::Ncurses::NcMouche(framouche, m.getModuleManager());
+  framouche->setModule(mouche);
+  win.addTab("Gkrellm", *frame1);
+  win.addTab("Mouche", *framouche);
 
   win.enable();
   while ((retValue = win.update()) == Graphic::CONTINUE)
@@ -110,12 +117,12 @@ static int graphic_mode(MainManager &manager)
   Graphic::Mode  graphicMode = Graphic::NCURSES_MODE;
   Logger &       logger = Logger::Instance();
 
-    while (retVal == Graphic::CONTINUE)
+  while (retVal == Graphic::CONTINUE)
     {
       if (graphicMode == Graphic::NCURSES_MODE)
 	{
 	  logger.log(Logger::Info, "Entering text mode [NCURSES]");
-	  retVal = ncurseMode(manager);
+	  while ((retVal = ncurseMode(manager)) == Graphic::RESIZE);
 	  logger.log(Logger::Info, "Leaving text mode [NCURSES]");
 	}
       else
@@ -135,15 +142,16 @@ static int graphic_mode(MainManager &manager)
       else
 	break;
     }
-    if (retVal == Graphic::ERROR)
-      return (1);
-    return (EXIT_SUCCESS);
+  if (retVal == Graphic::ERROR)
+    return (1);
+  return (EXIT_SUCCESS);
 }
 
 int main(int ac, char **av)
 {
-  MainManager    manager;
+  MainManager manager;
 
+  srand(time(NULL));
   if (ac == 2 && !::strcmp(av[1], "--server"))
     {
       Logger::Instance().log(Logger::Info, "Starting in server mode");

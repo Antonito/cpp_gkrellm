@@ -12,6 +12,7 @@ namespace Graphic
   {
     CONTINUE,
     SWITCH_MODE,
+    RESIZE,
     EXIT,
     ERROR
   };
