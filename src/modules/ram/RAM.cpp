@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include "RAM.hpp"
+#include <cstring>
 #include "UtilsModule.hpp"
 #include "Logger.hpp"
 #include "HTTPServer.hpp"
@@ -22,6 +23,7 @@ namespace Module
   void RAM::setData(RAMGlobal *rg)
   {
     m_data = rg;
+    ::memset(m_data, 0, sizeof(RAMGlobal));
   }
 
   std::string RAM::ramSerializer()
@@ -238,7 +240,6 @@ namespace Module
       }
     strbuf << ff.rdbuf();
     m_split = split(strbuf.str(), '\n');
-
     for (std::vector<std::string>::iterator it = m_split.begin();
          it != m_split.end(); ++it)
       {

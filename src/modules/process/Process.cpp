@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <dirent.h>
+#include <cstring>
 #include "Process.hpp"
 #include "UtilsModule.hpp"
 #include "Logger.hpp"
@@ -23,6 +24,7 @@ namespace Module
   void Process::setData(ProcessGlobal *rg)
   {
     m_data = rg;
+    ::memset(rg, 0, sizeof(ProcessGlobal));
   }
 
   std::string Process::processSerializer()

@@ -62,6 +62,10 @@ TCPSocket::~TCPSocket()
 
 bool TCPSocket::send(int fd, char const *str, size_t len)
 {
+  if (fd < 0)
+    {
+      return (false);
+    }
   if (write(fd, str, len) < 0)
     {
       return (false);

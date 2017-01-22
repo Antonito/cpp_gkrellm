@@ -36,6 +36,9 @@ namespace Graphic
 	{
 	  switch (event.type)
 	    {
+	    case sf::Event::Closed:
+	      return (Graphic::EXIT);
+	      break;
 	    case sf::Event::Resized:
 	      m_width = event.size.width;
 	      m_height = event.size.height;
