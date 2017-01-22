@@ -1,38 +1,28 @@
 #!/bin/env python3
-
 import requests
-import time
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-import numpy as np
+import json
 
-IP = "127.0.0.1"
-PORT = ":12345"
+print("==================================================");
+print("[Poster Oriented Programming - GKRELLM] API Tester");
+print("==================================================");
 
-url = "http://" + IP + PORT + "/cpu"
-response = requests.get(url)
-if response.ok:
-    print ("%s" % (response.content))
-else:
-    response.raise_for_status()
-json = response.json()
+# Get configuration
+is_ok = False
+while not is_ok:
+    IP = input("Hostname: ")
+    PORT = ":" + input("Port: ")
+    url = "http://" + IP + PORT + "/"
+    print("--> %s" % (url))
+    conf = input("OK ? [y/n]")
+    if conf == "y":
+        is_ok = True
 
-fig = plt.figure()
-ax = plt.axes(xlim=(0, 1), ylim=(0, 3500))
-line, = ax.plot([], [], lw=2)
-
-def init():
-    line.set_data([], [])
-    return line,
-
-def animate(i):
-    response = requests.get(url)
-    json = response.json()
-    x = np.linspace(0, 2, 1000)
-    y = json["core"][0]["freq_mhz"]
-    line.set_data(x, y)
-    return line,
-
-anim = animation.FuncAnimation(fig, animate, init_func=init,
-                               frames=2, interval=20, blit=True)
-plt.show()
+# Test API
+while True:
+    route = input("Route: ")
+    response = requests.get(url + route)
+    if response.ok:
+        elem = json.loads(response.content.decode())
+        print(json.dumps(elem, indent=4, sort_keys=True))
+    else:
+        print("Error: %s" % (response.status_code))
