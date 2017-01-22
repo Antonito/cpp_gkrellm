@@ -16,8 +16,13 @@ namespace Graphic
       virtual void updateInfos();
       virtual bool update();
       virtual void refresh() const;
+      void         resize();
+
+      static void setTermSize(size_t width, size_t height);
 
     private:
+      static size_t  m_termWidth;
+      static size_t  m_termHeight;
       static int     readKey();
       static int     keyboardHit();
       struct termios m_orig_termios;

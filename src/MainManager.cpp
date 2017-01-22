@@ -42,3 +42,8 @@ MainManager &MainManager::operator=(MainManager const &)
 {
   return (*this);
 }
+
+ModuleManager const &MainManager::getModuleManager() const
+{
+  return (m_modules);
+}

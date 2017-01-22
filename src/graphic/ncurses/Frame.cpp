@@ -4,7 +4,7 @@ namespace Graphic
 {
   namespace Ncurses
   {
-    Frame::Frame()
+    Frame::Frame() : AFrame(), m_win(NULL)
     {
     }
 
@@ -76,25 +76,34 @@ namespace Graphic
 
     void Frame::update()
     {
-      //       ::box(m_win, '|', '-');
-      //       ::wrefresh(m_win);
       if (m_split.size() >= 1)
 	m_split[0]->update();
       if (m_split.size() >= 2)
 	m_split[1]->update();
       if (m_module)
-	m_module->update();
+	{
+	  m_module->position(m_x + m_offX, m_y + m_offY, m_width, m_height);
+	  m_module->update();
+	}
     }
 
     void Frame::refresh()
     {
-      ::wrefresh(m_win);
+      //::wrefresh(m_win);
+      ::wnoutrefresh(m_win);
+      ::wclear(m_win);
+      ::box(m_win, '|', '-');
       if (m_split.size() >= 1)
 	m_split[0]->refresh();
       if (m_split.size() >= 2)
 	m_split[1]->refresh();
       if (m_module)
 	m_module->refresh();
+    }
+
+    WINDOW *Frame::getWin() const
+    {
+      return (m_win);
     }
   }
 }

@@ -20,6 +20,8 @@ namespace Graphic
       virtual void update();
       virtual void refresh();
 
+      WINDOW *getWin() const;
+
     private:
       Frame(Frame const &other);
       Frame &operator=(Frame const &other);

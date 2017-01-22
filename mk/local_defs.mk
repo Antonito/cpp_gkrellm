@@ -14,7 +14,9 @@ INC_DIR=		-I./src/			\
 			-I./src/http/			\
 			-I./src/threads/		\
 			-I./src/graphic/		\
-			-I./src/graphic/ncurses/
+			-I./src/graphic/ncurses/	\
+			-I./src/graphic/module/		\
+			-I./src/graphic/module/network
 
 DEBUG=			no
 

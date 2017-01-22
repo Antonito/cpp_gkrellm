@@ -2,6 +2,7 @@
 #define NETWORK_HPP_
 
 #include <vector>
+#include <string>
 #include "IModuleMonitor.hpp"
 
 namespace Module

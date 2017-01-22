@@ -9,6 +9,14 @@ namespace Graphic
   {
   }
 
+  AFrame::~AFrame()
+  {
+    for (std::vector<AFrame *>::iterator it = m_split.begin();
+         it != m_split.end(); it++)
+      delete *it;
+    delete m_module;
+  }
+
   bool AFrame::isEnabled() const
   {
     return (m_isEnabled);

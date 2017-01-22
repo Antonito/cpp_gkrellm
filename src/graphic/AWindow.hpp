@@ -12,7 +12,7 @@ namespace Graphic
   {
   public:
     AWindow(std::string const &name);
-    virtual ~AWindow(){};
+    virtual ~AWindow();
 
     void addTab(std::string const &name, AFrame &tab);
     void         nextTab();

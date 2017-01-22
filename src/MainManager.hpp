@@ -12,8 +12,9 @@ public:
   MainManager(uint16_t port = 12345, int nbClients = 64);
   ~MainManager();
 
-  void reloadModules();
-  void reloadHTTP();
+  void                 reloadModules();
+  void                 reloadHTTP();
+  ModuleManager const &getModuleManager() const;
 
 private:
   ModuleManager m_modules;
