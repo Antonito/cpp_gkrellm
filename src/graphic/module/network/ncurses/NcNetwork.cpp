@@ -6,15 +6,12 @@ namespace Graphic
   {
     namespace Ncurses
     {
-      NcNetwork::NcNetwork(Graphic::Ncurses::Frame *frame)
+      NcNetwork::NcNetwork(Graphic::Ncurses::Frame *frame,
+                           ModuleManager const &    m)
           : ANcModule(frame), m_rec(0.1, 0.1), m_recDrop(0.6, 0.1),
-            m_send(0.1, 0.7), m_sendDrop(0.6, 0.7)
+            m_send(0.1, 0.7), m_sendDrop(0.6, 0.7), m_data(m.getNetwork())
       {
 	m_data.nd.push_back(::Module::Network::NetworkData());
-	m_data.nd[0].packetRecv += 100;
-	m_data.nd[0].packetRecvDrop += 100;
-	m_data.nd[0].packetSend += 100;
-	m_data.nd[0].packetSendDrop += 100;
       }
 
       NcNetwork::~NcNetwork()
@@ -28,10 +25,10 @@ namespace Graphic
 
       void NcNetwork::update()
       {
-	m_data.nd[0].packetRecv += random() % 10 - 3;
-	m_data.nd[0].packetRecvDrop += random() % 5 - 1;
-	m_data.nd[0].packetSend += random() % 10 - 3;
-	m_data.nd[0].packetSendDrop += random() % 5 - 1;
+	// m_data.nd[0].packetRecv += random() % 10 - 3;
+	// m_data.nd[0].packetRecvDrop += random() % 5 - 1;
+	// m_data.nd[0].packetSend += random() % 10 - 3;
+	// m_data.nd[0].packetSendDrop += random() % 5 - 1;
 	m_rec.clear();
 	m_recDrop.clear();
 	m_send.clear();

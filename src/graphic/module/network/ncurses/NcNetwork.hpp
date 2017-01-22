@@ -15,7 +15,7 @@ namespace Graphic
       class NcNetwork : public ANcModule
       {
       public:
-	NcNetwork(Graphic::Ncurses::Frame *frame);
+	NcNetwork(Graphic::Ncurses::Frame *frame, ModuleManager const &m);
 	virtual ~NcNetwork();
 
 	virtual void update();
@@ -24,11 +24,11 @@ namespace Graphic
       private:
 	NcNetwork &operator=(NcNetwork const &other);
 
-	::Module::Network::NetworkGlobal m_data;
-	Graphic::Ncurses::NcTextArea     m_rec;
-	Graphic::Ncurses::NcTextArea     m_recDrop;
-	Graphic::Ncurses::NcTextArea     m_send;
-	Graphic::Ncurses::NcTextArea     m_sendDrop;
+	::Module::Network::NetworkGlobal const &m_data;
+	Graphic::Ncurses::NcTextArea            m_rec;
+	Graphic::Ncurses::NcTextArea            m_recDrop;
+	Graphic::Ncurses::NcTextArea            m_send;
+	Graphic::Ncurses::NcTextArea            m_sendDrop;
       };
     }
   }
