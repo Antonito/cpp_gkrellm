@@ -36,7 +36,7 @@ namespace Graphic
 	m_text.split();
 
 	size_t i = 0;
-	for (it = m_data.coresData.begin(); it != m_data.coresData.end(); it++)
+	for (it = m_data.coresData.begin(); it != m_data.coresData.end() - 1; it++)
 	  {
 	    std::stringstream s;
 	    m_text.split();
