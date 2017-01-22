@@ -1,4 +1,3 @@
-
 #include <unistd.h>
 #include "ModuleManager.hpp"
 #include "Logger.hpp"
@@ -8,6 +7,7 @@ static void *_loop(void *_data)
   ModuleManagerThreadData *data =
       static_cast<ModuleManagerThreadData *>(_data);
 
+  Logger::Instance().log(Logger::Info, "Started one data-miner thread.");
   while (1)
     {
       pthread_testcancel();
