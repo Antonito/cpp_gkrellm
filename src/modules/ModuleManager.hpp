@@ -40,8 +40,6 @@ private:
 
   volatile ModuleDataBuffer m_buffer;
 
-  // TODO: Set buffer link at this time
-  // std::vector<IModuleMonitor *>createModule1() const;
   std::vector<Module::IModuleMonitor *> createCPUModule();
   std::vector<Module::IModuleMonitor *> createNetworkModule();
 };

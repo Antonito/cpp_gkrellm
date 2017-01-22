@@ -126,7 +126,7 @@ namespace Module
     char *login_check = getlogin();
     if (login_check != NULL)
       {
-	std::string userName(getlogin());
+	std::string userName(login_check);
 	m_data->userName = userName;
       }
     else

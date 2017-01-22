@@ -101,7 +101,14 @@ namespace Module
 		  {
 		    continue;
 		  }
-		pd.user = "UserLogin";
+		char *login_check = getlogin();
+		if (login_check != NULL)
+		  {
+		    std::string userName(login_check);
+		    pd.user = userName;
+		  }
+		else
+		  pd.user = "Unknown";
 		m_data->pd.push_back(pd);
 	      }
 	  }
@@ -110,7 +117,7 @@ namespace Module
     else
       {
 	Logger::Instance().log(Logger::Error,
-	                       "Cannot open /proc, WTF ? is this blinux ?");
+	                       "Cannot open /proc");
       }
   }
 }
