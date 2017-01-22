@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 #include <unistd.h>
 #include "MainManager.hpp"
 #include "AModule.hpp"
@@ -103,14 +104,13 @@ Graphic::Event sfmlMode(MainManager &manager)
   return (retValue);
 }
 
-int main()
+static int graphic_mode(MainManager &manager)
 {
-  MainManager    manager;
   Graphic::Event retVal = Graphic::CONTINUE;
   Graphic::Mode  graphicMode = Graphic::NCURSES_MODE;
   Logger &       logger = Logger::Instance();
 
-  while (retVal == Graphic::CONTINUE)
+    while (retVal == Graphic::CONTINUE)
     {
       if (graphicMode == Graphic::NCURSES_MODE)
 	{
@@ -135,8 +135,22 @@ int main()
       else
 	break;
     }
+    if (retVal == Graphic::ERROR)
+      return (1);
+    return (EXIT_SUCCESS);
+}
 
-  if (retVal == Graphic::ERROR)
-    return (1);
-  return (0);
+int main(int ac, char **av)
+{
+  MainManager    manager;
+
+  if (ac == 2 && !::strcmp(av[1], "--server"))
+    {
+      Logger::Instance().log(Logger::Info, "Starting in server mode");
+      for (;;)
+	{
+	  sleep(1);
+	}
+    }
+  return (graphic_mode(manager));
 }

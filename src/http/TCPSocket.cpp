@@ -17,12 +17,10 @@ TCPSocket::TCPSocket(uint16_t port, int maxClient)
   m_fd = socket(AF_INET, SOCK_STREAM, 0);
   if (m_fd == -1)
     {
-      // TODO: throw exception
       Logger::Instance().log(Logger::Critical, "Cannot create TCP socket.");
     }
   if (setsockopt(m_fd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(enable)) < 0)
     {
-      // TODO: Log
       Logger::Instance().log(Logger::Warning, "Cannot configure TCP socket.");
     }
   sin.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -30,12 +28,10 @@ TCPSocket::TCPSocket(uint16_t port, int maxClient)
   sin.sin_family = AF_INET;
   if (bind(m_fd, reinterpret_cast<struct sockaddr *>(&sin), sizeof(sin)) == -1)
     {
-      // TODO: throw exception
       Logger::Instance().log(Logger::Critical, "Cannot bind TCP socket.");
     }
   if (listen(m_fd, maxClient) == -1)
     {
-      // TODO: throw exception
       Logger::Instance().log(Logger::Critical, "Cannot listen on TCP socket.");
     }
 }

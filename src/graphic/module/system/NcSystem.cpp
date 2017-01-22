@@ -24,6 +24,7 @@ namespace Graphic
 
       void NcSystem::update()
       {
+	m_text.clear();
 	m_text << "Host : " << m_data.hostname;
 	m_text.split();
 	m_text << "User : " << m_data.userName;
