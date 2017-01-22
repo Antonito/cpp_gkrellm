@@ -21,7 +21,10 @@ INC_DIR=		-I./src/			\
 			-I./src/graphic/module/cpu	\
 			-I./src/graphic/module/network/sfml	\
 			-I./src/graphic/sfml		\
-			-I./src/graphic/module/system
+			-I./src/graphic/module/system	\
+			-I./src/graphic/module/cpu	\
+			-I./src/graphic/module/ram
+
 
 DEBUG=			no
 

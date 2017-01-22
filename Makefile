@@ -15,7 +15,9 @@ VPATH=		./src/:./src/JSON/:./src/log/:./src/http/		\
 		:./src/graphic/module/mouche/				\
 		:./src/graphic/module/network/sfml			\
 		:./src/graphic/module/cpu/ncurses			\
-		:./src/graphic/module/system
+		:./src/graphic/module/system				\
+		:./src/graphic/module/cpu				\
+		:./src/graphic/module/ram
 
 SRC_FILES=	main.cpp		\
 		MainManager.cpp
@@ -60,7 +62,10 @@ GRAPHIC_MODULE_SRC=	AModule.cpp	\
 			ASfModule.cpp
 
 GFX_NETWORK=	NcNetwork.cpp	\
-		SfNetwork.cpp
+		SfNetwork.cpp	\
+		SfSystem.cpp	\
+		SfRAM.cpp	\
+		SfCPU.cpp
 
 SFML_SRC=	SfWindow.cpp	\
 		SfFrame.cpp

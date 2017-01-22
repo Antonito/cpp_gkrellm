@@ -31,7 +31,9 @@ namespace Graphic
       m_isEnabled = true;
       m_rect.setSize(sf::Vector2f(width, height));
       m_rect.setPosition(m_x + m_offX, m_y + m_offY);
-      m_rect.setFillColor(sf::Color::Red);
+      // m_rect.setFillColor(sf::Color::Red);
+      m_rect.setOutlineThickness(10);
+      m_rect.setOutlineColor(sf::Color::Red);
       if (m_splitMode == VERTICAL)
 	{
 	  if (m_split.size() >= 1)

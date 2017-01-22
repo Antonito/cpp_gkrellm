@@ -8,8 +8,11 @@
 #include "SfWindow.hpp"
 #include "SfFrame.hpp"
 #include "SfNetwork.hpp"
+#include "SfSystem.hpp"
 #include "ncurses/NcCpu.hpp"
 #include "NcSystem.hpp"
+#include "SfCPU.hpp"
+#include "SfRAM.hpp"
 #include "Logger.hpp"
 #include "NcMouche.hpp"
 
@@ -70,12 +73,33 @@ Graphic::Event sfmlMode(MainManager &manager)
   Graphic::Event retValue = Graphic::CONTINUE;
 
   Graphic::SFML::SfWindow win("gkrellm", 1280, 720);
-  Graphic::SFML::SfFrame *frm = new Graphic::SFML::SfFrame(win);
-  //(void)manager;
-  SfNetwork *network = new SfNetwork(frm, manager.getModuleManager());
-  frm->setModule(network);
+  Graphic::SFML::SfFrame *frm1 = new Graphic::SFML::SfFrame(win);
+  Graphic::SFML::SfFrame *frm1_3 = new Graphic::SFML::SfFrame(win);
+  Graphic::SFML::SfFrame *frm1_1 = new Graphic::SFML::SfFrame(win);
+  Graphic::SFML::SfFrame *frm1_1_2 = new Graphic::SFML::SfFrame(win);
+  Graphic::SFML::SfFrame *frm1_2 = new Graphic::SFML::SfFrame(win);
+  Graphic::SFML::SfFrame *frm1_2_1 = new Graphic::SFML::SfFrame(win);
+  Graphic::SFML::SfFrame *frm1_2_2 = new Graphic::SFML::SfFrame(win);
+  frm1->setSplitMode(Graphic::AFrame::HORIZONTAL);
 
-  win.addTab("TabName", *frm);
+  //(void)manager;
+  SfNetwork *network = new SfNetwork(frm1_1, manager.getModuleManager());
+  SfSystem * system = new SfSystem(frm1_2_1, manager.getModuleManager());
+  SfCPU *    cpu = new SfCPU(frm1_2_2, manager.getModuleManager());
+  SfRAM *    ram = new SfRAM(frm1_1_2, manager.getModuleManager());
+  frm1_1->setModule(network);
+  frm1->addFrame(frm1_3);
+  frm1_3->addFrame(frm1_1);
+  frm1_3->addFrame(frm1_1_2);
+  frm1_1_2->setModule(ram);
+
+  frm1_2_1->setModule(system);
+  frm1_2->addFrame(frm1_2_1);
+  frm1_2_2->setModule(cpu);
+  frm1_2->addFrame(frm1_2_2);
+  frm1->addFrame(frm1_2);
+
+  win.addTab("TabName", *frm1);
   win.enable();
   while (win.isOpen() && retValue == Graphic::CONTINUE)
     {
