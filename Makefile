@@ -12,7 +12,8 @@ VPATH=		./src/:./src/JSON/:./src/log/:./src/http/		\
 		:./src/graphic/module:./src/graphic/module/network/	\
 		:./src/graphic/module/network/ncurses			\
 		:./src/modules/process/:./src/graphic/sfml		\
-		:./src/graphic/module/network/sfml
+		:./src/graphic/module/network/sfml			\
+		:./src/graphic/module/cpu/ncurses
 
 SRC_FILES=	main.cpp		\
 		MainManager.cpp
@@ -60,12 +61,14 @@ GFX_NETWORK=	NcNetwork.cpp	\
 SFML_SRC=	SfWindow.cpp	\
 		SfFrame.cpp
 
+GFX_CPU=	NcCpu.cpp
+
 
 
 SRC=		$(SRC_FILES) $(JSON_FILES) $(LOG_SRC) $(HTTP_SRC)	\
 		$(THREAD_SRC) $(MODULE_SRC) $(GRAPHIC_SRC)	\
 		$(NCURSES_SRC) $(GRAPHIC_MODULE_SRC) $(GFX_NETWORK) \
-		$(SFML_SRC)
+		$(SFML_SRC) $(GFX_CPU)
 
 # Rules
 include $(MK_DIR)rules.mk
