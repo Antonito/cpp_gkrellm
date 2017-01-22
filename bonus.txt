@@ -1,0 +1,52 @@
+Application mobile:
+ -recuperation des infos module: network, system, disk, memory, process
+ -graphique montrant le nombre de "packet receive/send" -> onglet network
+ -affichage de : "os name, user name, kernel version, hostname, uptime, date" -> onglet system
+ -graphique mutli-series montrant le load Average -> onglet system
+ -graphique donut pour chaque disque (affichage des partitions) DYNAMIQUE EN TEMPS REEL (ajout de USB) -> onglet disk
+ -barre montrant le pourcentage d'utilisation pour chaque core -> onglet memory
+ -semi graphique donut montrant le pourcentage d'utilisation du CPU (global) -> onglet memory
+ -barre montrant l'utilisation actuelle de la RAN -> onglet memory
+ -barre montrant l'utilisation actuelle de la SWAP -> onglet memory
+ -list des "current process" -> onglet process
+
+
+ServerHttp:
+ -gestion des erreurs
+ -API REST (cpp)
+ -python(script de test)
+ -parser/generateur de JSON
+ -pattern producteur/consommateur (donc multi-thread) en format JSON
+
+Graphique:
+ -python (matplotlib)
+ -sfml (GUI)
+
+
+Module:
+ -parsing /proc/meminfo {ram/swap}
+ -parsing /proc/diskpart {disk}
+ -parsing /sys/block/$DISK$/size {disk}
+ -parsing /sys/block/$DISK$/$PARTITION$/size {disk/partition}
+ -parsing /proc/cpuinfo {cpu} + temperature
+ -parsing /proc/stat {cpu}
+ -parsing /proc/sys/kernel/hostname {hostname}
+ -parsing /proc/sys/kernel/osrealease {kernel version}
+ -parsing /proc/version {os Name}
+ -parsing /proc//uptime {uptime}
+ -parsing /proc/loadavg {loadavg}
+ -parsing /proc/net/dev {network load}
+ -parsing /sys/class/power_supply/* {battery/AC}
+ -parsing /sys/class/backlight/* (Retro-eclairage ecran)
+ -liste des processus
+ -Architecture compatible .so (ajout de module au runtime) => SOUS CONDITIONS
+
+Global:
+ -Logger
+ -encapsulation mutex/semaphore/thread
+ -couche d'abstraction au niveau des threads (gestion d'un pool de thread)
+ -uniformisation du code avec clang-format
+ -Evil Makefile
+ -Abstraction complete entre recuperation des donnees et leur utilisation avec les libs graphiques
+ -algorithme lock free pour la recuperation des donnees (multi-Thread)
+ -schema d'architecture

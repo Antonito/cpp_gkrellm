@@ -13,10 +13,10 @@ namespace Graphic
     public:
       Window(std::string const &name);
       virtual ~Window();
-      virtual void updateInfos();
-      virtual bool update();
-      virtual void refresh() const;
-      void         resize();
+      virtual void           updateInfos();
+      virtual Graphic::Event update();
+      virtual void           refresh();
+      void                   resize();
 
       static void setTermSize(size_t width, size_t height);
 
