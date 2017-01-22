@@ -2,17 +2,17 @@
 #include "Logger.hpp"
 
 MainManager::MainManager(uint16_t port, int nbClients)
-  : m_modules(), m_http(port, nbClients)
+    : m_modules(), m_http(port, nbClients)
 {
   Logger &logger = Logger::Instance();
-  #if 0
+#if 0
 
   logger.setLogLevel(Logger::Info);
   if (m_logfile.is_open())
     {
       logger.setStream(&m_logfile);
     }
-  #endif
+#endif
   logger.log(Logger::Info, "Starting MainManager.");
   m_modules.start();
   m_http.start();
@@ -21,13 +21,13 @@ MainManager::MainManager(uint16_t port, int nbClients)
 
 MainManager::~MainManager()
 {
-  #if 0
+#if 0
   if (m_logfile.is_open())
     {
       m_logfile.close();
       logger.setStream(&std::clog);
     }
-  #endif
+#endif
   Logger::Instance().log(Logger::Info, "Stopping MainManager...");
 }
 
@@ -54,4 +54,9 @@ MainManager::MainManager(MainManager const &other)
 MainManager &MainManager::operator=(MainManager const &)
 {
   return (*this);
+}
+
+ModuleManager const &MainManager::getModuleManager() const
+{
+  return (m_modules);
 }

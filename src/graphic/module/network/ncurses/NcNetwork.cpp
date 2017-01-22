@@ -1,3 +1,4 @@
+#include "ModuleManager.hpp"
 #include "NcNetwork.hpp"
 
 namespace Graphic
@@ -8,10 +9,9 @@ namespace Graphic
     {
       NcNetwork::NcNetwork(Graphic::Ncurses::Frame *frame,
                            ModuleManager const &    m)
-          : ANcModule(frame), m_rec(0.1, 0.1), m_recDrop(0.6, 0.1),
-            m_send(0.1, 0.7), m_sendDrop(0.6, 0.7), m_data(m.getNetwork())
+          : ANcModule(frame), m_data(m.getNetwork()), m_rec(0.1, 0.1),
+            m_recDrop(0.6, 0.1), m_send(0.1, 0.7), m_sendDrop(0.6, 0.7)
       {
-	m_data.nd.push_back(::Module::Network::NetworkData());
       }
 
       NcNetwork::~NcNetwork()
@@ -33,10 +33,17 @@ namespace Graphic
 	m_recDrop.clear();
 	m_send.clear();
 	m_sendDrop.clear();
-	m_rec << "Received : " << m_data.nd[0].packetRecv;
-	m_recDrop << "Drop : " << m_data.nd[0].packetRecvDrop;
-	m_send << "Send : " << m_data.nd[0].packetSend;
-	m_sendDrop << "Drop : " << m_data.nd[0].packetSendDrop;
+	// clang-format off
+	std::vector< ::Module::Network::NetworkData>::const_iterator it;
+	// clang-format on
+
+	it = m_data.nd.begin();
+	while (it != m_data.nd.end() && it->interface != "wlo1")
+	  it++;
+	m_rec << "Received : " << it->packetRecv;
+	m_recDrop << "Drop : " << it->packetRecvDrop;
+	m_send << "Send : " << it->packetSend;
+	m_sendDrop << "Drop : " << it->packetSendDrop;
       }
 
       void NcNetwork::refresh()
