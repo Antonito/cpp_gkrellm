@@ -1,5 +1,6 @@
 #include "AFrame.hpp"
-#include "ncurses/Frame.hpp"
+#include "Frame.hpp"
+#include "Logger.hpp"
 
 namespace Graphic
 {
@@ -24,6 +25,9 @@ namespace Graphic
 
   void AFrame::addFrame(AFrame *frame)
   {
+    Logger &logger = Logger::Instance();
+
+    logger.log(Logger::Info, "Adding frame");
     if (m_module != NULL)
       {
 	AFrame *frm = AFrame::newFrame();
@@ -41,6 +45,7 @@ namespace Graphic
       }
     else
       {
+	logger.log(Logger::Error, "Cannot split a frame more than twice");
 	// THROW: CAN'T SPLIT A FRAME IN MORE THAN 2
       }
   }

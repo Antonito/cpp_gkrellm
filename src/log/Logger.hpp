@@ -2,6 +2,7 @@
 #define LOGGER_HPP_
 
 #include <iostream>
+#include <fstream>
 #include "Mutex.hpp"
 
 // Singleton
@@ -22,6 +23,8 @@ public:
   void setLogLevel(LogLevel lvl);
   LogLevel getLogLevel() const;
 
+  void setFile(std::string const &name);
+  void closeFile();
   void log(LogLevel lvl, std::string const &);
 
   // Log at current level
@@ -36,6 +39,7 @@ private:
   void _writeLog(std::string const &msg, LogLevel lvl);
 
   LogLevel      m_level;
+  std::ofstream m_file;
   std::ostream *m_stream;
   Mutex         m_mut;
 };

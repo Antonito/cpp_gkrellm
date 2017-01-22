@@ -1,4 +1,5 @@
 #include "AWindow.hpp"
+#include "Logger.hpp"
 
 namespace Graphic
 {
@@ -15,6 +16,9 @@ namespace Graphic
 
   void AWindow::addTab(std::string const &name, AFrame &frame)
   {
+    Logger &logger = Logger::Instance();
+
+    logger.log(Logger::Info, "Adding tab " + name);
     m_tab[name] = &frame;
     if (m_tab.size() == 1)
       m_currentTab = m_tab.begin();
@@ -22,6 +26,9 @@ namespace Graphic
 
   void AWindow::nextTab()
   {
+    Logger &logger = Logger::Instance();
+
+    logger.log(Logger::Info, "Switching to next tab");
     this->updateInfos();
     if (m_tab.size() > 0)
       {
@@ -37,6 +44,9 @@ namespace Graphic
 
   void AWindow::prevTab()
   {
+    Logger &logger = Logger::Instance();
+
+    logger.log(Logger::Info, "Switching to prev tab");
     this->updateInfos();
     if (m_tab.size() > 0)
       {
@@ -52,6 +62,9 @@ namespace Graphic
 
   void AWindow::enable()
   {
+    Logger &logger = Logger::Instance();
+
+    logger.log(Logger::Info, "Enabled window");
     this->updateInfos();
     if (m_tab.size() > 0 && m_currentTab->second->isEnabled() == false)
       {
@@ -62,6 +75,9 @@ namespace Graphic
 
   void AWindow::disable()
   {
+    Logger &logger = Logger::Instance();
+
+    logger.log(Logger::Info, "Disabled window");
     if (m_tab.size() > 0 && m_currentTab->second->isEnabled() == true)
       {
 	m_currentTab->second->disable();

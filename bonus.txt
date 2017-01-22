@@ -42,7 +42,7 @@ Module:
  -Architecture compatible .so (ajout de module au runtime) => SOUS CONDITIONS
 
 Global:
- -Logger
+ -Logger (Singleton, et thread-safe)
  -encapsulation mutex/semaphore/thread
  -couche d'abstraction au niveau des threads (gestion d'un pool de thread)
  -uniformisation du code avec clang-format

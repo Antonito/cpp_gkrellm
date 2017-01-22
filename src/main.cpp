@@ -7,6 +7,7 @@
 #include "SfWindow.hpp"
 #include "SfFrame.hpp"
 #include "SfNetwork.hpp"
+#include "Logger.hpp"
 
 // NCURSES
 
@@ -58,13 +59,22 @@ int main()
   MainManager    manager;
   Graphic::Event retVal = Graphic::CONTINUE;
   Graphic::Mode  graphicMode = Graphic::SFML_MODE;
+  Logger &logger = Logger::Instance();
 
   while (retVal == Graphic::CONTINUE)
     {
       if (graphicMode == Graphic::NCURSES_MODE)
-	retVal = ncurseMode(manager);
+	{
+	  logger.log(Logger::Info, "Entering text mode [NCURSES]");
+	  retVal = ncurseMode(manager);
+	  logger.log(Logger::Info, "Leaving text mode [NCURSES]");
+	}
       else
-	retVal = sfmlMode(manager);
+	{
+	  logger.log(Logger::Info, "Entering graphic text mode [SFML]");
+	  retVal = sfmlMode(manager);
+	  logger.log(Logger::Info, "Leaving graphic text mode [SFML]");
+	}
 
       if (retVal == Graphic::SWITCH_MODE)
 	{
