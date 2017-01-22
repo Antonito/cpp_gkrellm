@@ -8,6 +8,20 @@
 
 namespace Graphic
 {
+  enum Event
+  {
+    CONTINUE,
+    SWITCH_MODE,
+    EXIT,
+    ERROR
+  };
+
+  enum Mode
+  {
+    NCURSES_MODE,
+    SFML_MODE
+  };
+
   class AWindow
   {
   public:
@@ -15,13 +29,13 @@ namespace Graphic
     virtual ~AWindow();
 
     void addTab(std::string const &name, AFrame &tab);
-    void         nextTab();
-    void         prevTab();
-    virtual void updateInfos() = 0;
-    void         enable();
-    void         disable();
-    virtual bool update() = 0;
-    virtual void refresh() const = 0;
+    void                   nextTab();
+    void                   prevTab();
+    virtual void           updateInfos() = 0;
+    void                   enable();
+    void                   disable();
+    virtual Graphic::Event update() = 0;
+    virtual void           refresh() = 0;
 
   protected:
     std::string m_name;

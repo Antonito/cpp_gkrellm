@@ -16,7 +16,9 @@ INC_DIR=		-I./src/			\
 			-I./src/graphic/		\
 			-I./src/graphic/ncurses/	\
 			-I./src/graphic/module/		\
-			-I./src/graphic/module/network
+			-I./src/graphic/module/network	\
+			-I./src/graphic/module/network/sfml	\
+			-I./src/graphic/sfml
 
 DEBUG=			no
 
@@ -24,6 +26,6 @@ MODE=
 
 LOCAL_COMP_FLAGS=	-pipe
 
-LOCAL_LINK_FLAGS=	-pthread -lncurses
+LOCAL_LINK_FLAGS=	-pthread -lncurses -lsfml-graphics -lsfml-window -lsfml-system
 
 LOCAL_DEBUG_FLAGS=
