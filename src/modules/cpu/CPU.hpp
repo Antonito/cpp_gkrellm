@@ -36,6 +36,7 @@ namespace Module
       typedef struct CPUGlobal
       {
 	std::string          name;
+	size_t               temp;
 	std::vector<CPUData> coresData;
       } CPUGlobal;
       static std::string cpuSerializer();

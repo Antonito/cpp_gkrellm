@@ -46,12 +46,18 @@ std::vector<Module::IModuleMonitor *> ModuleManager::createNetworkModule()
   std::vector<Module::IModuleMonitor *> _module;
   Module::Network *                     net = new Module::Network();
   Module::Process *                     proc = new Module::Process();
+  Module::Power *                       power = new Module::Power();
+  Module::Misc *                        misc = new Module::Misc();
 
   net->setData(
       const_cast<Module::Network::NetworkGlobal *>(&m_buffer.network));
   _module.push_back(net);
   proc->setData(const_cast<Module::Process::ProcessGlobal *>(&m_buffer.proc));
   _module.push_back(proc);
+  power->setData(const_cast<Module::Power::PowerGlobal *>(&m_buffer.power));
+  _module.push_back(power);
+  misc->setData(const_cast<Module::Misc::MiscGlobal *>(&m_buffer.misc));
+  _module.push_back(misc);
   return (_module);
 }
 
@@ -154,4 +160,14 @@ Module::RAM::RAMGlobal const &ModuleManager::getRAM() const
 Module::Process::ProcessGlobal const &ModuleManager::getProcess() const
 {
   return (*const_cast<Module::Process::ProcessGlobal *>(&m_buffer.proc));
+}
+
+Module::Power::PowerGlobal const &ModuleManager::getPower() const
+{
+  return (*const_cast<Module::Power::PowerGlobal *>(&m_buffer.power));
+}
+
+Module::Misc::MiscGlobal const &ModuleManager::getMisc() const
+{
+  return (*const_cast<Module::Misc::MiscGlobal *>(&m_buffer.misc));
 }

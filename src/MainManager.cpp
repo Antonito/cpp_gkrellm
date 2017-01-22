@@ -7,6 +7,8 @@ MainManager::MainManager(uint16_t port, int nbClients)
   Logger &logger = Logger::Instance();
 
   logger.setLogLevel(Logger::Info);
+  logger.log(Logger::Info, "Logging to ./gkrellm.log");
+  logger.setFile("./gkrellm.log");
   logger.log(Logger::Info, "Starting MainManager.");
   m_modules.start();
   m_http.start();
@@ -15,7 +17,11 @@ MainManager::MainManager(uint16_t port, int nbClients)
 
 MainManager::~MainManager()
 {
-  Logger::Instance().log(Logger::Info, "Stopping MainManager...");
+  Logger &logger = Logger::Instance();
+
+  logger.log(Logger::Info, "Stopping MainManager...");
+  logger.closeFile();
+  logger.log(Logger::Info, "Closed ./gkrellm.log");
 }
 
 void MainManager::reloadModules()

@@ -28,7 +28,7 @@ Module:
  -parsing /proc/diskpart {disk}
  -parsing /sys/block/$DISK$/size {disk}
  -parsing /sys/block/$DISK$/$PARTITION$/size {disk/partition}
- -parsing /proc/cpuinfo {cpu}
+ -parsing /proc/cpuinfo {cpu} + temperature
  -parsing /proc/stat {cpu}
  -parsing /proc/sys/kernel/hostname {hostname}
  -parsing /proc/sys/kernel/osrealease {kernel version}
@@ -37,11 +37,12 @@ Module:
  -parsing /proc/loadavg {loadavg}
  -parsing /proc/net/dev {network load}
  -parsing /sys/class/power_supply/* {battery/AC}
+ -parsing /sys/class/backlight/* (Retro-eclairage ecran)
  -liste des processus
  -Architecture compatible .so (ajout de module au runtime) => SOUS CONDITIONS
 
 Global:
- -Logger
+ -Logger (Singleton, et thread-safe)
  -encapsulation mutex/semaphore/thread
  -couche d'abstraction au niveau des threads (gestion d'un pool de thread)
  -uniformisation du code avec clang-format

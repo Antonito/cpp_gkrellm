@@ -28,6 +28,8 @@ public:
   Module::Disk::DiskGlobal const &         getDisk() const;
   Module::RAM::RAMGlobal const &           getRAM() const;
   Module::Process::ProcessGlobal const &   getProcess() const;
+  Module::Power::PowerGlobal const &       getPower() const;
+  Module::Misc::MiscGlobal const &         getMisc() const;
 
 private:
   ThreadPool                           m_threads;

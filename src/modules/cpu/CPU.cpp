@@ -45,6 +45,10 @@ namespace Module
       json = "{ \"name\": \"" + m_data->name + "\", \"nb_core\": ";
       nb << nbCore;
       json += nb.str();
+      json += ", \"temp\": ";
+      nb.str("");
+      nb << m_data->temp;
+      json += nb.str();
       json += ", \"core\": [";
       for (size_t i = 0; i < nbCore; ++i)
 	{
@@ -162,6 +166,16 @@ namespace Module
 	      m_data->coresData.push_back(info_proc);
 	    }
 	}
+      ff.close();
+      ff.open("/sys/class/thermal/thermal_zone0/temp", std::ios_base::in);
+      if (!ff.good())
+	{
+	  Logger::Instance().log(Logger::Error, "cannot read cpu module info");
+	  return;
+	}
+      strbuf.str("");
+      strbuf << ff.rdbuf();
+      strbuf >> m_data->temp;
       ff.close();
       ff.open("/proc/cpuinfo", std::ios_base::in);
       if (!ff.good())

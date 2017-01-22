@@ -10,6 +10,8 @@
 #include "Disk.hpp"
 #include "RAM.hpp"
 #include "Process.hpp"
+#include "Power.hpp"
+#include "Misc.hpp"
 
 struct ModuleDataBuffer
 {
@@ -19,6 +21,8 @@ struct ModuleDataBuffer
   Module::Disk::DiskGlobal          disk;
   Module::RAM::RAMGlobal            ram;
   Module::Process::ProcessGlobal    proc;
+  Module::Power::PowerGlobal        power;
+  Module::Misc::MiscGlobal          misc;
 };
 
 #endif // !MODULEDATABUFFER_HPP_

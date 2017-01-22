@@ -13,10 +13,22 @@ namespace Module
     struct NetworkData
     {
       std::string interface;
+      size_t      bytesRecv;
       size_t      packetRecv;
+      size_t      packetRecvErrs;
       size_t      packetRecvDrop;
+      size_t      packetRecvFifo;
+      size_t      packetRecvFrame;
+      size_t      packetRecvCompressed;
+      size_t      packetRecvMulticast;
+      size_t      bytesSend;
       size_t      packetSend;
+      size_t      packetSendErrs;
       size_t      packetSendDrop;
+      size_t      packetSendFifo;
+      size_t      packetSendColls;
+      size_t      packetSendCarrier;
+      size_t      packetSendCompressed;
     };
     struct NetworkGlobal
     {
