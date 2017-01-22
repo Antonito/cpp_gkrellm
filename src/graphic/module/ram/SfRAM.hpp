@@ -21,12 +21,12 @@ private:
 
   Graphic::SFML::SfFrame *m_frame;
 
-  ::Module::Network::NetworkGlobal const &m_data;
+  ::Module::RAM::RAMGlobal const &m_data;
 
-  sf::Text m_rec;
-  sf::Text m_recDrop;
-  sf::Text m_send;
-  sf::Text m_sendDrop;
+  sf::Text m_swap;
+  sf::Text m_swapFree;
+  sf::Text m_mem;
+  sf::Text m_memFree;
 };
 
 #endif // !SFRAM_HPP_

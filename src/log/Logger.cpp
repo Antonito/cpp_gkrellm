@@ -7,6 +7,18 @@ Logger &Logger::Instance()
   return (m_instance);
 }
 
+void Logger::setFile(std::string const &name)
+{
+  m_file.open(name.c_str());
+  m_stream = &m_file;
+}
+
+void Logger::closeFile()
+{
+  m_file.close();
+  m_stream = &std::clog;
+}
+
 void Logger::setStream(std::ostream &stream)
 {
   m_stream = &stream;

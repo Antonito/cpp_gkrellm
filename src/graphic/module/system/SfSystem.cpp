@@ -35,27 +35,27 @@ void SfSystem::update()
 
   // std::cout << it->packetRecv << std::endl;
 
-  ss << m_data.osName;
+  ss << "OS Name: " << m_data.osName;
   m_osName.setString(ss.str());
   m_osName.setFillColor(sf::Color::Black);
   ss.str("");
 
-  ss << m_data.userName;
+  ss << "User Name: " << m_data.userName;
   m_userName.setString(ss.str());
   m_userName.setFillColor(sf::Color::Black);
   ss.str("");
 
-  ss << m_data.hostname;
+  ss << "Hostname: " << m_data.hostname;
   m_hostName.setString(ss.str());
   m_hostName.setFillColor(sf::Color::Black);
   ss.str("");
 
-  ss << m_data.kernel;
+  ss << "Kernel: " << m_data.kernel;
   m_kernel.setString(ss.str());
   m_kernel.setFillColor(sf::Color::Black);
   ss.str("");
 
-  ss << m_data.datetime;
+  ss << "Date & Time: " << m_data.datetime;
   m_datetime.setString(ss.str());
   m_datetime.setFillColor(sf::Color::Black);
   ss.str("");
@@ -63,18 +63,18 @@ void SfSystem::update()
 
 void SfSystem::refresh()
 {
-  m_osName.setPosition(m_x + 0.1 * m_width, m_y + 0.1 * m_height);
+  m_osName.setPosition(m_x + 0.0 * m_width, m_y + 0.1 * m_height);
   m_frame->getWin().draw(m_osName);
 
-  m_userName.setPosition(m_x + 0.8 * m_width, m_y + 0.5 * m_height);
+  m_userName.setPosition(m_x + 0.0 * m_width, (m_y + 10) + 0.2 * m_height);
   m_frame->getWin().draw(m_userName);
 
-  m_hostName.setPosition(m_x + 0.1 * m_width, m_y + 0.1 * m_height);
+  m_hostName.setPosition(m_x + 0.0 * m_width, (m_y + 10) + 0.3 * m_height);
   m_frame->getWin().draw(m_hostName);
 
-  m_kernel.setPosition(m_x + 0.8 * m_width, m_y + 0.5 * m_height);
+  m_kernel.setPosition(m_x + 0.0 * m_width, (m_y + 10) + 0.4 * m_height);
   m_frame->getWin().draw(m_kernel);
 
-  m_datetime.setPosition(m_x + 0.8 * m_width, m_y + 0.5 * m_height);
+  m_datetime.setPosition(m_x + 0.0 * m_width, (m_y + 10) + 0.5 * m_height);
   m_frame->getWin().draw(m_datetime);
 }

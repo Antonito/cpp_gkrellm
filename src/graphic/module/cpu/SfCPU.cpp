@@ -13,10 +13,8 @@ SfCPU::SfCPU(Graphic::SFML::SfFrame *frame, ModuleManager const &m)
     {
       //throw
     }
-  m_rec.setFont(font);
-  m_recDrop.setFont(font);
-  m_send.setFont(font);
-  m_sendDrop.setFont(font);
+  m_modelName.setFont(font);
+  m_temp.setFont(font);
 }
 
 SfCPU::~SfCPU()
@@ -30,21 +28,29 @@ SfCPU &SfCPU::operator=(SfCPU const &)
 
 void SfCPU::update()
 {
+	m_curFreq.clear();
+  static sf::Font font;
+  if (!font.loadFromFile("./fonts/arial.ttf"))
+    {
+      //throw
+    }
   std::stringstream ss;
   // clang-format off
-  std::vector< ::Module::Processor::CPU::CPUData>::iterator it;
+  std::vector< ::Module::Processor::CPU::CPUData>::const_iterator it;
   // clang-format on
 
   it = m_data.coresData.begin();
-  int i = 0;
+  unsigned int i = 0;
   for (; it != m_data.coresData.end(); ++it)
     {
-      if (i >= m_data->coresData.size())
+      if (i >= m_data.coresData.size() - 1)
 	break;
       std::stringstream dtos;
       dtos << "core " << i << ": " << it->curFreq << "MHz";
       sf::Text text;
+      text.setFont(font);
       text.setString(dtos.str());
+      text.setFillColor(sf::Color::Black);
       m_curFreq.push_back(text);
       i++;
     }
@@ -56,7 +62,7 @@ void SfCPU::update()
   m_modelName.setFillColor(sf::Color::Black);
   ss.str("");
 
-  ss << m_data.temp;
+  ss << "Temp. " << m_data.temp / 1000 << "C";
   m_temp.setString(ss.str());
   m_temp.setFillColor(sf::Color::Black);
   ss.str("");
@@ -67,15 +73,18 @@ void SfCPU::refresh()
   m_modelName.setPosition(m_x + 0.1 * m_width, m_y + 0.1 * m_height);
   m_frame->getWin().draw(m_modelName);
 
-  m_temp.setPosition(m_x + 0.8 * m_width, m_y + 0.5 * m_height);
+  m_temp.setPosition(m_x + 0.1 * m_width, m_y + 0.2 * m_height);
   m_frame->getWin().draw(m_temp);
 
-  double toto = 0.1;
+  int    toto = 0;
+  double tata = 0.0;
   for (std::vector<sf::Text>::iterator it = m_curFreq.begin();
        it != m_curFreq.end(); ++it)
     {
-      it->setPosition(m_x + 0.2 * m_width, m_y + 0.1 * m_height + toto);
+      it->setPosition(m_x + 0.2 * m_width,
+                      (m_y + toto) + (0.3 + tata) * m_height);
       m_frame->getWin().draw(*it);
-      toto += 0.1;
+      toto += 10;
+      tata += 0.1;
     }
 }
