@@ -59,19 +59,24 @@ namespace Graphic
       ::endwin();
     }
 
-    bool Window::update()
+    Graphic::Event Window::update()
     {
       while (keyboardHit())
 	{
 	  int key = getchar();
-	  if (key == 'q')
-	    return (false);
+	  switch (key)
+	    {
+	    case 'q':
+	      return (Graphic::EXIT);
+	    case 'm':
+	      return (Graphic::SWITCH_MODE);
+	    }
 	}
       m_currentTab->second->update();
-      return (true);
+      return (Graphic::CONTINUE);
     }
 
-    void Window::refresh() const
+    void Window::refresh()
     {
       //::refresh();
       ::doupdate();
