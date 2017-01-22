@@ -22,6 +22,12 @@ public:
   bool stop();
 
   // Getters
+  Module::Processor::CPU::CPUGlobal const &getCPU() const;
+  Module::Network::NetworkGlobal const &   getNetwork() const;
+  Module::System::SystemGlobal const &     getSystem() const;
+  Module::Disk::DiskGlobal const &         getDisk() const;
+  Module::RAM::RAMGlobal const &           getRAM() const;
+  Module::Process::ProcessGlobal const &   getProcess() const;
 
 private:
   ThreadPool                           m_threads;
