@@ -26,8 +26,8 @@ int sfmlMode(MainManager const &)
 int main()
 {
   MainManager manager;
-  //   for (;;)
-  //     usleep(10000);
+  for (;;)
+    usleep(10000);
   ncurseMode(manager);
   return (0);
 }

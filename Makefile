@@ -38,8 +38,10 @@ MODULE_SRC=	ModuleManager.cpp	\
 		Network.cpp		\
 		System.cpp		\
 		Disk.cpp		\
+		Misc.cpp		\
 		RAM.cpp			\
-		Process.cpp
+		Process.cpp		\
+		Power.cpp
 
 GRAPHIC_SRC=	AFrame.cpp		\
 		AWindow.cpp		\
