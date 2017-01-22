@@ -24,16 +24,21 @@ namespace Graphic
 
       void NcRAM::update()
       {
-	int ram = m_data.rd.memFree * 100 / m_data.rd.memTotal;
-	int swap = m_data.sd.swapFree * 100 / m_data.sd.swapTotal;
+
+	int ram = 0;
+	if (m_data.rd.memTotal != 0)
+	  ram = m_data.rd.memFree * 50 / m_data.rd.memTotal;
+
+	int swap = 0;
+	if (m_data.sd.swapTotal != 0)
+	  swap = m_data.sd.swapFree * 50 / m_data.sd.swapTotal;
 
 	m_text.clear();
-	m_text << "Ram  : " << std::string('|', ram) << std::string('-', 100 - ram)
-	       << ram << "%  " << m_data.rd.memTotal / 1000000000 << "GB";
+	m_text << "Ram  : " << std::string(ram, '|') << std::string(50 - ram, '-')
+	       << ram * 2 << "%%  " << (m_data.rd.memTotal / 100000) / 10.0 << "GB";
 	m_text.split();
-	m_text << "Swap : " << std::string('|', swap) << std::string('-', 100 - swap)
-	       << swap << "%  " << m_data.rd.swapTotal / 1000000000 << "GB";
-	m_text.split();
+	m_text << "Swap : " << std::string(swap, '|') << std::string(50 - swap, '-')
+	       << swap * 2 << "%%  " << (m_data.sd.swapTotal / 100000) / 10.0  << "GB";
 	m_text.split();
       }
 

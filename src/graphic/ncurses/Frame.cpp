@@ -1,3 +1,4 @@
+#include <curses.h>
 #include "Frame.hpp"
 
 namespace Graphic
@@ -38,8 +39,13 @@ namespace Graphic
 	{
 	  // THROW: Failed to create ncurses frame
 	}
-      ::box(m_win, '|', '-');
+      //      ::box(m_win, '|', '-');
       ::wrefresh(m_win);
+      // //       ::start_color();
+      // // ::init_pair(1, COLOR_RED, COLOR_YELLOW);
+      // // ::attron(COLOR_PAIR(1));
+      ::box(m_win, '|', '-');
+      // ::attroff(COLOR_PAIR(1));
       // Enable child frame recursively
       if (m_splitMode == VERTICAL)
 	{
@@ -92,7 +98,12 @@ namespace Graphic
       //::wrefresh(m_win);
       ::wnoutrefresh(m_win);
       ::wclear(m_win);
+      ::start_color();
+      ::init_pair(1, COLOR_GREEN, COLOR_BLACK);
+      ::wattron(m_win, COLOR_PAIR(1));
       ::box(m_win, '|', '-');
+      ::wattroff(m_win, COLOR_PAIR(1));
+      //      ::wattroff(COLOR_PAIR(1));
       if (m_split.size() >= 1)
 	m_split[0]->refresh();
       if (m_split.size() >= 2)

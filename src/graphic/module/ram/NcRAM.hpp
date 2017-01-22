@@ -24,7 +24,7 @@ namespace Graphic
       private:
 	NcRAM &operator=(NcRAM const &other);
 
-	::Module::System::SystemGlobal const &m_data;
+	::Module::RAM::RAMGlobal const &m_data;
 	Graphic::Ncurses::NcTextArea            m_text;
       };
     }

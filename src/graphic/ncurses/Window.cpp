@@ -43,6 +43,8 @@ namespace Graphic
       ::cfmakeraw(&new_term);
       ::tcsetattr(0, TCSANOW, &new_term);
       ::curs_set(0);
+      ::start_color();
+      init_pair(1, COLOR_RED, COLOR_YELLOW);
     }
 
     Window::~Window()
