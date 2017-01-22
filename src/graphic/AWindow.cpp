@@ -9,6 +9,9 @@ namespace Graphic
 
   AWindow::~AWindow()
   {
+    Logger &logger = Logger::Instance();
+
+    logger.log(Logger::Info, "Destroying window");
     for (std::map<std::string, AFrame *>::iterator it = m_tab.begin();
          it != m_tab.end(); ++it)
       delete it->second;
