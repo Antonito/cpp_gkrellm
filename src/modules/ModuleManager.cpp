@@ -125,3 +125,33 @@ bool ModuleManager::stop()
   Logger::Instance().log(Logger::Info, "Module Manager stopped.");
   return (true);
 }
+
+Module::Processor::CPU::CPUGlobal const &ModuleManager::getCPU() const
+{
+  return (*const_cast<Module::Processor::CPU::CPUGlobal *>(&m_buffer.CPU));
+}
+
+Module::Network::NetworkGlobal const &ModuleManager::getNetwork() const
+{
+  return (*const_cast<Module::Network::NetworkGlobal *>(&m_buffer.network));
+}
+
+Module::System::SystemGlobal const &ModuleManager::getSystem() const
+{
+  return (*const_cast<Module::System::SystemGlobal *>(&m_buffer.sys));
+}
+
+Module::Disk::DiskGlobal const &ModuleManager::getDisk() const
+{
+  return (*const_cast<Module::Disk::DiskGlobal *>(&m_buffer.disk));
+}
+
+Module::RAM::RAMGlobal const &ModuleManager::getRAM() const
+{
+  return (*const_cast<Module::RAM::RAMGlobal *>(&m_buffer.ram));
+}
+
+Module::Process::ProcessGlobal const &ModuleManager::getProcess() const
+{
+  return (*const_cast<Module::Process::ProcessGlobal *>(&m_buffer.proc));
+}
