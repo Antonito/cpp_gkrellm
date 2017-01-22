@@ -27,7 +27,27 @@ namespace Module
 
   std::string Process::processSerializer()
   {
-    return ("");
+    std::string json = "{ \"process\": [";
+    for (std::vector<ProcessData>::iterator it = m_data->pd.begin();
+         it != m_data->pd.end(); ++it)
+      {
+	std::stringstream nb;
+	if (it != m_data->pd.begin())
+	  {
+	    json += ", ";
+	  }
+	json += "{ \"pid\": ";
+	nb.str("");
+	nb << it->pid;
+	json += nb.str();
+	json += ", \"user\": \"";
+	json += it->user;
+	json += "\", \"cmdline\": \"";
+	json += it->cmdline;
+	json += "\"}";
+      }
+    json += "]}";
+    return (json);
   }
 
   void Process::setRoute()
@@ -75,13 +95,12 @@ namespace Module
 		    continue;
 		  }
 		std::stringstream mystream;
-		mystream << ff.rdbuf();
+		getline(ff, pd.cmdline, '\0');
 		ff.close();
-		if (mystream.str() == "")
+		if (pd.cmdline == "")
 		  {
 		    continue;
 		  }
-		mystream >> pd.cmdline;
 		pd.user = "UserLogin";
 		m_data->pd.push_back(pd);
 	      }
