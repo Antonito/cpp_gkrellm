@@ -26,10 +26,11 @@ namespace Graphic
 
       void display(Graphic::Module::ANcModule const &module) const;
       void setPosition(double x, double y);
+      void split();
 
     private:
 
-      std::stringstream m_value;
+      std::vector<std::stringstream *> m_value;
       double            m_x;
       double            m_y;
     };

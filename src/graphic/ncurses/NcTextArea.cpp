@@ -7,19 +7,27 @@ namespace Graphic
   {
     NcTextArea::NcTextArea() : m_x(0), m_y(0)
     {
+      m_value.push_back(new std::stringstream());
     }
 
     NcTextArea::NcTextArea(double x, double y) : m_x(x), m_y(y)
     {
+      m_value.push_back(new std::stringstream());
     }
 
     NcTextArea::NcTextArea(NcTextArea const &o) : m_x(o.m_x), m_y(o.m_y)
     {
-      m_value << o.m_value.str();
+      for (size_t i = 0; i < o.m_value.size(); ++i)
+	{
+	  m_value.push_back(new std::stringstream());
+	  *m_value[i] << o.m_value[i]->str();
+	}
     }
 
     NcTextArea::~NcTextArea()
     {
+      for (size_t i = 0; i < m_value.size(); ++i)
+	delete m_value[i];
     }
 
     NcTextArea &NcTextArea::operator=(NcTextArea const &o)
@@ -28,26 +36,33 @@ namespace Graphic
 	{
 	  m_x = o.m_x;
 	  m_y = o.m_y;
-	  m_value << o.m_value.str();
+	  for (size_t i = 0; i < o.m_value.size(); ++i)
+	    {
+	      m_value.push_back(new std::stringstream());
+	      *m_value[i] << o.m_value[i]->str();
+	    }
 	}
       return (*this);
     }
 
     NcTextArea &NcTextArea::operator<<(std::string const &s)
     {
-      m_value << s;
+      *m_value[m_value.size() - 1] << s;
       return (*this);
     }
 
     NcTextArea &NcTextArea::operator<<(int n)
     {
-      m_value << n;
+      *m_value[m_value.size() - 1] << n;
       return (*this);
     }
 
     void NcTextArea::clear()
     {
-      m_value.str("");
+      for (size_t i = 0; i < m_value.size(); ++i)
+	delete m_value[i];
+      m_value.clear();
+      m_value.push_back(new std::stringstream());
     }
 
     void NcTextArea::display(Graphic::Module::ANcModule const &m) const
@@ -55,8 +70,9 @@ namespace Graphic
       //       ::move(m.getX() + m_x * m.getWidth() + 0.5,
       //              m.getY() + m_y * m.getHeight() + 0.5);
       //::move(0, 0);
-      ::mvwprintw(m.getWin(), m_y * m.getHeight() + 0.5,
-                  m_x * m.getWidth() + 0.5, m_value.str().c_str());
+      for (size_t i = 0; i < m_value.size(); ++i)
+	::mvwprintw(m.getWin(), m_y * m.getHeight() + 0.5 + i,
+		    m_x * m.getWidth() + 0.5, m_value[i]->str().c_str());
       //::wrefresh(m.getWin());
     }
 
@@ -64,6 +80,11 @@ namespace Graphic
     {
       m_x = x;
       m_y = y;
+    }
+
+    void NcTextArea::split()
+    {
+      m_value.push_back(new std::stringstream());
     }
   }
 }

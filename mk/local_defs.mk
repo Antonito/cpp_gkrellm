@@ -19,7 +19,8 @@ INC_DIR=		-I./src/			\
 			-I./src/graphic/module/network	\
 			-I./src/graphic/module/cpu	\
 			-I./src/graphic/module/network/sfml	\
-			-I./src/graphic/sfml
+			-I./src/graphic/sfml		\
+			-I./src/graphic/module/system
 
 DEBUG=			no
 
