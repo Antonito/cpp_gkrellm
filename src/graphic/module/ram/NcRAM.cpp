@@ -31,7 +31,7 @@ namespace Graphic
 
 	int swap = 0;
 	if (m_data.sd.swapTotal != 0)
-	  swap = m_data.sd.swapFree * 50 / m_data.sd.swapTotal;
+	  swap = (m_data.sd.swapTotal - m_data.sd.swapFree) * 50 / m_data.sd.swapTotal;
 
 	m_text.clear();
 	m_text << "Ram  : " << std::string(ram, '|') << std::string(50 - ram, '-')
