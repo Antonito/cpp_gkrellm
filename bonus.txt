@@ -1,11 +1,18 @@
 Application mobile:
+ -IOS
+ -Android
+ -selection du server pour get les infos
  -recuperation des infos module: network, system, disk, memory, process
+ -affichage du % batterie, status (charging or not), constructeur de la batterie -> onglet home
+ -Infos essentielles : Brightness, is CapsLock, is NumLock -> onlget home
  -graphique montrant le nombre de "packet receive/send" -> onglet network
+ -graphique montrant le nombre de "Byte receive/send" -> onglet network
  -affichage de : "os name, user name, kernel version, hostname, uptime, date" -> onglet system
  -graphique mutli-series montrant le load Average -> onglet system
  -graphique donut pour chaque disque (affichage des partitions) DYNAMIQUE EN TEMPS REEL (ajout de USB) -> onglet disk
  -barre montrant le pourcentage d'utilisation pour chaque core -> onglet memory
  -semi graphique donut montrant le pourcentage d'utilisation du CPU (global) -> onglet memory
+ -affichage de la temperature du CPU -> onglet memory
  -barre montrant l'utilisation actuelle de la RAN -> onglet memory
  -barre montrant l'utilisation actuelle de la SWAP -> onglet memory
  -list des "current process" -> onglet process
@@ -17,10 +24,12 @@ ServerHttp:
  -python(script de test)
  -parser/generateur de JSON
  -pattern producteur/consommateur (donc multi-thread) en format JSON
+ -collection de script en python permettant de benchmarker et de tester l'API
 
 Graphique:
  -python (matplotlib)
  -sfml (GUI)
+ -gestion de theme en SFML
 
 
 Module:

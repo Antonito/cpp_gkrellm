@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cstring>
+#include <cstdlib>
+#include <ctime>
 #include <unistd.h>
 #include "MainManager.hpp"
 #include "AModule.hpp"
@@ -110,7 +112,7 @@ static int graphic_mode(MainManager &manager)
   Graphic::Mode  graphicMode = Graphic::NCURSES_MODE;
   Logger &       logger = Logger::Instance();
 
-    while (retVal == Graphic::CONTINUE)
+  while (retVal == Graphic::CONTINUE)
     {
       if (graphicMode == Graphic::NCURSES_MODE)
 	{
@@ -135,15 +137,16 @@ static int graphic_mode(MainManager &manager)
       else
 	break;
     }
-    if (retVal == Graphic::ERROR)
-      return (1);
-    return (EXIT_SUCCESS);
+  if (retVal == Graphic::ERROR)
+    return (1);
+  return (EXIT_SUCCESS);
 }
 
 int main(int ac, char **av)
 {
-  MainManager    manager;
+  MainManager manager;
 
+  srand(time(NULL));
   if (ac == 2 && !::strcmp(av[1], "--server"))
     {
       Logger::Instance().log(Logger::Info, "Starting in server mode");
