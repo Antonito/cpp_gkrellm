@@ -17,6 +17,7 @@
 #include "SfRAM.hpp"
 #include "Logger.hpp"
 #include "NcMouche.hpp"
+#include "NcRAM.hpp"
 
 // NCURSES
 
@@ -29,11 +30,19 @@ Graphic::Event ncurseMode(MainManager &m)
 
   // Network
   Graphic::Ncurses::Frame *frame1_1 = new Graphic::Ncurses::Frame();
+  Graphic::Ncurses::Frame *frame1_1_1 = new Graphic::Ncurses::Frame();
   Graphic::Module::Ncurses::NcNetwork *network =
-      new Graphic::Module::Ncurses::NcNetwork(frame1_1, m.getModuleManager());
-  frame1_1->setModule(network);
-  frame1->addFrame(frame1_1);
+      new Graphic::Module::Ncurses::NcNetwork(frame1_1_1, m.getModuleManager());
+  frame1_1_1->setModule(network);
+  frame1_1->addFrame(frame1_1_1);
 
+
+  Graphic::Ncurses::Frame *frame1_1_2 = new Graphic::Ncurses::Frame();
+  Graphic::Module::Ncurses::NcRAM *ram =
+      new Graphic::Module::Ncurses::NcRAM(frame1_1_2, m.getModuleManager());
+  frame1_1_2->setModule(ram);
+  frame1_1->addFrame(frame1_1_2);
+  frame1->addFrame(frame1_1);
   // SPLIT
 
   // System
