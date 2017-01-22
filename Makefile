@@ -73,7 +73,8 @@ SFML_SRC=	SfWindow.cpp	\
 GFX_CPU=	NcCpu.cpp
 
 GFX_SYSTEM=	NcSystem.cpp	\
-		NcMouche.cpp
+		NcMouche.cpp	\
+		NcRAM.cpp
 
 SRC=		$(SRC_FILES) $(JSON_FILES) $(LOG_SRC) $(HTTP_SRC)	\
 		$(THREAD_SRC) $(MODULE_SRC) $(GRAPHIC_SRC)	\
