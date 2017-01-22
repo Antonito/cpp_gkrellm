@@ -45,6 +45,18 @@ namespace Graphic
 		{
 		  return (Graphic::SWITCH_MODE);
 		}
+	      else if (event.key.code == sf::Keyboard::Escape)
+		{
+		  return (Graphic::EXIT);
+		}
+	      else if (event.key.code == sf::Keyboard::P)
+		{
+		  this->nextTab();
+		}
+	      else if (event.key.code == sf::Keyboard::O)
+		{
+		  this->prevTab();
+		}
 	      break;
 	    default:
 	      break;

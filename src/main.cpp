@@ -37,7 +37,7 @@ Graphic::Event sfmlMode(MainManager &manager)
 {
   Graphic::Event retValue = Graphic::CONTINUE;
 
-  Graphic::SFML::SfWindow win("Window", 1280, 720);
+  Graphic::SFML::SfWindow win("gkrellm", 1280, 720);
   Graphic::SFML::SfFrame *frm = new Graphic::SFML::SfFrame(win);
 
   SfNetwork *network = new SfNetwork(frm, manager.getModuleManager());
