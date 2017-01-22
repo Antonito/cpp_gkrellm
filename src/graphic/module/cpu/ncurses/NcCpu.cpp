@@ -1,4 +1,5 @@
 #include <iterator>
+#include <iomanip>
 #include "ModuleManager.hpp"
 #include "NcCpu.hpp"
 
@@ -10,7 +11,7 @@ namespace Graphic
     {
       NcCpu::NcCpu(Graphic::Ncurses::Frame *frame,
                            ModuleManager const &    m)
-	: ANcModule(frame), m_data(m.getCPU())
+	: ANcModule(frame), m_data(m.getCPU()), m_text(0.1, 0.1)
       {
       }
 
@@ -25,35 +26,30 @@ namespace Graphic
 
       void NcCpu::update()
       {
-	m_name.clear();
-	m_curFreq.clear();
+	m_text.clear();
+
 	// clang-format off
 	std::vector< ::Module::Processor::CPU::CPUData>::const_iterator it;
 	// clang-format on
 
-	    m_name << "Processor : " << m_data.name;
+	m_text << "Processor : " << m_data.name;
+	m_text.split();
 
-	    size_t i = 0;
+	size_t i = 0;
 	for (it = m_data.coresData.begin(); it != m_data.coresData.end(); it++)
 	  {
-	    Graphic::Ncurses::NcTextArea freq;
-
-	    freq << "Core " << i << " : " << it->curFreq << " MHz";
-
-	    m_curFreq.push_back(freq);
+	    std::stringstream s;
+	    m_text.split();
+	    m_text.split();
+	    s << std::fixed << std::setprecision(1) << it->curFreq / 1000;
+	    m_text << "Core " << i << " : " << s.str() << " GHz";
 	    i++;
 	  }
       }
 
       void NcCpu::refresh()
       {
-	m_name.setPosition(0.1, 0.1);
-	m_name.display(*this);
-	for (size_t i = 0; i < m_curFreq.size(); ++i)
-	  {
-	    m_curFreq[i].setPosition(0.1, 0.2 + i * 0.5 / m_curFreq.size() + 0.1);
-	    m_curFreq[i].display(*this);
-	  }
+	m_text.display(*this);
       }
     }
   }

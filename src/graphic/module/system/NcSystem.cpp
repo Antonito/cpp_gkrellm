@@ -40,6 +40,14 @@ namespace Graphic
 	m_text << "Idletime : " << m_data.idletime;
 	m_text.split();
 	m_text.split();
+	m_text << "Load average (1 min) : " << m_data.loadAverage1;
+	m_text.split();
+	m_text << "Load average (5 min) : " << m_data.loadAverage5;
+	m_text.split();
+	m_text << "Load average (15 min) : " << m_data.loadAverage15;
+	m_text.split();
+	m_text.split();
+	m_text << "Datetime : " << m_data.datetime;
       }
 
       void NcSystem::refresh()

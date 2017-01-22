@@ -16,6 +16,7 @@
 #include "SfCPU.hpp"
 #include "SfRAM.hpp"
 #include "Logger.hpp"
+#include "NcMouche.hpp"
 
 // NCURSES
 
@@ -51,11 +52,15 @@ Graphic::Event ncurseMode(MainManager &m)
   frame1_2->addFrame(frame1_2_2);
   frame1->addFrame(frame1_2);
 
-  win.addTab("TabName", *frame1);
-  // Network
-
-  //
   frame1->setModule(network);
+
+  // Mouche
+  Graphic::Ncurses::Frame *        framouche = new Graphic::Ncurses::Frame();
+  Graphic::Module::Ncurses::NcMouche *mouche =
+      new Graphic::Module::Ncurses::NcMouche(framouche, m.getModuleManager());
+  framouche->setModule(mouche);
+  win.addTab("Gkrellm", *frame1);
+  win.addTab("Mouche", *framouche);
 
   win.enable();
   while ((retValue = win.update()) == Graphic::CONTINUE)
@@ -117,7 +122,7 @@ static int graphic_mode(MainManager &manager)
       if (graphicMode == Graphic::NCURSES_MODE)
 	{
 	  logger.log(Logger::Info, "Entering text mode [NCURSES]");
-	  retVal = ncurseMode(manager);
+	  while ((retVal = ncurseMode(manager)) == Graphic::RESIZE);
 	  logger.log(Logger::Info, "Leaving text mode [NCURSES]");
 	}
       else

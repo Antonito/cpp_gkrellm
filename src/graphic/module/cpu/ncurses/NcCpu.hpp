@@ -25,8 +25,7 @@ namespace Graphic
 	NcCpu &operator=(NcCpu const &other);
 
 	::Module::Processor::CPU::CPUGlobal const &m_data;
-	Graphic::Ncurses::NcTextArea            m_name;
-	std::vector<Graphic::Ncurses::NcTextArea>            m_curFreq;
+	Graphic::Ncurses::NcTextArea            m_text;
       };
     }
   }

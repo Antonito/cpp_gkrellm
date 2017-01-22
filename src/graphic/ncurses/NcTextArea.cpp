@@ -57,6 +57,18 @@ namespace Graphic
       return (*this);
     }
 
+    NcTextArea &NcTextArea::operator<<(size_t n)
+    {
+      *m_value[m_value.size() - 1] << n;
+      return (*this);
+    }
+
+    NcTextArea &NcTextArea::operator<<(double n)
+    {
+      *m_value[m_value.size() - 1] << n;
+      return (*this);
+    }
+
     void NcTextArea::clear()
     {
       for (size_t i = 0; i < m_value.size(); ++i)

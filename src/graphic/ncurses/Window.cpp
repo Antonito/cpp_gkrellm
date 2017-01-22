@@ -16,32 +16,23 @@ namespace Graphic
 {
   namespace Ncurses
   {
-    size_t Window::m_termWidth = 0;
-    size_t Window::m_termHeight = 0;
+    bool Window::m_resized = false;
 
-    void do_resize(int s)
+    void Window::doResize(int s)
     {
       if (s == SIGWINCH)
 	{
-	  struct winsize w;
-	  ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-
-	  Window::setTermSize(w.ws_col, w.ws_row);
+	  Window::m_resized = true;
 	}
-    }
-
-    void Window::setTermSize(size_t width, size_t height)
-    {
-      m_termWidth = width;
-      m_termHeight = height;
     }
 
     Window::Window(std::string const &name) : AWindow(name)
     {
       struct termios new_term;
 
-      signal(SIGWINCH, do_resize);
-      do_resize(SIGWINCH);
+      signal(SIGWINCH, Window::doResize);
+      Window::m_resized = false;
+      getmaxyx(stdscr, m_height, m_width);
       ::initscr();
       ::raw();
       ::keypad(stdscr, TRUE);
@@ -61,6 +52,9 @@ namespace Graphic
 
     Graphic::Event Window::update()
     {
+      if (m_resized)
+	return (Graphic::RESIZE);
+
       while (keyboardHit())
 	{
 	  int key = getchar();
@@ -70,6 +64,12 @@ namespace Graphic
 	      return (Graphic::EXIT);
 	    case 'm':
 	      return (Graphic::SWITCH_MODE);
+	    case 'o':
+	      this->prevTab();
+	      break;
+	    case 'p':
+	      this->nextTab();
+	      break;
 	    }
 	}
       m_currentTab->second->update();
@@ -78,7 +78,6 @@ namespace Graphic
 
     void Window::refresh()
     {
-      //::refresh();
       ::doupdate();
       ::clear();
       m_currentTab->second->refresh();
@@ -88,13 +87,7 @@ namespace Graphic
     void Window::updateInfos()
     {
        getmaxyx(stdscr, m_height, m_width);
-      if (m_width != m_termWidth || m_height != m_termHeight)
-	{
-	  m_width = m_termWidth;
-	  m_height = m_termHeight;
-	  this->resize();
-	}
-      m_headerSize = 1;
+      m_headerSize = 0;
     }
 
     void Window::resize()

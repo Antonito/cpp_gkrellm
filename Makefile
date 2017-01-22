@@ -12,6 +12,7 @@ VPATH=		./src/:./src/JSON/:./src/log/:./src/http/		\
 		:./src/graphic/module:./src/graphic/module/network/	\
 		:./src/graphic/module/network/ncurses			\
 		:./src/modules/process/:./src/graphic/sfml		\
+		:./src/graphic/module/mouche/				\
 		:./src/graphic/module/network/sfml			\
 		:./src/graphic/module/cpu/ncurses			\
 		:./src/graphic/module/system				\
@@ -71,7 +72,8 @@ SFML_SRC=	SfWindow.cpp	\
 
 GFX_CPU=	NcCpu.cpp
 
-GFX_SYSTEM=	NcSystem.cpp
+GFX_SYSTEM=	NcSystem.cpp	\
+		NcMouche.cpp
 
 SRC=		$(SRC_FILES) $(JSON_FILES) $(LOG_SRC) $(HTTP_SRC)	\
 		$(THREAD_SRC) $(MODULE_SRC) $(GRAPHIC_SRC)	\

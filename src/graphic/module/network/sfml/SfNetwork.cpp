@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sstream>
+#include <SFML/Graphics.hpp>
 #include "SfNetwork.hpp"
 
 // clang-format off
@@ -43,22 +44,22 @@ void SfNetwork::update()
 
   ss << "Packet received: " << it->packetRecv;
   m_rec.setString(ss.str());
-  m_rec.setFillColor(sf::Color::Black);
+  m_rec.setColor(sf::Color::Black);
   ss.str("");
 
   ss << "Packet received drop: " << it->packetRecvDrop;
   m_recDrop.setString(ss.str());
-  m_recDrop.setFillColor(sf::Color::Black);
+  m_recDrop.setColor(sf::Color::Black);
   ss.str("");
 
   ss << "Packet sent: " << it->packetSend;
   m_send.setString(ss.str());
-  m_send.setFillColor(sf::Color::Black);
+  m_send.setColor(sf::Color::Black);
   ss.str("");
 
   ss << "Packet sent drop: " << it->packetSendDrop;
   m_sendDrop.setString(ss.str());
-  m_sendDrop.setFillColor(sf::Color::Black);
+  m_sendDrop.setColor(sf::Color::Black);
 }
 
 void SfNetwork::refresh()
