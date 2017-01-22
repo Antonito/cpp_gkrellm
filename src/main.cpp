@@ -7,6 +7,7 @@
 #include "SfWindow.hpp"
 #include "SfFrame.hpp"
 #include "SfNetwork.hpp"
+#include "SfSystem.hpp"
 
 // NCURSES
 
@@ -39,11 +40,15 @@ Graphic::Event sfmlMode(MainManager &manager)
 
   Graphic::SFML::SfWindow win("Window", 1280, 720);
   Graphic::SFML::SfFrame *frm = new Graphic::SFML::SfFrame(win);
+  Graphic::SFML::SfFrame *frmSystem = new Graphic::SFML::SfFrame(win);
 
   SfNetwork *network = new SfNetwork(frm, manager.getModuleManager());
+  SfSystem * system = new SfSystem(frm, manager.getModuleManager());
   frm->setModule(network);
+  frmSystem->setModule(system);
 
   win.addTab("TabName", *frm);
+  win.addTab("TabName", *frmSystem);
   win.enable();
   while (win.isOpen() && retValue == Graphic::CONTINUE)
     {
