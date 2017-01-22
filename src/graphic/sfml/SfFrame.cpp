@@ -31,8 +31,27 @@ namespace Graphic
       m_isEnabled = true;
       m_rect.setSize(sf::Vector2f(width, height));
       m_rect.setPosition(m_x + m_offX, m_y + m_offY);
-      //      m_rect.setPosition(0, 0);
       m_rect.setFillColor(sf::Color::Red);
+      if (m_splitMode == VERTICAL)
+	{
+	  if (m_split.size() >= 1)
+	    m_split[0]->enable(m_x, m_y, m_offX, m_offY,
+	                       m_width * m_ratio + 0.5, m_height);
+	  if (m_split.size() >= 2)
+	    m_split[1]->enable(m_x + (m_ratio * m_width) + 0.5, m_y, m_offX,
+	                       m_offY, m_width * (1.0 - m_ratio) + 0.5,
+	                       m_height);
+	}
+      else
+	{
+	  if (m_split.size() >= 1)
+	    m_split[0]->enable(m_x, m_y, m_offX, m_offY, m_width,
+	                       m_height * m_ratio + 0.5);
+	  if (m_split.size() >= 2)
+	    m_split[1]->enable(m_x, m_y + (m_ratio * m_height) + 0.5, m_offX,
+	                       m_offY, m_width,
+	                       m_height * (1.0 - m_ratio) + 0.5);
+	}
     }
 
     void SfFrame::disable()
@@ -47,7 +66,10 @@ namespace Graphic
       if (m_split.size() >= 2)
 	m_split[1]->update();
       if (m_module)
-	m_module->update();
+	{
+	  m_module->position(m_x + m_offX, m_y + m_offY, m_width, m_height);
+	  m_module->update();
+	}
     }
 
     void SfFrame::refresh()

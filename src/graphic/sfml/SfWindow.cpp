@@ -7,7 +7,7 @@ namespace Graphic
   namespace SFML
   {
     SfWindow::SfWindow(std::string const &name, size_t width, size_t height)
-        : AWindow(name), m_window(sf::VideoMode(20, 20), name)
+        : AWindow(name), m_window(sf::VideoMode(width, height), name)
     {
       m_width = width;
       m_height = height;
@@ -42,7 +42,6 @@ namespace Graphic
       m_window.clear();
       if (m_tab.size() > 0)
 	{
-	  std::clog << "oui" << std::endl;
 	  m_currentTab->second->refresh();
 	}
       m_window.display();

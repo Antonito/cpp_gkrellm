@@ -58,8 +58,7 @@ int main()
   MainManager    manager;
   Graphic::Event retVal = Graphic::CONTINUE;
   Graphic::Mode  graphicMode = Graphic::SFML_MODE;
-  //   for (;;)
-  //     usleep(10000);
+
   while (retVal == Graphic::CONTINUE)
     {
       if (graphicMode == Graphic::NCURSES_MODE)

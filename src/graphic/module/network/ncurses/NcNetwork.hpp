@@ -26,9 +26,9 @@ namespace Graphic
 
 	::Module::Network::NetworkGlobal const &m_data;
 	Graphic::Ncurses::NcTextArea            m_rec;
-	Graphic::Ncurses::NcTextArea            m_recDrop;
+	Graphic::Ncurses::NcTextArea            m_byteRec;
 	Graphic::Ncurses::NcTextArea            m_send;
-	Graphic::Ncurses::NcTextArea            m_sendDrop;
+	Graphic::Ncurses::NcTextArea            m_byteSend;
       };
     }
   }

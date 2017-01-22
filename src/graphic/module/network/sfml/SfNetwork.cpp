@@ -6,8 +6,17 @@
 
 SfNetwork::SfNetwork(Graphic::SFML::SfFrame *frame, ModuleManager const &m)
     : m_frame(frame),
-    m_data(m.getNetwork())
+      m_data(m.getNetwork())
 {
+  static sf::Font font;
+  if (!font.loadFromFile("./fonts/arial.ttf"))
+    {
+      //throw
+    }
+  m_rec.setFont(font);
+  m_recDrop.setFont(font);
+  m_send.setFont(font);
+  m_sendDrop.setFont(font);
 }
 
 SfNetwork::~SfNetwork()
@@ -30,26 +39,26 @@ void SfNetwork::update()
   while (it != m_data.nd.end() && it->interface != "wlo1")
     it++;
 
-  std::cout << it->packetRecv << std::endl;
+  //std::cout << it->packetRecv << std::endl;
 
   ss << it->packetRecv;
   m_rec.setString(ss.str());
-  m_rec.setColor(sf::Color::Black);
+  m_rec.setFillColor(sf::Color::Black);
   ss.str("");
 
   ss << it->packetRecvDrop;
   m_recDrop.setString(ss.str());
-  m_recDrop.setColor(sf::Color::Black);
+  m_recDrop.setFillColor(sf::Color::Black);
   ss.str("");
 
   ss << it->packetSend;
   m_send.setString(ss.str());
-  m_send.setColor(sf::Color::Black);
+  m_send.setFillColor(sf::Color::Black);
   ss.str("");
 
   ss << it->packetSendDrop;
   m_sendDrop.setString(ss.str());
-  m_sendDrop.setColor(sf::Color::Black);
+  m_sendDrop.setFillColor(sf::Color::Black);
 }
 
 void SfNetwork::refresh()
