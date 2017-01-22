@@ -6,17 +6,24 @@
 #include "Frame.hpp"
 #include "SfWindow.hpp"
 #include "SfFrame.hpp"
+#include "SfNetwork.hpp"
 
-Graphic::Event ncurseMode(MainManager const &)
+// NCURSES
+
+Graphic::Event ncurseMode(MainManager &m)
 {
   Graphic::Event           retValue;
   Graphic::Ncurses::Window win("gkrellm");
   Graphic::Ncurses::Frame *frm = new Graphic::Ncurses::Frame();
 
+  Graphic::Module::Ncurses::NcNetwork *network =
+      new Graphic::Module::Ncurses::NcNetwork(frm, m.getModuleManager());
+
   win.addTab("TabName", *frm);
   // Network
 
   //
+  frm->setModule(network);
 
   win.enable();
   while ((retValue = win.update()) == Graphic::CONTINUE)
@@ -24,12 +31,17 @@ Graphic::Event ncurseMode(MainManager const &)
   return (retValue);
 }
 
-Graphic::Event sfmlMode(MainManager const &)
+// SFML
+
+Graphic::Event sfmlMode(MainManager &manager)
 {
   Graphic::Event retValue = Graphic::CONTINUE;
 
   Graphic::SFML::SfWindow win("Window", 1280, 720);
   Graphic::SFML::SfFrame *frm = new Graphic::SFML::SfFrame(win);
+
+  SfNetwork *network = new SfNetwork(frm, manager.getModuleManager());
+  frm->setModule(network);
 
   win.addTab("TabName", *frm);
   win.enable();
@@ -45,7 +57,7 @@ int main()
 {
   MainManager    manager;
   Graphic::Event retVal = Graphic::CONTINUE;
-  Graphic::Mode  graphicMode = Graphic::NCURSES_MODE;
+  Graphic::Mode  graphicMode = Graphic::SFML_MODE;
   //   for (;;)
   //     usleep(10000);
   while (retVal == Graphic::CONTINUE)

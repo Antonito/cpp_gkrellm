@@ -11,7 +11,8 @@ VPATH=		./src/:./src/JSON/:./src/log/:./src/http/		\
 		:./src/graphic:./src/graphic/ncurses			\
 		:./src/graphic/module:./src/graphic/module/network/	\
 		:./src/graphic/module/network/ncurses			\
-		:./src/modules/process/:./src/graphic/sfml
+		:./src/modules/process/:./src/graphic/sfml		\
+		:./src/graphic/module/network/sfml
 
 SRC_FILES=	main.cpp		\
 		MainManager.cpp
@@ -52,12 +53,16 @@ NCURSES_SRC=	Frame.cpp		\
 		NcTextArea.cpp
 
 GRAPHIC_MODULE_SRC=	AModule.cpp	\
-			ANcModule.cpp
+			ANcModule.cpp	\
+			ASfModule.cpp
 
-GFX_NETWORK=	NcNetwork.cpp
+GFX_NETWORK=	NcNetwork.cpp	\
+		SfNetwork.cpp
 
 SFML_SRC=	SfWindow.cpp	\
 		SfFrame.cpp
+
+
 
 SRC=		$(SRC_FILES) $(JSON_FILES) $(LOG_SRC) $(HTTP_SRC)	\
 		$(THREAD_SRC) $(MODULE_SRC) $(GRAPHIC_SRC)	\
