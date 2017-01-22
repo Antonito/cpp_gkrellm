@@ -13,8 +13,11 @@ namespace Graphic
     class NcTextArea
     {
     public:
+      NcTextArea();
       NcTextArea(double x, double y);
       ~NcTextArea();
+      NcTextArea(NcTextArea const &other);
+      NcTextArea &operator=(NcTextArea const &other);
 
       NcTextArea &operator<<(std::string const &s);
       NcTextArea &operator<<(int n);
@@ -22,12 +25,12 @@ namespace Graphic
       void clear();
 
       void display(Graphic::Module::ANcModule const &module) const;
+      void setPosition(double x, double y);
+      void split();
 
     private:
-      NcTextArea(NcTextArea const &other);
-      NcTextArea &operator=(NcTextArea const &other);
 
-      std::stringstream m_value;
+      std::vector<std::stringstream *> m_value;
       double            m_x;
       double            m_y;
     };

@@ -87,7 +87,7 @@ namespace Graphic
 
     void Window::updateInfos()
     {
-      // getmaxyx(stdscr, m_height, m_width);
+       getmaxyx(stdscr, m_height, m_width);
       if (m_width != m_termWidth || m_height != m_termHeight)
 	{
 	  m_width = m_termWidth;

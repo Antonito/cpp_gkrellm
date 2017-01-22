@@ -7,6 +7,8 @@
 #include "SfWindow.hpp"
 #include "SfFrame.hpp"
 #include "SfNetwork.hpp"
+#include "ncurses/NcCpu.hpp"
+#include "NcSystem.hpp"
 #include "Logger.hpp"
 
 // NCURSES
@@ -15,16 +17,39 @@ Graphic::Event ncurseMode(MainManager &m)
 {
   Graphic::Event           retValue;
   Graphic::Ncurses::Window win("gkrellm");
-  Graphic::Ncurses::Frame *frm = new Graphic::Ncurses::Frame();
+  Graphic::Ncurses::Frame *frame1 = new Graphic::Ncurses::Frame();
+  frame1->setSplitMode(Graphic::AFrame::HORIZONTAL);
 
+  // Network
+  Graphic::Ncurses::Frame *frame1_1 = new Graphic::Ncurses::Frame();
   Graphic::Module::Ncurses::NcNetwork *network =
-      new Graphic::Module::Ncurses::NcNetwork(frm, m.getModuleManager());
+      new Graphic::Module::Ncurses::NcNetwork(frame1_1, m.getModuleManager());
+  frame1_1->setModule(network);
+  frame1->addFrame(frame1_1);
 
-  win.addTab("TabName", *frm);
+  // SPLIT
+
+  // System
+  Graphic::Ncurses::Frame *frame1_2 = new Graphic::Ncurses::Frame();
+  Graphic::Ncurses::Frame *frame1_2_1 = new Graphic::Ncurses::Frame();
+  Graphic::Module::Ncurses::NcSystem *system =
+      new Graphic::Module::Ncurses::NcSystem(frame1_2_1, m.getModuleManager());
+  frame1_2_1->setModule(system);
+  frame1_2->addFrame(frame1_2_1);
+
+  // Cpu
+  Graphic::Ncurses::Frame *        frame1_2_2 = new Graphic::Ncurses::Frame();
+  Graphic::Module::Ncurses::NcCpu *cpu =
+      new Graphic::Module::Ncurses::NcCpu(frame1_2_2, m.getModuleManager());
+  frame1_2_2->setModule(cpu);
+  frame1_2->addFrame(frame1_2_2);
+  frame1->addFrame(frame1_2);
+
+  win.addTab("TabName", *frame1);
   // Network
 
   //
-  frm->setModule(network);
+  frame1->setModule(network);
 
   win.enable();
   while ((retValue = win.update()) == Graphic::CONTINUE)
@@ -40,7 +65,7 @@ Graphic::Event sfmlMode(MainManager &manager)
 
   Graphic::SFML::SfWindow win("gkrellm", 1280, 720);
   Graphic::SFML::SfFrame *frm = new Graphic::SFML::SfFrame(win);
-
+  //(void)manager;
   SfNetwork *network = new SfNetwork(frm, manager.getModuleManager());
   frm->setModule(network);
 
@@ -58,8 +83,8 @@ int main()
 {
   MainManager    manager;
   Graphic::Event retVal = Graphic::CONTINUE;
-  Graphic::Mode  graphicMode = Graphic::SFML_MODE;
-  Logger &logger = Logger::Instance();
+  Graphic::Mode  graphicMode = Graphic::NCURSES_MODE;
+  Logger &       logger = Logger::Instance();
 
   while (retVal == Graphic::CONTINUE)
     {
