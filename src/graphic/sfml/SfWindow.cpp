@@ -30,6 +30,38 @@ namespace Graphic
 
     Graphic::Event SfWindow::update()
     {
+      sf::Event event;
+
+      while (m_window.pollEvent(event))
+	{
+	  switch (event.type)
+	    {
+	    case sf::Event::Resized:
+	      m_width = event.size.width;
+	      m_height = event.size.height;
+	      break;
+	    case sf::Event::KeyPressed:
+	      if (event.key.code == sf::Keyboard::M)
+		{
+		  return (Graphic::SWITCH_MODE);
+		}
+	      else if (event.key.code == sf::Keyboard::Escape)
+		{
+		  return (Graphic::EXIT);
+		}
+	      else if (event.key.code == sf::Keyboard::P)
+		{
+		  this->nextTab();
+		}
+	      else if (event.key.code == sf::Keyboard::O)
+		{
+		  this->prevTab();
+		}
+	      break;
+	    default:
+	      break;
+	    }
+	}
       if (m_tab.size() > 0)
 	{
 	  m_currentTab->second->update();
